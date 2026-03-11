@@ -47,9 +47,16 @@ dev_dependencies:
   injectable_generator: ^2.12.1
   build_runner: ^2.12.2
   flutter_gen_runner: ^5.13.0+1
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_logo.png"
 
 flutter_gen:
   output: lib/generated/
+  line_length: 150
 
   integrations:
     flutter_svg: true
@@ -59,5 +66,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-    - assets/svgs/
     - assets/translations/
