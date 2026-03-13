@@ -1,95 +1,58 @@
+import 'package:client/core/size_config/device_size_constants.dart';
+import 'package:client/core/themes/app_themes.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 
+import 'core/navigation/navigation_service.dart';
+import 'core/size_config/app_dimen.dart';
 import 'core/themes/app_colors.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('vi'), Locale('en')],
+      path: 'assets/translations', 
+      fallbackLocale: const Locale('vi'),
+      startLocale: const Locale('vi'),
+      saveLocale: true,
+      child: const MyApplication(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApplication extends StatefulWidget {
+  const MyApplication({super.key});
 
+  @override
+  State<MyApplication> createState() => _MyApplicationState();
+}
+
+class _MyApplicationState extends State<MyApplication> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: const Size(
+        DeviceSizeConstants.designDeviceWidth,
+        DeviceSizeConstants.designDeviceHeight,
+      ),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
+        AppDimen.of(context);
+        
+        return MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          title: 'Movie Ticket Booking',
-          theme: ThemeData(
-            useMaterial3: true,
-            textTheme: GoogleFonts.poppinsTextTheme(),
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.deepPurple,
-              background: AppColors.white,
-            ),
-          ),
-          home: const HelloWorldScreen(),
+          theme: AppThemes.themData,
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          routerConfig: NavigationService.router,
         );
       },
-    );
-  }
-}
-
-class HelloWorldScreen extends StatelessWidget {
-  const HelloWorldScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.movie_filter_rounded,
-              size: 100.sp,
-              color: Colors.deepPurple,
-            ),
-            SizedBox(height: 24.h),
-            Text(
-              'Hello World',
-              style: TextStyle(
-                fontSize: 32.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.black,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              'Chào mừng bạn đến với ứng dụng đặt vé xem phim',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Colors.grey[600],
-              ),
-            ),
-            SizedBox(height: 40.h),
-            ElevatedButton(
-              onPressed: () {
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 12.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.r),
-                ),
-              ),
-              child: Text(
-                'Bắt đầu ngay',
-                style: TextStyle(fontSize: 18.sp),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

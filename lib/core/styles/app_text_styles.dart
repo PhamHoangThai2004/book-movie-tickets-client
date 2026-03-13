@@ -5,7 +5,7 @@ import '../size_config/app_dimen.dart';
 import '../size_config/dimens.dart';
 import '../themes/app_colors.dart';
 
-abstract class TextStylesCustom {
+abstract class AppTextStyles {
   static TextStyle style = GoogleFonts.inter(
     fontSize: Dimens.d16.responsive(),
     fontWeight: FontWeight.w400,
