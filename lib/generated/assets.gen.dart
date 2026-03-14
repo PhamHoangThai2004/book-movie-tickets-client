@@ -27,17 +27,38 @@ class $AssetsImagesGen {
 class $AssetsSvgsGen {
   const $AssetsSvgsGen();
 
-  /// File path: assets/svgs/ic_camera_movie.svg
-  SvgGenImage get icCameraMovie => const SvgGenImage('assets/svgs/ic_camera_movie.svg');
+  /// File path: assets/svgs/ic_arrow_right.svg
+  SvgGenImage get icArrowRight => const SvgGenImage('assets/svgs/ic_arrow_right.svg');
 
-  /// File path: assets/svgs/ic_camera_movie_outline.svg
-  SvgGenImage get icCameraMovieOutline => const SvgGenImage('assets/svgs/ic_camera_movie_outline.svg');
+  /// File path: assets/svgs/ic_call.svg
+  SvgGenImage get icCall => const SvgGenImage('assets/svgs/ic_call.svg');
+
+  /// File path: assets/svgs/ic_edit.svg
+  SvgGenImage get icEdit => const SvgGenImage('assets/svgs/ic_edit.svg');
+
+  /// File path: assets/svgs/ic_email.svg
+  SvgGenImage get icEmail => const SvgGenImage('assets/svgs/ic_email.svg');
 
   /// File path: assets/svgs/ic_home.svg
   SvgGenImage get icHome => const SvgGenImage('assets/svgs/ic_home.svg');
 
   /// File path: assets/svgs/ic_home_outline.svg
   SvgGenImage get icHomeOutline => const SvgGenImage('assets/svgs/ic_home_outline.svg');
+
+  /// File path: assets/svgs/ic_lock.svg
+  SvgGenImage get icLock => const SvgGenImage('assets/svgs/ic_lock.svg');
+
+  /// File path: assets/svgs/ic_notification.svg
+  SvgGenImage get icNotification => const SvgGenImage('assets/svgs/ic_notification.svg');
+
+  /// File path: assets/svgs/ic_search.svg
+  SvgGenImage get icSearch => const SvgGenImage('assets/svgs/ic_search.svg');
+
+  /// File path: assets/svgs/ic_shopping_cart.svg
+  SvgGenImage get icShoppingCart => const SvgGenImage('assets/svgs/ic_shopping_cart.svg');
+
+  /// File path: assets/svgs/ic_star.svg
+  SvgGenImage get icStar => const SvgGenImage('assets/svgs/ic_star.svg');
 
   /// File path: assets/svgs/ic_ticket.svg
   SvgGenImage get icTicket => const SvgGenImage('assets/svgs/ic_ticket.svg');
@@ -51,8 +72,32 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/ic_user_outline.svg
   SvgGenImage get icUserOutline => const SvgGenImage('assets/svgs/ic_user_outline.svg');
 
+  /// File path: assets/svgs/ic_video.svg
+  SvgGenImage get icVideo => const SvgGenImage('assets/svgs/ic_video.svg');
+
+  /// File path: assets/svgs/ic_video_outline.svg
+  SvgGenImage get icVideoOutline => const SvgGenImage('assets/svgs/ic_video_outline.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [icCameraMovie, icCameraMovieOutline, icHome, icHomeOutline, icTicket, icTicketOutline, icUser, icUserOutline];
+  List<SvgGenImage> get values => [
+    icArrowRight,
+    icCall,
+    icEdit,
+    icEmail,
+    icHome,
+    icHomeOutline,
+    icLock,
+    icNotification,
+    icSearch,
+    icShoppingCart,
+    icStar,
+    icTicket,
+    icTicketOutline,
+    icUser,
+    icUserOutline,
+    icVideo,
+    icVideoOutline,
+  ];
 }
 
 class $AssetsTranslationsGen {

@@ -1,2 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512" height="512"><path d="M12,12A6,6,0,1,0,6,6,6.006,6.006,0,0,0,12,12ZM12,2A4,4,0,1,1,8,6,4,4,0,0,1,12,2Z"/><path d="M12,14a9.01,9.01,0,0,0-9,9,1,1,0,0,0,2,0,7,7,0,0,1,14,0,1,1,0,0,0,2,0A9.01,9.01,0,0,0,12,14Z"/></svg>
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.0003 14C17.222 14 19.8337 11.3884 19.8337 8.16671C19.8337 4.94505 17.222 2.33337 14.0003 2.33337C10.7787 2.33337 8.16699 4.94505 8.16699 8.16671C8.16699 11.3884 10.7787 14 14.0003 14Z" stroke="#CCCCCC" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M24.0218 25.6667C24.0218 21.1517 19.5302 17.5 14.0002 17.5C8.47018 17.5 3.97852 21.1517 3.97852 25.6667" stroke="#CCCCCC" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

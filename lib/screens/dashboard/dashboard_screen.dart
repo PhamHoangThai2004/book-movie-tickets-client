@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/screens/dashboard/components/navigation_bar_item.dart';
@@ -53,7 +51,7 @@ class _DashboardState extends State<DashboardScreen> {
       ),
       child: Column(
         children: [
-          Divider(color: AppColors.white.withValues(alpha: 0.2), thickness: Dimens.d1.responsive(),),
+          Divider(color: AppColors.darkCharcoal, thickness: Dimens.d1.responsive()),
           VerticalSpacing(of: Dimens.d10.responsive()),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,7 +64,7 @@ class _DashboardState extends State<DashboardScreen> {
                 onTap: () => _goToTab(item.index),
               );
             }).toList(),
-          )
+          ),
         ],
       ),
     );

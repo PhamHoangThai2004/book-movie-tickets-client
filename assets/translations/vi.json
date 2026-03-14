@@ -2,5 +2,7 @@
   "home": "Trang chủ",
   "ticket": "Vé",
   "movie": "Phim",
-  "profile": "Hồ sơ"
+  "profile": "Hồ sơ",
+  "payment_history": "Lịch sử thanh toán",
+  "change_password": "Đổi mật khẩu"
 }
