@@ -107,6 +107,9 @@ extension FontColorCustom on TextStyle {
 
   /// color: silver
   TextStyle get silverColor => copyWith(color: AppColors.silver);
+
+  /// color: coolGray
+  TextStyle get coolGrayColor => copyWith(color: AppColors.coolGray);
 }
 
 extension FontStyleCustom on TextStyle {

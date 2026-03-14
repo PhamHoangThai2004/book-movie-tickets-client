@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/navigation/navigation_service.dart';
 import 'core/size_config/app_dimen.dart';
-import 'core/themes/app_colors.dart';
+import 'core/size_config/size_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +34,9 @@ class MyApplication extends StatefulWidget {
 class _MyApplicationState extends State<MyApplication> {
   @override
   Widget build(BuildContext context) {
+    AppDimen.of(context);
+    SizeConfig().init(context);
+
     return ScreenUtilInit(
       designSize: const Size(
         DeviceSizeConstants.designDeviceWidth,
@@ -42,8 +45,6 @@ class _MyApplicationState extends State<MyApplication> {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        AppDimen.of(context);
-        
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           theme: AppThemes.themData,

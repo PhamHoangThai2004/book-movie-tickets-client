@@ -20,12 +20,18 @@ class $AssetsImagesGen {
   /// File path: assets/images/app_logo.png
   AssetGenImage get appLogo => const AssetGenImage('assets/images/app_logo.png');
 
+  /// File path: assets/images/img_name_app.png
+  AssetGenImage get imgNameApp => const AssetGenImage('assets/images/img_name_app.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [appLogo];
+  List<AssetGenImage> get values => [appLogo, imgNameApp];
 }
 
 class $AssetsSvgsGen {
   const $AssetsSvgsGen();
+
+  /// File path: assets/svgs/ic_arrow_left.svg
+  SvgGenImage get icArrowLeft => const SvgGenImage('assets/svgs/ic_arrow_left.svg');
 
   /// File path: assets/svgs/ic_arrow_right.svg
   SvgGenImage get icArrowRight => const SvgGenImage('assets/svgs/ic_arrow_right.svg');
@@ -80,6 +86,7 @@ class $AssetsSvgsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+    icArrowLeft,
     icArrowRight,
     icCall,
     icEdit,

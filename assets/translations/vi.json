@@ -4,5 +4,10 @@
   "movie": "Phim",
   "profile": "Hồ sơ",
   "payment_history": "Lịch sử thanh toán",
-  "change_password": "Đổi mật khẩu"
+  "change_password": "Đổi mật khẩu",
+  "cinema_hub_hello": "CinemaHub xin chào!",
+  "enjoy_your_favorite_movies": "Hãy thưởng thức những bộ phim yêu thích của bạn.",
+  "sign_in": "Đăng nhập",
+  "sign_up": "Đăng ký",
+  "privacy_policy_message": "Bằng cách đăng nhập hoặc đăng ký, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của chúng tôi."
 }

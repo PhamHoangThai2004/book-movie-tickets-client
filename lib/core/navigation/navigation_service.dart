@@ -1,3 +1,4 @@
+import 'package:client/screens/auth/auth_screen.dart';
 import 'package:client/screens/dashboard/cubit/dashboard_cubit.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/movie/movie_screen.dart';
@@ -28,6 +29,8 @@ class NavigationService {
   static String get movie => '/movie';
 
   static String get profile => '/profile';
+
+  static String get auth => '/auth';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -80,6 +83,20 @@ class NavigationService {
         builder: (context, state) {
           return StartupScreen();
         },
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: auth,
+        path: auth,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const AuthScreen(),
+          transitionDuration: const Duration(milliseconds: 300),
+          reverseTransitionDuration: const Duration(milliseconds: 300),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        ),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

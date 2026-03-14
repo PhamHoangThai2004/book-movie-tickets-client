@@ -1,7 +1,9 @@
 import 'package:client/core/themes/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../size_config/app_dimen.dart';
+import '../size_config/dimens.dart';
 
 abstract class AppThemes {
   static ThemeData themData = ThemeData(
@@ -24,8 +26,19 @@ abstract class AppThemes {
     gradient: LinearGradient(
       begin: Alignment.center,
       end: Alignment.bottomLeft,
-      colors: [AppColors.black, AppColors.black, AppColors.amberYellow.withValues(alpha: 0.2)],
-      stops: [0.0, 0.6, 1.0],
+      colors: [AppColors.warmBlack, AppColors.deepBrown.withValues(alpha: 0.2)],
+      stops: [0.6, 1.2],
     ),
+  );
+
+  static BoxDecoration yellowButtonStyle = BoxDecoration(
+    color: AppColors.amberYellow,
+    borderRadius: BorderRadius.all(Radius.circular(Dimens.d64.responsive())),
+  );
+
+  static BoxDecoration outlineButtonStyle = BoxDecoration(
+    color: AppColors.transparent,
+    border: Border.all(color: AppColors.whiteSmoke, width: Dimens.d1.responsive()),
+    borderRadius: BorderRadius.all(Radius.circular(Dimens.d64.responsive())),
   );
 }
