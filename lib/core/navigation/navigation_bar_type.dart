@@ -61,7 +61,7 @@ extension NavigationBarTypeX on NavigationBarType {
           colorFilter: ColorFilter.mode(AppColors.lightGray, BlendMode.srcIn),
         );
       case NavigationBarType.MOVIE:
-        return Assets.svgs.icCameraMovieOutline.svg(
+        return Assets.svgs.icVideoOutline.svg(
           width: Dimens.d24.responsive(),
           height: Dimens.d24.responsive(),
           colorFilter: ColorFilter.mode(AppColors.lightGray, BlendMode.srcIn),
@@ -90,7 +90,7 @@ extension NavigationBarTypeX on NavigationBarType {
           colorFilter: ColorFilter.mode(AppColors.amberYellow, BlendMode.srcIn),
         );
       case NavigationBarType.MOVIE:
-        return Assets.svgs.icCameraMovie.svg(
+        return Assets.svgs.icVideo.svg(
           width: Dimens.d24.responsive(),
           height: Dimens.d24.responsive(),
           colorFilter: ColorFilter.mode(AppColors.amberYellow, BlendMode.srcIn),

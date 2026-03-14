@@ -6,7 +6,7 @@ import '../size_config/dimens.dart';
 import '../themes/app_colors.dart';
 
 abstract class AppTextStyles {
-  static TextStyle style = GoogleFonts.inter(
+  static TextStyle style = GoogleFonts.beVietnamPro(
     fontSize: Dimens.d16.responsive(),
     fontWeight: FontWeight.w400,
     color: AppColors.black,
@@ -14,29 +14,26 @@ abstract class AppTextStyles {
 }
 
 extension FontWeightCustom on TextStyle {
-  /// FontWeight.w300
+  /// FontWeight.w300 / light
   TextStyle get w300 => copyWith(fontWeight: FontWeight.w300);
 
-  /// FontWeight.w400
+  /// FontWeight.w400 / regular
   TextStyle get w400 => copyWith(fontWeight: FontWeight.w400);
 
-  /// FontWeight.w500
+  /// FontWeight.w500 / medium
   TextStyle get w500 => copyWith(fontWeight: FontWeight.w500);
 
-  /// FontWeight.w600
+  /// FontWeight.w600 / semi-bold
   TextStyle get w600 => copyWith(fontWeight: FontWeight.w600);
 
-  /// FontWeight.w700
+  /// FontWeight.w700 / bold
   TextStyle get w700 => copyWith(fontWeight: FontWeight.w700);
 
-  /// FontWeight.w800
+  /// FontWeight.w800 / heavy
   TextStyle get w800 => copyWith(fontWeight: FontWeight.w800);
 
-  /// FontWeight.w900
+  /// FontWeight.w900 / black
   TextStyle get w900 => copyWith(fontWeight: FontWeight.w900);
-
-  /// FontWeight.bold
-  TextStyle get bold => copyWith(fontWeight: FontWeight.bold);
 }
 
 extension FontSizeCustom on TextStyle {
@@ -104,6 +101,12 @@ extension FontColorCustom on TextStyle {
 
   /// color: black
   TextStyle get blackColor => copyWith(color: AppColors.black);
+
+  /// color: whiteSmoke
+  TextStyle get whiteSmokeColor => copyWith(color: AppColors.whiteSmoke);
+
+  /// color: silver
+  TextStyle get silverColor => copyWith(color: AppColors.silver);
 }
 
 extension FontStyleCustom on TextStyle {
