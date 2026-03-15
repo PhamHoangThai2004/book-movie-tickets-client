@@ -9,5 +9,15 @@
   "enjoy_your_favorite_movies": "Hãy thưởng thức những bộ phim yêu thích của bạn.",
   "sign_in": "Đăng nhập",
   "sign_up": "Đăng ký",
-  "privacy_policy_message": "Bằng cách đăng nhập hoặc đăng ký, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của chúng tôi."
+  "privacy_policy_message": "Bằng cách đăng nhập hoặc đăng ký, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của chúng tôi.",
+  "email": "Email",
+  "password": "Mật khẩu",
+  "forgot_password": "Quên mật khẩu?",
+  "enter_your_email": "Nhập địa chỉ email của bạn",
+  "enter_your_password": "Nhập mật khẩu của bạn",
+  "full_name": "Họ và tên",
+  "enter_your_name": "Nhập họ và tên của bạn",
+  "already_have_account": "Bạn đã có tài khoản?",
+  "no_account_yet": "Bạn chưa có tài khoản?",
+  "now_register": "Đăng ký ngay"
 }

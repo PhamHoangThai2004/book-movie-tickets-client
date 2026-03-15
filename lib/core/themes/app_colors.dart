@@ -15,4 +15,5 @@ final class AppColors {
   static const Color warmBlack = Color(0xFF0C0A05);
   static const Color deepBrown = Color(0xFF342705);
   static const Color grey = Color(0xFF686868);
+  static const Color red = Color(0xFFFF0000);
 }

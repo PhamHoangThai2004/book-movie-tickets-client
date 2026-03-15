@@ -3,6 +3,8 @@ import 'package:client/screens/dashboard/cubit/dashboard_cubit.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/movie/movie_screen.dart';
 import 'package:client/screens/profile/profile_screen.dart';
+import 'package:client/screens/sign_in/sign_in_screen.dart';
+import 'package:client/screens/sign_up/sign_up_screen.dart';
 import 'package:client/screens/startup/startup_screen.dart';
 import 'package:client/screens/ticket/ticket_screen.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +33,10 @@ class NavigationService {
   static String get profile => '/profile';
 
   static String get auth => '/auth';
+
+  static String get signUp => '/sign-up';
+
+  static String get signIn => '/sign-in';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -67,6 +73,7 @@ class NavigationService {
     navigatorKey: rootNavigatorKey,
     observers: [BotToastNavigatorObserver()],
     routes: [
+      /// startupScreen
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
         name: startup,
@@ -84,6 +91,8 @@ class NavigationService {
           return StartupScreen();
         },
       ),
+
+      /// authScreen
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
         name: auth,
@@ -98,6 +107,40 @@ class NavigationService {
           },
         ),
       ),
+
+      /// signUpScreen
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: signUp,
+        path: signUp,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const SignUpScreen(),
+          transitionDuration: const Duration(milliseconds: 300),
+          reverseTransitionDuration: const Duration(milliseconds: 300),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        ),
+      ),
+
+      /// signInScreen
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: signIn,
+        path: signIn,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const SignInScreen(),
+          transitionDuration: const Duration(milliseconds: 300),
+          reverseTransitionDuration: const Duration(milliseconds: 300),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        ),
+      ),
+
+      /// dashboardScreen
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return BlocProvider(
@@ -107,27 +150,19 @@ class NavigationService {
         },
         branches: [
           StatefulShellBranch(
-            routes: [
-              GoRoute(path: home, builder: (_, _) => HomeScreen(), routes: const []),
-            ],
+            routes: [GoRoute(path: home, builder: (_, _) => HomeScreen(), routes: const [])],
           ),
 
           StatefulShellBranch(
-            routes: [
-              GoRoute(path: ticket, builder: (_, _) => TicketScreen(), routes: const []),
-            ],
+            routes: [GoRoute(path: ticket, builder: (_, _) => TicketScreen(), routes: const [])],
           ),
 
           StatefulShellBranch(
-            routes: [
-              GoRoute(path: movie, builder: (_, _) => MovieScreen(), routes: const []),
-            ],
+            routes: [GoRoute(path: movie, builder: (_, _) => MovieScreen(), routes: const [])],
           ),
 
           StatefulShellBranch(
-            routes: [
-              GoRoute(path: profile, builder: (_, _) => ProfileScreen(), routes: const []),
-            ],
+            routes: [GoRoute(path: profile, builder: (_, _) => ProfileScreen(), routes: const [])],
           ),
         ],
       ),

@@ -7,7 +7,9 @@ import 'package:client/core/themes/app_colors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../core/navigation/navigation_service.dart';
 import '../../core/themes/app_themes.dart';
 import '../../generated/assets.gen.dart';
 
@@ -30,8 +32,6 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppDimen.of(context);
-
     return Scaffold(
       backgroundColor: AppColors.amberYellow.withValues(alpha: 0.1),
       body: SafeArea(
@@ -134,11 +134,15 @@ class _AuthScreenState extends State<AuthScreen> {
       padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
       child: Column(
         children: [
-          ButtonCustom(title: 'sign_in'.tr(), onPressed: () {}),
+          ButtonCustom(title: 'sign_in'.tr(), onPressed: () {
+            context.pushNamed(NavigationService.signIn);
+          }),
           VerticalSpacing(of: Dimens.d16.responsive()),
           ButtonCustom(
             title: 'sign_up'.tr(),
-            onPressed: () {},
+            onPressed: () {
+              context.pushNamed(NavigationService.signUp);
+            },
             buttonStyle: AppThemes.outlineButtonStyle,
             titleStyle: AppTextStyles.style.w700.s20.whiteSmokeColor,
           ),

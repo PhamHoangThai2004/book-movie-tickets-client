@@ -41,4 +41,19 @@ abstract class AppThemes {
     border: Border.all(color: AppColors.whiteSmoke, width: Dimens.d1.responsive()),
     borderRadius: BorderRadius.all(Radius.circular(Dimens.d64.responsive())),
   );
+
+  static OutlineInputBorder inputDefaultBorder = OutlineInputBorder(
+    borderSide: BorderSide(color: AppColors.transparent),
+    borderRadius: BorderRadius.circular(Dimens.d16.responsive()),
+  );
+
+  static OutlineInputBorder inputErrorBorder = OutlineInputBorder(
+    borderSide: BorderSide(color: AppColors.red),
+    borderRadius: BorderRadius.circular(Dimens.d16.responsive()),
+  );
+
+  static OutlineInputBorder inputFocusedBorder = OutlineInputBorder(
+    borderSide: BorderSide(color: AppColors.amberYellow),
+    borderRadius: BorderRadius.circular(Dimens.d16.responsive()),
+  );
 }
