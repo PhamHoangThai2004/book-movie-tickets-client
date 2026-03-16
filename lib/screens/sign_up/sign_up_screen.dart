@@ -1,16 +1,24 @@
+import 'package:client/core/common/register_cubit.dart';
 import 'package:client/core/customs/button_custom.dart';
 import 'package:client/core/customs/cupertino_button_custom.dart';
-import 'package:client/core/customs/text_field_custom.dart';
+import 'package:client/core/navigation/navigation_service.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/styles/app_text_styles.dart';
 import 'package:client/core/themes/app_colors.dart';
+import 'package:client/screens/sign_up/components/input_email_layout.dart';
+import 'package:client/screens/sign_up/components/input_name_layout.dart';
+import 'package:client/screens/sign_up/cubit/sign_up_cubit.dart';
+import 'package:client/screens/sign_up/cubit/sign_up_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/size_config/size_config.dart';
+import '../../core/themes/app_themes.dart';
 import '../../generated/assets.gen.dart';
+import 'components/input_password_layout.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -38,37 +46,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 VerticalSpacing(of: SizeConfig.getSpaceWithAppBarHeight()),
                 _header(),
                 VerticalSpacing(of: Dimens.d40.responsive()),
-                TextFieldCustom(
-                  controller: TextEditingController(),
-                  hintText: 'enter_your_name'.tr(),
-                  errorText: '',
-                  prefix: Assets.svgs.icEdit,
-                  labelText: 'full_name'.tr(),
-                  inputType: TextInputType.name,
-                  onChanged: (value) {},
-                ),
+                InputNameLayout(),
                 VerticalSpacing(of: Dimens.d20.responsive()),
-                TextFieldCustom(
-                  controller: TextEditingController(),
-                  hintText: 'enter_your_email'.tr(),
-                  errorText: '',
-                  prefix: Assets.svgs.icEmail,
-                  labelText: 'email'.tr(),
-                  inputType: TextInputType.emailAddress,
-                  onChanged: (value) {},
-                ),
+                InputEmailLayout(),
                 VerticalSpacing(of: Dimens.d20.responsive()),
-                TextFieldCustom(
-                  controller: TextEditingController(),
-                  hintText: 'enter_your_password'.tr(),
-                  labelText: 'password'.tr(),
-                  inputType: TextInputType.visiblePassword,
-                  prefix: Assets.svgs.icPassword,
-                  suffix: Assets.svgs.icEyesClosed,
-                  onClickSuffix: () {},
-                  errorText: '',
-                  onChanged: (value) {},
-                ),
+                InputPasswordLayout(),
                 VerticalSpacing(of: Dimens.d30.responsive()),
                 _buildSignUpButton(),
                 VerticalSpacing(of: Dimens.d20.responsive()),
@@ -82,7 +64,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         style: AppTextStyles.style.w400.s14.whiteColor,
                       ),
                       CupertinoButtonCustom(
-                        onPressed: () {},
+                        onPressed: () => context.pushReplacement(NavigationService.signIn),
                         child: Text(
                           'sign_in'.tr(),
                           style: AppTextStyles.style.w700.s14.amberYellowColor,
@@ -118,6 +100,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget _buildSignUpButton() {
-    return ButtonCustom(title: 'sign_up'.tr(), onPressed: () {});
+    return BlocBuilder<SignUpCubit, SignUpState>(
+      buildWhen: (previous, current) => previous.isValid != current.isValid,
+      builder: (context, state) {
+        return ButtonCustom(
+          title: 'sign_up'.tr(),
+          onPressed: state.isValid ? context.signUpCubit.signUp : null,
+          titleStyle: state.isValid ? null : AppTextStyles.style.w700.s20.whiteColor,
+          buttonStyle: state.isValid ? AppThemes.yellowButtonStyle : AppThemes.disabledButtonStyle,
+        );
+      },
+    );
   }
 }

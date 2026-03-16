@@ -36,6 +36,11 @@ abstract class AppThemes {
     borderRadius: BorderRadius.all(Radius.circular(Dimens.d64.responsive())),
   );
 
+  static BoxDecoration disabledButtonStyle = BoxDecoration(
+    color: AppColors.grey,
+    borderRadius: BorderRadius.all(Radius.circular(Dimens.d64.responsive())),
+  );
+
   static BoxDecoration outlineButtonStyle = BoxDecoration(
     color: AppColors.transparent,
     border: Border.all(color: AppColors.whiteSmoke, width: Dimens.d1.responsive()),

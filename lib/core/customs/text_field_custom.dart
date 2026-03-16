@@ -27,7 +27,7 @@ class TextFieldCustom extends StatefulWidget {
 
   const TextFieldCustom({
     super.key,
-    required this.controller,
+    this.controller,
     this.textStyle,
     required this.hintText,
     this.hintStyle,
@@ -96,6 +96,7 @@ class _TextFieldCustomState extends State<TextFieldCustom> {
             errorBorder: AppThemes.inputErrorBorder,
             focusedErrorBorder: AppThemes.inputErrorBorder,
             focusedBorder: AppThemes.inputFocusedBorder,
+            errorText: widget.errorText.isEmpty ? null : widget.errorText,
             prefixIcon: widget.prefix != null
                 ? Container(
                     padding: EdgeInsets.only(

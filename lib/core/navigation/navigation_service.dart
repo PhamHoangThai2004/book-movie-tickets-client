@@ -3,6 +3,7 @@ import 'package:client/screens/dashboard/cubit/dashboard_cubit.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/movie/movie_screen.dart';
 import 'package:client/screens/profile/profile_screen.dart';
+import 'package:client/screens/sign_in/cubit/sign_in_cubit.dart';
 import 'package:client/screens/sign_in/sign_in_screen.dart';
 import 'package:client/screens/sign_up/sign_up_screen.dart';
 import 'package:client/screens/startup/startup_screen.dart';
@@ -13,6 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:bot_toast/bot_toast.dart';
 
 import '../../screens/dashboard/dashboard_screen.dart';
+import '../../screens/sign_up/cubit/sign_up_cubit.dart';
 
 class NavigationService {
   static final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'rootKey');
@@ -115,7 +117,7 @@ class NavigationService {
         path: signUp,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: const SignUpScreen(),
+          child: BlocProvider(create: (context) => SignUpCubit(), child: const SignUpScreen()),
           transitionDuration: const Duration(milliseconds: 300),
           reverseTransitionDuration: const Duration(milliseconds: 300),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -131,7 +133,7 @@ class NavigationService {
         path: signIn,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: const SignInScreen(),
+          child: BlocProvider(create: (context) => SignInCubit(), child: const SignInScreen()),
           transitionDuration: const Duration(milliseconds: 300),
           reverseTransitionDuration: const Duration(milliseconds: 300),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {

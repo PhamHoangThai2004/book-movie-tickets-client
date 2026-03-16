@@ -19,5 +19,14 @@
   "enter_your_name": "Nhập họ và tên của bạn",
   "already_have_account": "Bạn đã có tài khoản?",
   "no_account_yet": "Bạn chưa có tài khoản?",
-  "now_register": "Đăng ký ngay"
+  "now_register": "Đăng ký ngay",
+  "email_empty_error": "Email không được để trống",
+  "email_too_long_error": "Email quá dài",
+  "email_fail": "Email không đúng định dạng",
+  "password_empty_error": "Mật khẩu không được để trống",
+  "password_too_long_error": "Mật khẩu quá dài",
+  "password_fail": "Mật khẩu phải có ít nhất 8 ký tựu và chứa ít nhất 1 ký tự đặc biệt",
+  "name_empty_error": "Tên không được để trống",
+  "name_too_long_error": "Tên quá dài",
+  "name_fail": "Tên không được chứa ký tự đặc biệt hoặc số"
 }
