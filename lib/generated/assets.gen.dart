@@ -39,11 +39,17 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/ic_call.svg
   SvgGenImage get icCall => const SvgGenImage('assets/svgs/ic_call.svg');
 
+  /// File path: assets/svgs/ic_close.svg
+  SvgGenImage get icClose => const SvgGenImage('assets/svgs/ic_close.svg');
+
   /// File path: assets/svgs/ic_edit.svg
   SvgGenImage get icEdit => const SvgGenImage('assets/svgs/ic_edit.svg');
 
   /// File path: assets/svgs/ic_email.svg
   SvgGenImage get icEmail => const SvgGenImage('assets/svgs/ic_email.svg');
+
+  /// File path: assets/svgs/ic_exclamation_circle.svg
+  SvgGenImage get icExclamationCircle => const SvgGenImage('assets/svgs/ic_exclamation_circle.svg');
 
   /// File path: assets/svgs/ic_eyes_closed.svg
   SvgGenImage get icEyesClosed => const SvgGenImage('assets/svgs/ic_eyes_closed.svg');
@@ -98,8 +104,10 @@ class $AssetsSvgsGen {
     icArrowLeft,
     icArrowRight,
     icCall,
+    icClose,
     icEdit,
     icEmail,
+    icExclamationCircle,
     icEyesClosed,
     icEyesOpen,
     icHome,

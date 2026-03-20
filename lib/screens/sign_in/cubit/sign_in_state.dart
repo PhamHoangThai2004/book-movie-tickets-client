@@ -9,7 +9,7 @@ class SignInState extends Equatable {
   final String emailError;
   final String passwordError;
   final StatusEnum status;
-  final String? errorMessage;
+  final String errorMessage;
 
   const SignInState({
     this.email = '',
@@ -18,7 +18,7 @@ class SignInState extends Equatable {
     this.emailError = '',
     this.passwordError = '',
     this.status = StatusEnum.initial,
-    this.errorMessage,
+    this.errorMessage = '',
   });
 
   bool get isValid => 

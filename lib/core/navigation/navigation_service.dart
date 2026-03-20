@@ -15,6 +15,7 @@ import 'package:bot_toast/bot_toast.dart';
 
 import '../../screens/dashboard/dashboard_screen.dart';
 import '../../screens/sign_up/cubit/sign_up_cubit.dart';
+import '../di/injection.dart';
 
 class NavigationService {
   static final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'rootKey');
@@ -133,7 +134,7 @@ class NavigationService {
         path: signIn,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: BlocProvider(create: (context) => SignInCubit(), child: const SignInScreen()),
+          child: BlocProvider(create: (context) => SignInCubit(authRepository: getIt()), child: const SignInScreen()),
           transitionDuration: const Duration(milliseconds: 300),
           reverseTransitionDuration: const Duration(milliseconds: 300),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
