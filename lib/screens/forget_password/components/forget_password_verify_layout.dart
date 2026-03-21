@@ -1,22 +1,21 @@
-import 'package:client/core/common/register_cubit.dart';
+import 'package:client/core/customs/app_bars/header_custom.dart';
+import 'package:client/core/customs/buttons/button_custom.dart';
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
-import 'package:client/screens/sign_up/cubit/sign_up_cubit.dart';
-import 'package:client/screens/sign_up/cubit/sign_up_state.dart';
+import 'package:client/core/size_config/app_dimen.dart';
+import 'package:client/core/size_config/dimens.dart';
+import 'package:client/core/size_config/size_config.dart';
+import 'package:client/core/styles/app_text_styles.dart';
+import 'package:client/screens/forget_password/cubit/forget_password_cubit.dart';
+import 'package:client/screens/forget_password/cubit/forget_password_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/customs/app_bars/header_custom.dart';
-import '../../../core/customs/buttons/button_custom.dart';
 import '../../../core/customs/inputs/pin_code_otp_field.dart';
-import '../../../core/size_config/app_dimen.dart';
-import '../../../core/size_config/dimens.dart';
-import '../../../core/size_config/size_config.dart';
-import '../../../core/styles/app_text_styles.dart';
 import '../../../core/themes/app_themes.dart';
 
-class RegisterOtpVerifyLayout extends StatelessWidget {
-  const RegisterOtpVerifyLayout({super.key});
+class ForgetPasswordVerifyLayout extends StatelessWidget {
+  const ForgetPasswordVerifyLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +33,17 @@ class RegisterOtpVerifyLayout extends StatelessWidget {
                   VerticalSpacing(of: SizeConfig.getSpaceWithAppBarHeight()),
                   HeaderCustom(
                     title: 'otp_code_verification'.tr(),
-                    backAction: context.signUpCubit.backToInputForm,
+                    backAction: context.read<ForgetPasswordCubit>().backToInputForm,
                   ),
                   VerticalSpacing(of: Dimens.d40.responsive()),
                   Text(
-                    'confirm_otp_message'.tr(namedArgs: {'email': context.signUpCubit.state.email}),
+                    'confirm_otp_message'.tr(namedArgs: {'email': context.read<ForgetPasswordCubit>().state.email}),
                     style: AppTextStyles.style.s16.w400.whiteSmokeColor,
                   ),
                   VerticalSpacing(of: Dimens.d30.responsive()),
-                  OtpFieldCustom(onOtpChanged: context.signUpCubit.onOtpChanged),
+                  OtpFieldCustom(onOtpChanged: context.read<ForgetPasswordCubit>().onOtpChanged),
                   VerticalSpacing(of: Dimens.d20.responsive()),
-                  Align(alignment: Alignment.topRight, child: _countdownOrResendText()),
+                  Align(alignment: Alignment.topRight, child: _buildCountdownOrResendText()),
                 ],
               ),
             ),
@@ -53,20 +52,20 @@ class RegisterOtpVerifyLayout extends StatelessWidget {
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeOut,
             padding: EdgeInsets.only(bottom: keyboardInset + Dimens.d20.responsive()),
-            child: _confirmButton(),
+            child: _buildConfirmButton(),
           ),
         ],
       ),
     );
   }
 
-  Widget _countdownOrResendText() {
-    return BlocBuilder<SignUpCubit, SignUpState>(
+  Widget _buildCountdownOrResendText() {
+    return BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
       buildWhen: (previous, current) => previous.otpCountdownSeconds != current.otpCountdownSeconds,
       builder: (context, state) {
         if (state.isOtpExpired) {
           return CupertinoButtonCustom(
-            onPressed: () => context.signUpCubit.resendOtp(),
+            onPressed: context.read<ForgetPasswordCubit>().resendOtp,
             child: Text('resend_code'.tr(), style: AppTextStyles.style.w700.s20.amberYellowColor),
           );
         }
@@ -80,19 +79,19 @@ class RegisterOtpVerifyLayout extends StatelessWidget {
     );
   }
 
-  Widget _confirmButton() {
-    return BlocBuilder<SignUpCubit, SignUpState>(
+  Widget _buildConfirmButton() {
+    return BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
       buildWhen: (previous, current) => previous.canVerifyOtp != current.canVerifyOtp,
       builder: (context, state) {
         return ButtonCustom(
-          title: 'confirm'.tr(),
-          onPressed: state.canVerifyOtp ? () => context.signUpCubit.verifyOtp() : null,
+          title: 'continue'.tr(),
+          onPressed: state.canVerifyOtp ? context.read<ForgetPasswordCubit>().verifyOtp : null,
           titleStyle: state.canVerifyOtp ? null : AppTextStyles.style.w700.s20.whiteColor,
-          buttonStyle: state.canVerifyOtp
-              ? AppThemes.yellowButtonStyle
-              : AppThemes.disabledButtonStyle,
+          buttonStyle: state.canVerifyOtp ? AppThemes.yellowButtonStyle : AppThemes.disabledButtonStyle,
         );
       },
     );
   }
 }
+
+

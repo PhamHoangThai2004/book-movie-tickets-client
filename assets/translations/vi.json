@@ -12,7 +12,7 @@
   "privacy_policy_message": "Bằng cách đăng nhập hoặc đăng ký, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của chúng tôi.",
   "email": "Email",
   "password": "Mật khẩu",
-  "forgot_password": "Quên mật khẩu?",
+  "forgot_password": "Quên mật khẩu",
   "enter_your_email": "Nhập địa chỉ email của bạn",
   "enter_your_password": "Nhập mật khẩu của bạn",
   "full_name": "Họ và tên",
@@ -35,5 +35,10 @@
   "confirm_otp_message": "Bạn cần nhập mã OTP đã được gửi đến địa chỉ email {email}.",
   "resend_code": "Gửi lại mã",
   "otp_error": "Mã OTP không hợp lệ",
-  "register_success": "Đăng ký tài khoản thành công! Vui lòng đăng nhập lại"
+  "register_success": "Đăng ký tài khoản thành công! Vui lòng đăng nhập lại",
+  "reset_password": "Đặt lại mật khẩu",
+  "enter_new_password": "Nhập mật khẩu mới của bạn",
+  "new_password": "Mật khẩu mới",
+  "password_reset_success": "Đặt lại mật khẩu thành công! Vui lòng đăng nhập lại",
+  "continue": "Tiếp tục"
 }

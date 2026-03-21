@@ -1,3 +1,4 @@
+import 'package:client/screens/forget_password/cubit/forget_password_cubit.dart';
 import 'package:client/screens/sign_up/cubit/sign_up_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,4 +12,6 @@ extension RegisterCubit on BuildContext {
   SignInCubit get signInCubit => read<SignInCubit>();
 
   SignUpCubit get signUpCubit => read<SignUpCubit>();
+
+  ForgetPasswordCubit get forgetPasswordCubit => read<ForgetPasswordCubit>();
 }

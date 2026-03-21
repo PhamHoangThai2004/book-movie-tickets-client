@@ -60,9 +60,9 @@ class SignInScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () => context.push(NavigationService.forgetPassword),
                       child: Text(
-                        'forgot_password'.tr(),
+                        '${'forgot_password'.tr()}?',
                         style: AppTextStyles.style.w400.s14.amberYellowColor,
                       ),
                     ),

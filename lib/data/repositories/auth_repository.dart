@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import '../model/login_model.dart';
 import '../remote/requests/login_request.dart';
 import '../remote/requests/register_request.dart';
+import '../remote/requests/reset_password_request.dart';
 import '../remote/services/auth_service.dart';
 
 abstract class AuthRepository {
@@ -12,9 +13,13 @@ abstract class AuthRepository {
 
   Future<void> register(RegisterRequest request);
 
-  Future<void> verifyOtp(VerifyOtpRequest request);
+  Future<String?> verifyOtp(VerifyOtpRequest request);
 
   Future<void> resendOtp(String email, String type);
+
+  Future<void> resetPasswordRequest(String email);
+
+  Future<void> resetPassword(ResetPasswordRequest request);
 }
 
 @Injectable(as: AuthRepository)
@@ -42,9 +47,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> verifyOtp(VerifyOtpRequest request) async {
+  Future<String?> verifyOtp(VerifyOtpRequest request) async {
     try {
-      await _authService.verifyOtp(request);
+      final response = await _authService.verifyOtp(request);
+      return response;
     } catch (e) {
       throw ApiException.error(e);
     }
@@ -54,6 +60,24 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> resendOtp(String email, String type) async {
     try {
       await _authService.resendOtp(email, type);
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+
+  @override
+  Future<void> resetPassword(ResetPasswordRequest request) async {
+    try {
+      await _authService.resetPassword(request);
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+
+  @override
+  Future<void> resetPasswordRequest(String email) async {
+    try {
+      await _authService.resetPasswordRequest(email);
     } catch (e) {
       throw ApiException.error(e);
     }
