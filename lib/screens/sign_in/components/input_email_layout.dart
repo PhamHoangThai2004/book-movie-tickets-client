@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/customs/text_field_custom.dart';
+import '../../../core/customs/inputs/text_field_custom.dart';
 import '../../../generated/assets.gen.dart';
 import '../cubit/sign_in_cubit.dart';
 import '../cubit/sign_in_state.dart';

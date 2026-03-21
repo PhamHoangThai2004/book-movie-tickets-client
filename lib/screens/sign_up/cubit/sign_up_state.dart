@@ -3,15 +3,21 @@ import 'package:equatable/equatable.dart';
 import '../../../data/enums/status_enum.dart';
 
 class SignUpState extends Equatable {
+  static const int otpCountdownDurationInSeconds = 300;
+
   final String fullName;
   final String email;
   final String password;
+  final String otp;
+  final int otpCountdownSeconds;
   final bool isPasswordVisible;
   final String fullNameError;
   final String emailError;
   final String passwordError;
+  final String otpError;
   final StatusEnum status;
-  final String? errorMessage;
+  final String errorMessage;
+  final SignInStep signInStep;
 
   const SignUpState({
     this.fullName = '',
@@ -22,7 +28,11 @@ class SignUpState extends Equatable {
     this.emailError = '',
     this.passwordError = '',
     this.status = StatusEnum.initial,
-    this.errorMessage,
+    this.errorMessage = '',
+    this.signInStep = SignInStep.inputForm,
+    this.otp = '',
+    this.otpError = '',
+    this.otpCountdownSeconds = otpCountdownDurationInSeconds,
   });
 
   bool get isValid => 
@@ -32,6 +42,12 @@ class SignUpState extends Equatable {
       fullNameError.isEmpty && 
       emailError.isEmpty && 
       passwordError.isEmpty;
+
+  bool get isOtpValid => RegExp(r'^\d{6}$').hasMatch(otp);
+
+  bool get canVerifyOtp => isOtpValid && otpError.isEmpty && otpCountdownSeconds > 0;
+
+  bool get isOtpExpired => otpCountdownSeconds <= 0;
 
   SignUpState copyWith({
     String? fullName,
@@ -43,6 +59,10 @@ class SignUpState extends Equatable {
     String? passwordError,
     StatusEnum? status,
     String? errorMessage,
+    SignInStep? signInStep,
+    String? otp,
+    String? otpError,
+    int? otpCountdownSeconds,
   }) {
     return SignUpState(
       fullName: fullName ?? this.fullName,
@@ -54,6 +74,10 @@ class SignUpState extends Equatable {
       passwordError: passwordError ?? this.passwordError,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
+      signInStep: signInStep ?? this.signInStep,
+      otp: otp ?? this.otp,
+      otpError: otpError ?? this.otpError,
+      otpCountdownSeconds: otpCountdownSeconds ?? this.otpCountdownSeconds,
     );
   }
 
@@ -68,5 +92,11 @@ class SignUpState extends Equatable {
     passwordError,
     status,
     errorMessage,
+    signInStep,
+    otp,
+    otpError,
+    otpCountdownSeconds,
   ];
 }
+
+enum SignInStep { inputForm, otpVerify, finishSignUp }

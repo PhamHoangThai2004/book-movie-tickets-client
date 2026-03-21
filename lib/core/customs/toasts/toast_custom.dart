@@ -2,12 +2,12 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:client/core/themes/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../generated/assets.gen.dart';
-import '../size_config/app_dimen.dart';
-import '../size_config/dimens.dart';
-import '../size_config/size_config.dart';
-import '../styles/app_text_styles.dart';
-import 'cupertino_button_custom.dart';
+import '../../../generated/assets.gen.dart';
+import '../../size_config/app_dimen.dart';
+import '../../size_config/dimens.dart';
+import '../../size_config/size_config.dart';
+import '../../styles/app_text_styles.dart';
+import '../buttons/cupertino_button_custom.dart';
 
 mixin ToastCustom {
   static void show({

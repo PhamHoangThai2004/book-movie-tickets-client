@@ -1,5 +1,7 @@
 import 'package:client/data/model/login_model.dart';
 import 'package:client/data/remote/requests/login_request.dart';
+import 'package:client/data/remote/requests/register_request.dart';
+import 'package:client/data/remote/requests/verify_otp_request.dart';
 import 'package:client/data/remote/responses/model_response.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
@@ -12,6 +14,9 @@ import '../../network/interceptors/general_interceptor.dart';
 @injectable
 class AuthService {
   final signInPath = 'account/auth/login';
+  final signUpPath = 'account/auth/register';
+  final verifyOtpPath = 'account/auth/verify-otp';
+  final resendOtpPath = 'account/auth/resend-otp';
 
   final Dio _dio = Dio(BaseOptions(baseUrl: AppConfig.baseUrl))
     ..interceptors.addAll([CurlLoggerDioInterceptor(printOnSuccess: true), GeneralInterceptor()]);
@@ -24,6 +29,30 @@ class AuthService {
         (json) => LoginModel.fromJson(json as Map<String, dynamic>),
       );
       return result.data;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<void> register(RegisterRequest request) async {
+    try {
+      await _dio.post(signUpPath, data: request.toJson());
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<void> verifyOtp(VerifyOtpRequest request) async {
+    try {
+      await _dio.post(verifyOtpPath, data: request.toJson());
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<void> resendOtp(String email, String type) async {
+    try {
+      await _dio.post(resendOtpPath, data: {'email': email, 'type': type});
     } on ApiException {
       rethrow;
     }

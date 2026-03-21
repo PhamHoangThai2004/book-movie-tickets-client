@@ -5,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/common/register_cubit.dart';
-import '../../../core/customs/text_field_custom.dart';
+import '../../../core/customs/inputs/text_field_custom.dart';
 import '../../../generated/assets.gen.dart';
 
-class InputNameLayout extends StatelessWidget {
+class InputRegisterName extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
 
-  InputNameLayout({super.key});
+  InputRegisterName({super.key});
 
   @override
   Widget build(BuildContext context) {

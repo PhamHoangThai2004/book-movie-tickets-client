@@ -1,9 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../size_config/app_dimen.dart';
-import '../size_config/dimens.dart';
-import '../themes/app_colors.dart';
+import '../../size_config/app_dimen.dart';
+import '../../size_config/dimens.dart';
+import '../../themes/app_colors.dart';
 
 class LoadingCustom {
   static final LoadingCustom _instance = LoadingCustom.internal();

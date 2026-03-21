@@ -1,4 +1,4 @@
-import 'package:client/core/customs/button_custom.dart';
+import 'package:client/core/customs/buttons/button_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/size_config/size_config.dart';

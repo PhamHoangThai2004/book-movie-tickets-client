@@ -29,5 +29,11 @@
   "name_empty_error": "Tên không được để trống",
   "name_too_long_error": "Tên quá dài",
   "name_fail": "Tên không được chứa ký tự đặc biệt hoặc số",
-  "error_internet": "Lỗi kết nối mạng!"
+  "error_internet": "Lỗi kết nối mạng!",
+  "otp_code_verification": "Xác thực mã OTP",
+  "confirm": "Xác nhận",
+  "confirm_otp_message": "Bạn cần nhập mã OTP đã được gửi đến địa chỉ email {email}.",
+  "resend_code": "Gửi lại mã",
+  "otp_error": "Mã OTP không hợp lệ",
+  "register_success": "Đăng ký tài khoản thành công! Vui lòng đăng nhập lại"
 }

@@ -118,7 +118,10 @@ class NavigationService {
         path: signUp,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: BlocProvider(create: (context) => SignUpCubit(), child: const SignUpScreen()),
+          child: BlocProvider(
+            create: (context) => SignUpCubit(authRepository: getIt()),
+            child: const SignUpScreen(),
+          ),
           transitionDuration: const Duration(milliseconds: 300),
           reverseTransitionDuration: const Duration(milliseconds: 300),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -134,7 +137,10 @@ class NavigationService {
         path: signIn,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: BlocProvider(create: (context) => SignInCubit(authRepository: getIt()), child: const SignInScreen()),
+          child: BlocProvider(
+            create: (context) => SignInCubit(authRepository: getIt()),
+            child: const SignInScreen(),
+          ),
           transitionDuration: const Duration(milliseconds: 300),
           reverseTransitionDuration: const Duration(milliseconds: 300),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {

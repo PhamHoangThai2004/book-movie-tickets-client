@@ -1,4 +1,4 @@
-import 'package:client/core/customs/cupertino_button_custom.dart';
+import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/size_config/size_config.dart';

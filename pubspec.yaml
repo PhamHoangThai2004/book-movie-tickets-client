@@ -22,6 +22,7 @@ dependencies:
   google_fonts: ^8.0.2
   flutter_svg: ^2.2.4
   flutter_keyboard_visibility: ^6.0.0
+  pin_code_fields: ^9.1.0
 
   # Network
   dio: ^5.9.2

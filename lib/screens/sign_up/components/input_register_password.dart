@@ -5,13 +5,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/customs/text_field_custom.dart';
+import '../../../core/customs/inputs/text_field_custom.dart';
 import '../../../generated/assets.gen.dart';
 
-class InputPasswordLayout extends StatelessWidget {
+class InputRegisterPassword extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
 
-  InputPasswordLayout({super.key});
+  InputRegisterPassword({super.key});
 
   @override
   Widget build(BuildContext context) {

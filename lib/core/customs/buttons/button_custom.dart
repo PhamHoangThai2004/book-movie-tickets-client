@@ -1,12 +1,12 @@
-import 'package:client/core/customs/cupertino_button_custom.dart';
+import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../size_config/app_dimen.dart';
-import '../size_config/dimens.dart';
-import '../size_config/size_config.dart';
-import '../styles/app_text_styles.dart';
-import '../themes/app_colors.dart';
-import '../themes/app_themes.dart';
+import '../../size_config/app_dimen.dart';
+import '../../size_config/dimens.dart';
+import '../../size_config/size_config.dart';
+import '../../styles/app_text_styles.dart';
+import '../../themes/app_colors.dart';
+import '../../themes/app_themes.dart';
 
 class ButtonCustom extends StatelessWidget {
   final String title;
