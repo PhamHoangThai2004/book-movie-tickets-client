@@ -25,8 +25,6 @@ class _DashboardState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-
     return BlocBuilder<DashboardCubit, DashboardState>(
       builder: (context, state) {
         return Scaffold(

@@ -9,6 +9,13 @@ final class AppColors {
   static const Color whiteSmoke = Color(0xFFF2F2F2);
   static const Color lightGray = Color(0xFFCCCCCC);
   static const Color darkGray = Color(0xFF4A4A4A);
+  static const Color coolGray = Color(0xFFB3B3B3);
   static const Color silver = Color(0xFFDEDEDE);
   static const Color darkCharcoal = Color(0xFF262626);
+  static const Color warmBlack = Color(0xFF0C0A05);
+  static const Color deepBrown = Color(0xFF342705);
+  static const Color grey = Color(0xFF686868);
+  static const Color red = Color(0xFFFF0000);
+  static const Color blue = Color(0xFF0000FF);
+  static const Color green = Color(0xFF00FF00);
 }

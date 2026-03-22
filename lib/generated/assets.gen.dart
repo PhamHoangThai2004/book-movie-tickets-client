@@ -20,12 +20,18 @@ class $AssetsImagesGen {
   /// File path: assets/images/app_logo.png
   AssetGenImage get appLogo => const AssetGenImage('assets/images/app_logo.png');
 
+  /// File path: assets/images/img_name_app.png
+  AssetGenImage get imgNameApp => const AssetGenImage('assets/images/img_name_app.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [appLogo];
+  List<AssetGenImage> get values => [appLogo, imgNameApp];
 }
 
 class $AssetsSvgsGen {
   const $AssetsSvgsGen();
+
+  /// File path: assets/svgs/ic_arrow_left.svg
+  SvgGenImage get icArrowLeft => const SvgGenImage('assets/svgs/ic_arrow_left.svg');
 
   /// File path: assets/svgs/ic_arrow_right.svg
   SvgGenImage get icArrowRight => const SvgGenImage('assets/svgs/ic_arrow_right.svg');
@@ -33,11 +39,23 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/ic_call.svg
   SvgGenImage get icCall => const SvgGenImage('assets/svgs/ic_call.svg');
 
+  /// File path: assets/svgs/ic_close.svg
+  SvgGenImage get icClose => const SvgGenImage('assets/svgs/ic_close.svg');
+
   /// File path: assets/svgs/ic_edit.svg
   SvgGenImage get icEdit => const SvgGenImage('assets/svgs/ic_edit.svg');
 
   /// File path: assets/svgs/ic_email.svg
   SvgGenImage get icEmail => const SvgGenImage('assets/svgs/ic_email.svg');
+
+  /// File path: assets/svgs/ic_exclamation_circle.svg
+  SvgGenImage get icExclamationCircle => const SvgGenImage('assets/svgs/ic_exclamation_circle.svg');
+
+  /// File path: assets/svgs/ic_eyes_closed.svg
+  SvgGenImage get icEyesClosed => const SvgGenImage('assets/svgs/ic_eyes_closed.svg');
+
+  /// File path: assets/svgs/ic_eyes_open.svg
+  SvgGenImage get icEyesOpen => const SvgGenImage('assets/svgs/ic_eyes_open.svg');
 
   /// File path: assets/svgs/ic_home.svg
   SvgGenImage get icHome => const SvgGenImage('assets/svgs/ic_home.svg');
@@ -50,6 +68,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/ic_notification.svg
   SvgGenImage get icNotification => const SvgGenImage('assets/svgs/ic_notification.svg');
+
+  /// File path: assets/svgs/ic_password.svg
+  SvgGenImage get icPassword => const SvgGenImage('assets/svgs/ic_password.svg');
 
   /// File path: assets/svgs/ic_search.svg
   SvgGenImage get icSearch => const SvgGenImage('assets/svgs/ic_search.svg');
@@ -80,14 +101,20 @@ class $AssetsSvgsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+    icArrowLeft,
     icArrowRight,
     icCall,
+    icClose,
     icEdit,
     icEmail,
+    icExclamationCircle,
+    icEyesClosed,
+    icEyesOpen,
     icHome,
     icHomeOutline,
     icLock,
     icNotification,
+    icPassword,
     icSearch,
     icShoppingCart,
     icStar,
