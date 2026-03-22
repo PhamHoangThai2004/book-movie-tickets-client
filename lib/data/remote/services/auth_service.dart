@@ -48,7 +48,7 @@ class AuthService {
   Future<String?> verifyOtp(VerifyOtpRequest request) async {
     try {
       final response = await _dio.post(verifyOtpPath, data: request.toJson());
-      return response.data['data']['verifytToken'];
+      return response.data['data']['verifyToken'];
     } on ApiException {
       rethrow;
     }
