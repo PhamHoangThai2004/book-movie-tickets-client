@@ -10,6 +10,8 @@ import 'package:client/screens/sign_in/sign_in_screen.dart';
 import 'package:client/screens/sign_up/sign_up_screen.dart';
 import 'package:client/screens/startup/startup_screen.dart';
 import 'package:client/screens/ticket/ticket_screen.dart';
+import 'package:client/screens/update_profile/cubit/update_profile_cubit.dart';
+import 'package:client/screens/update_profile/update_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -44,6 +46,8 @@ class NavigationService {
   static String get signIn => '/sign-in';
 
   static String get forgetPassword => '/forget-password';
+
+  static String get updateProfile => '/update-profile';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -172,11 +176,30 @@ class NavigationService {
         ),
       ),
 
+      /// updateProfileScreen
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: updateProfile,
+        path: updateProfile,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: BlocProvider(
+            create: (context) => UpdateProfileCubit(userRepository: getIt()),
+            child: const UpdateProfileScreen(),
+          ),
+          transitionDuration: const Duration(milliseconds: 300),
+          reverseTransitionDuration: const Duration(milliseconds: 300),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        ),
+      ),
+
       /// dashboardScreen
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return BlocProvider(
-            create: (context) => DashboardCubit(),
+            create: (context) => DashboardCubit(getIt()),
             child: DashboardScreen(navigationShell: navigationShell),
           );
         },

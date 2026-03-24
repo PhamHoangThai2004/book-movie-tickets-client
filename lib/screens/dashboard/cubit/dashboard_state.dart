@@ -1,9 +1,11 @@
+import '../../../data/model/user_model.dart';
+
 class DashboardState {
-  final int currentIndex;
+  final UserModel? userInfo;
 
-  const DashboardState({required this.currentIndex});
+  const DashboardState({this.userInfo});
 
-  DashboardState copyWith({int? currentIndex}) {
-    return DashboardState(currentIndex: currentIndex ?? this.currentIndex);
+  DashboardState copyWith({UserModel? userInfo}) {
+    return DashboardState(userInfo: userInfo ?? this.userInfo);
   }
 }

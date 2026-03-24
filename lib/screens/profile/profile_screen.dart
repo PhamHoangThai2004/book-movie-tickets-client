@@ -1,4 +1,5 @@
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
+import 'package:client/core/navigation/navigation_service.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/size_config/size_config.dart';
@@ -6,8 +7,12 @@ import 'package:client/core/styles/app_text_styles.dart';
 import 'package:client/core/themes/app_colors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../generated/assets.gen.dart';
+import '../dashboard/cubit/dashboard_cubit.dart';
+import '../dashboard/cubit/dashboard_state.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -60,54 +65,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildHeader() {
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: Dimens.d45.responsive(),
-          backgroundImage: const NetworkImage('https://i.pravatar.cc/300'), // Ảnh mẫu
-        ),
-        HorizontalSpacing(of: Dimens.d16.responsive()),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Angelina', style: AppTextStyles.style.whiteSmokeColor.s32.w700),
-              VerticalSpacing(of: Dimens.d4.responsive()),
-              Row(
+    return BlocBuilder<DashboardCubit, DashboardState>(
+      buildWhen: (previous, current) => previous.userInfo != current.userInfo,
+      builder: (context, state) {
+        return Row(
+          children: [
+            CircleAvatar(
+              radius: Dimens.d45.responsive(),
+              backgroundImage: const NetworkImage('https://i.pravatar.cc/300'),
+            ),
+            HorizontalSpacing(of: Dimens.d16.responsive()),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Assets.svgs.icCall.svg(
-                    width: Dimens.d20.responsive(),
-                    height: Dimens.d20.responsive(),
-                    colorFilter: ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
+                  Text(
+                    state.userInfo?.name ?? '',
+                    style: AppTextStyles.style.whiteSmokeColor.s32.w700,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  HorizontalSpacing(of: Dimens.d8.responsive()),
-                  Text('(704) 555-0127', style: AppTextStyles.style.silverColor.s14.w400),
+                  VerticalSpacing(of: Dimens.d4.responsive()),
+                  Row(
+                    children: [
+                      Assets.svgs.icCall.svg(
+                        width: Dimens.d20.responsive(),
+                        height: Dimens.d20.responsive(),
+                        colorFilter: ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
+                      ),
+                      HorizontalSpacing(of: Dimens.d8.responsive()),
+                      Text(
+                        state.userInfo?.phoneNumber ?? 'not_yet'.tr(),
+                        style: AppTextStyles.style.silverColor.s14.w400,
+                      ),
+                    ],
+                  ),
+                  VerticalSpacing(of: Dimens.d4.responsive()),
+                  Row(
+                    children: [
+                      Assets.svgs.icEmail.svg(
+                        width: Dimens.d20.responsive(),
+                        height: Dimens.d20.responsive(),
+                        colorFilter: ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
+                      ),
+                      HorizontalSpacing(of: Dimens.d8.responsive()),
+                      Expanded(
+                        child: Text(
+                          state.userInfo?.email ?? '',
+                          style: AppTextStyles.style.silverColor.s14.w400,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
-              VerticalSpacing(of: Dimens.d4.responsive()),
-              Row(
-                children: [
-                  Assets.svgs.icEmail.svg(
-                    width: Dimens.d20.responsive(),
-                    height: Dimens.d20.responsive(),
-                    colorFilter: ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
-                  ),
-                  HorizontalSpacing(of: Dimens.d8.responsive()),
-                  Text('angelina@example.com', style: AppTextStyles.style.silverColor.s14.w400),
-                ],
+            ),
+            IconButton(
+              onPressed: () => context.pushNamed(NavigationService.updateProfile),
+              icon: Assets.svgs.icEdit.svg(
+                width: Dimens.d24.responsive(),
+                height: Dimens.d24.responsive(),
+                colorFilter: ColorFilter.mode(AppColors.whiteSmoke, BlendMode.srcIn),
               ),
-            ],
-          ),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: Assets.svgs.icEdit.svg(
-            width: Dimens.d24.responsive(),
-            height: Dimens.d24.responsive(),
-            colorFilter: ColorFilter.mode(AppColors.whiteSmoke, BlendMode.srcIn),
-          ),
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 
