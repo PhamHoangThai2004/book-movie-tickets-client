@@ -1,5 +1,11 @@
+import 'package:client/core/customs/dialogs/dialog_custom.dart';
 import 'package:client/core/utils/validator.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../data/local/preferences.dart';
+import '../navigation/navigation_service.dart';
 
 class AppUtils {
   static String validationEmail(String email) {
@@ -28,10 +34,35 @@ class AppUtils {
     final value = name.trim();
     if (value.isEmpty) {
       return 'name_empty_error'.tr();
-      } else if (value.length > 50) {
+    } else if (value.length > 50) {
       return 'name_too_long_error'.tr();
-      } else {
+    } else {
       return Validator.isValidName(value) ? '' : 'name_fail'.tr();
     }
+  }
+
+  static String validationPhoneNumber(String phoneNumber) {
+    final value = phoneNumber.trim();
+    if (value.isEmpty) {
+      return 'phone_number_empty_error'.tr();
+    } else {
+      return Validator.isValidPhoneNumber(value) ? '' : 'phone_number_fail'.tr();
+    }
+  }
+
+  static bool isLoggedIn() {
+    return Preferences.instance.accessToken.isNotEmpty;
+  }
+
+  static void requestLogin({required BuildContext context}) {
+    showDialogCustom(
+      context: context,
+      title: 'sign_in'.tr(),
+      message: 'please_login_message'.tr(),
+      acceptTitle: 'sign_in'.tr(),
+      acceptAction: () {
+        context.push(NavigationService.signIn);
+      },
+    );
   }
 }

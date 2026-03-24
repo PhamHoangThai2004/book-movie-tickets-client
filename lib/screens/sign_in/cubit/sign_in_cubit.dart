@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/app_utils.dart';
 import '../../../data/enums/status_enum.dart';
+import '../../../data/local/preferences.dart';
 import 'sign_in_state.dart';
 
 class SignInCubit extends Cubit<SignInState> {
@@ -41,7 +42,8 @@ class SignInCubit extends Cubit<SignInState> {
     try {
       final request = LoginRequest(email: email.trim(), password: password.trim());
       final response = await authRepository.login(request);
-        debugPrint('signIn response: ${response.toJson()}');
+      await Preferences.instance.saveAccessToken(response.accessToken);
+      await Preferences.instance.saveRefreshToken(response.refreshToken);
       emit(state.copyWith(status: StatusEnum.success));
     } on ApiException catch (e) {
       debugPrint('signIn error: ${e.errorMessage}');

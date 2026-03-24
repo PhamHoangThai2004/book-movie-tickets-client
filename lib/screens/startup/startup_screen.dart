@@ -24,7 +24,7 @@ class _StartupState extends State<StartupScreen> {
   Future<void> _init() async {
     await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
-    context.go(NavigationService.auth);
+    context.go(NavigationService.home);
   }
 
   @override

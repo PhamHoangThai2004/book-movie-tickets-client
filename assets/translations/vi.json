@@ -40,5 +40,22 @@
   "enter_new_password": "Nhập mật khẩu mới của bạn",
   "new_password": "Mật khẩu mới",
   "password_reset_success": "Đặt lại mật khẩu thành công! Vui lòng đăng nhập lại",
-  "continue": "Tiếp tục"
+  "continue": "Tiếp tục",
+  "cancel": "Huỷ bỏ",
+  "accept": "Đồng ý",
+  "sign_out": "Đăng xuất",
+  "please_login_message": "Vui lòng đăng nhập để có thể tiếp tục truy cập và sử dụng các tính năng này.",
+  "not_yet": "Chưa có",
+  "phone_number": "Số điện thoại",
+  "enter_your_phone_number": "Nhập số điện thoại của bạn",
+  "gender": "Giới tính",
+  "male": "Nam",
+  "female": "Nữ",
+  "other": "Khác",
+  "update_profile": "Cập nhật hồ sơ",
+  "update_profile_success": "Cập nhật hồ sơ thành công!",
+  "save_change": "Lưu thay đổi",
+  "date_of_birth": "Ngày sinh",
+  "phone_number_empty_error": "Số điện thoại không được để trống",
+  "phone_number_fail": "Số điện thoại không hợp lệ"
 }

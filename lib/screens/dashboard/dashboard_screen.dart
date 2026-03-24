@@ -1,5 +1,7 @@
+import 'package:client/core/common/register_cubit.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
+import 'package:client/core/utils/app_utils.dart';
 import 'package:client/screens/dashboard/components/navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +24,20 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardState extends State<DashboardScreen> {
   int currentId = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    context.dashboardCubit.getUserInfo();
+  }
+
+  @override
+  void didUpdateWidget(covariant DashboardScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (context.dashboardCubit.state.userInfo == null) {
+      context.dashboardCubit.getUserInfo();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +85,13 @@ class _DashboardState extends State<DashboardScreen> {
   }
 
   void _goToTab(int index) {
+    if (index == 1 || index == 3) {
+      final loggedIn = AppUtils.isLoggedIn();
+      if (!loggedIn) {
+        AppUtils.requestLogin(context: context);
+        return;
+      }
+    }
     widget.navigationShell.goBranch(
       index,
       initialLocation: index == widget.navigationShell.currentIndex,

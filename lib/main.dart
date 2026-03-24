@@ -9,6 +9,7 @@ import 'core/di/injection.dart';
 import 'core/navigation/navigation_service.dart';
 import 'core/size_config/app_dimen.dart';
 import 'core/size_config/size_config.dart';
+import 'data/local/preferences.dart';
 
 void main() async {
   await _configApp();
@@ -28,6 +29,7 @@ void main() async {
 Future<void> _configApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await Preferences.instance.init();
   configureDependencies();
 }
 
