@@ -20,4 +20,12 @@ class DashboardCubit extends Cubit<DashboardState> {
       debugPrint('getUserInfo error: ${e.toString()}');
     }
   }
+
+  void logout() {
+    try {
+      emit(state.copyWith(userInfo: null));
+    } catch (e) {
+      debugPrint('logout error: ${e.toString()}');
+    }
+  }
 }

@@ -55,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   colorFilter: ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
                 ),
                 title: 'change_password'.tr(),
-                onTap: () {},
+                onTap: () => context.pushNamed(NavigationService.changePassword),
               ),
             ],
           ),

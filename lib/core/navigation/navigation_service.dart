@@ -1,4 +1,6 @@
 import 'package:client/screens/auth/auth_screen.dart';
+import 'package:client/screens/change_password/change_password_screen.dart';
+import 'package:client/screens/change_password/cubit/change_password_cubit.dart';
 import 'package:client/screens/dashboard/cubit/dashboard_cubit.dart';
 import 'package:client/screens/forget_password/cubit/forget_password_cubit.dart';
 import 'package:client/screens/forget_password/forget_password_screen.dart';
@@ -48,6 +50,8 @@ class NavigationService {
   static String get forgetPassword => '/forget-password';
 
   static String get updateProfile => '/update-profile';
+
+  static String get changePassword => '/change-password';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -186,6 +190,25 @@ class NavigationService {
           child: BlocProvider(
             create: (context) => UpdateProfileCubit(userRepository: getIt()),
             child: const UpdateProfileScreen(),
+          ),
+          transitionDuration: const Duration(milliseconds: 300),
+          reverseTransitionDuration: const Duration(milliseconds: 300),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        ),
+      ),
+
+      /// changePasswordScreen
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: changePassword,
+        path: changePassword,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: BlocProvider(
+            create: (context) => ChangePasswordCubit(userRepository: getIt()),
+            child: const ChangePasswordScreen(),
           ),
           transitionDuration: const Duration(milliseconds: 300),
           reverseTransitionDuration: const Duration(milliseconds: 300),

@@ -33,4 +33,14 @@ class Preferences {
   Future<bool> saveRefreshToken(String token) {
     return _myPref.setString(_PreferencesKey.refreshToken, token);
   }
+
+  /// Remove data
+  Future<void> clearCurrentUserData() async {
+    await Future.wait(
+      [
+        _myPref.remove(_PreferencesKey.accessToken),
+        _myPref.remove(_PreferencesKey.refreshToken),
+      ],
+    );
+  }
 }
