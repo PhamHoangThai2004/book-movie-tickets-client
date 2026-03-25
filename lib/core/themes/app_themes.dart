@@ -27,7 +27,7 @@ abstract class AppThemes {
       begin: Alignment.center,
       end: Alignment.bottomLeft,
       colors: [AppColors.warmBlack, AppColors.deepBrown.withValues(alpha: 0.2)],
-      stops: [0.6, 1.2],
+      stops: [0.5, 1.2],
     ),
   );
 
