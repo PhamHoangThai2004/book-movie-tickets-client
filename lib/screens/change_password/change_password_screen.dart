@@ -29,39 +29,42 @@ class ChangePasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return KeyboardDismissOnTap(
       child: Scaffold(
-        backgroundColor: AppColors.black,
+        backgroundColor: AppColors.warmBlack,
         resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: BlocListener<ChangePasswordCubit, ChangePasswordState>(
-            listenWhen: (previous, current) => previous.status != current.status,
-            listener: (context, state) {
-              if (state.status.isProcessing) {
-                LoadingCustom.show();
-              } else if (state.status.isSuccess) {
-                LoadingCustom.hideLoading();
-                ToastCustom.show(message: 'change_password_success'.tr(), type: ToastType.success);
-                context.go(NavigationService.auth);
-              } else if (state.status.isFailure) {
-                LoadingCustom.hideLoading();
-                ToastCustom.show(message: state.errorMessage);
-              } else {
-                LoadingCustom.hideLoading();
-              }
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  VerticalSpacing(of: SizeConfig.getSpaceWithAppBarHeight()),
-                  HeaderCustom(title: 'change_password'.tr()),
-                  VerticalSpacing(of: Dimens.d32.responsive()),
-                  InputOldPassword(),
-                  VerticalSpacing(of: Dimens.d16.responsive()),
-                  InputNewPassword(),
-                  VerticalSpacing(of: Dimens.d32.responsive()),
-                  _buildSaveButton(),
-                ],
+        body: Container(
+          decoration: AppThemes.mainBackground,
+          child: SafeArea(
+            child: BlocListener<ChangePasswordCubit, ChangePasswordState>(
+              listenWhen: (previous, current) => previous.status != current.status,
+              listener: (context, state) {
+                if (state.status.isProcessing) {
+                  LoadingCustom.show();
+                } else if (state.status.isSuccess) {
+                  LoadingCustom.hideLoading();
+                  ToastCustom.show(message: 'change_password_success'.tr(), type: ToastType.success);
+                  context.go(NavigationService.auth);
+                } else if (state.status.isFailure) {
+                  LoadingCustom.hideLoading();
+                  ToastCustom.show(message: state.errorMessage);
+                } else {
+                  LoadingCustom.hideLoading();
+                }
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    VerticalSpacing(of: SizeConfig.getSpaceWithAppBarHeight()),
+                    HeaderCustom(title: 'change_password'.tr()),
+                    VerticalSpacing(of: Dimens.d32.responsive()),
+                    InputOldPassword(),
+                    VerticalSpacing(of: Dimens.d16.responsive()),
+                    InputNewPassword(),
+                    VerticalSpacing(of: Dimens.d32.responsive()),
+                    _buildSaveButton(),
+                  ],
+                ),
               ),
             ),
           ),

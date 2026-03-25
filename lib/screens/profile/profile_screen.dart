@@ -1,10 +1,13 @@
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
+import 'package:client/core/customs/dialogs/dialog_custom.dart';
 import 'package:client/core/navigation/navigation_service.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/size_config/size_config.dart';
 import 'package:client/core/styles/app_text_styles.dart';
 import 'package:client/core/themes/app_colors.dart';
+import 'package:client/core/themes/app_themes.dart';
+import 'package:client/core/utils/app_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,35 +32,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
     AppDimen.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.black,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: Dimens.d20.responsive()),
-          child: Column(
-            children: [
-              SizedBox(height: Dimens.d20.responsive()),
-              _buildHeader(),
-              SizedBox(height: Dimens.d60.responsive()),
-              _buildMenuItem(
-                icon: Assets.svgs.icShoppingCart.svg(
-                  width: Dimens.d32.responsive(),
-                  height: Dimens.d32.responsive(),
-                  colorFilter: ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
+      backgroundColor: AppColors.warmBlack,
+      body: Container(
+        height: SizeConfig.screenHeight,
+        decoration: AppThemes.mainBackground,
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: Dimens.d20.responsive()),
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: Dimens.d20.responsive()),
+                        _buildHeader(),
+                        SizedBox(height: Dimens.d60.responsive()),
+                        _buildMenuItem(
+                          icon: Assets.svgs.icShoppingCart.svg(
+                            width: Dimens.d32.responsive(),
+                            height: Dimens.d32.responsive(),
+                            colorFilter: ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
+                          ),
+                          title: 'payment_history'.tr(),
+                          onTap: () {},
+                        ),
+                        _buildDivider(),
+                        _buildMenuItem(
+                          icon: Assets.svgs.icLock.svg(
+                            width: Dimens.d32.responsive(),
+                            height: Dimens.d32.responsive(),
+                            colorFilter: ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
+                          ),
+                          title: 'change_password'.tr(),
+                          onTap: () => context.pushNamed(NavigationService.changePassword),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                title: 'payment_history'.tr(),
-                onTap: () {},
-              ),
-              _buildDivider(),
-              _buildMenuItem(
-                icon: Assets.svgs.icLock.svg(
-                  width: Dimens.d32.responsive(),
-                  height: Dimens.d32.responsive(),
-                  colorFilter: ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
-                ),
-                title: 'change_password'.tr(),
-                onTap: () => context.pushNamed(NavigationService.changePassword),
-              ),
-            ],
+                SizedBox(height: Dimens.d16.responsive()),
+                _buildLogoutButton(),
+                SizedBox(height: Dimens.d20.responsive()),
+              ],
+            ),
           ),
         ),
       ),
@@ -163,5 +181,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildDivider() {
     return Divider(color: AppColors.darkGray, height: 0.5, thickness: 0.5);
+  }
+
+  Widget _buildLogoutButton() {
+    return CupertinoButtonCustom(
+      onPressed: () => showDialogCustom(
+        context: context,
+        title: 'sign_out'.tr(),
+        message: 'confirm_logout_message'.tr(),
+        acceptAction: () => AppUtils.logout(context),
+      ),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: Dimens.d14.responsive()),
+        decoration: AppThemes.outlineButtonStyle.copyWith(
+          border: Border.all(color: AppColors.amberYellow, width: Dimens.d1.responsive()),
+        ),
+        alignment: Alignment.center,
+        child: Text('sign_out'.tr(), style: AppTextStyles.style.s20.w700.amberYellowColor),
+      ),
+    );
   }
 }
