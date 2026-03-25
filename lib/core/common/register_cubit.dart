@@ -1,3 +1,4 @@
+import 'package:client/screens/change_password/cubit/change_password_cubit.dart';
 import 'package:client/screens/forget_password/cubit/forget_password_cubit.dart';
 import 'package:client/screens/sign_up/cubit/sign_up_cubit.dart';
 import 'package:client/screens/update_profile/cubit/update_profile_cubit.dart';
@@ -17,4 +18,6 @@ extension RegisterCubit on BuildContext {
   ForgetPasswordCubit get forgetPasswordCubit => read<ForgetPasswordCubit>();
 
   UpdateProfileCubit get updateProfileCubit => read<UpdateProfileCubit>();
+
+  ChangePasswordCubit get changePasswordCubit => read<ChangePasswordCubit>();
 }

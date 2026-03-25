@@ -1,4 +1,5 @@
 import 'package:client/data/model/user_model.dart';
+import 'package:client/data/remote/requests/change_password_request.dart';
 import 'package:client/data/remote/requests/update_profile_request.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
@@ -12,6 +13,7 @@ import '../responses/model_response.dart';
 @injectable
 class UserService {
   final String _profilePath = 'account/users/profile';
+  final String _changePasswordPath = 'account/auth/change-password';
 
   final Dio _dio = Dio(BaseOptions(baseUrl: AppConfig.baseUrl))
     ..interceptors.addAll([CurlLoggerDioInterceptor(printOnSuccess: true), AuthInterceptor()]);
@@ -32,6 +34,14 @@ class UserService {
   Future<void> updateProfile(UpdateProfileRequest request) async {
     try {
       await _dio.patch(_profilePath, data: request.toJson());
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<void> changePassword(ChangePasswordRequest request) async {
+    try {
+      await _dio.post(_changePasswordPath, data: request.toJson());
     } on ApiException {
       rethrow;
     }

@@ -12,9 +12,11 @@ import 'package:client/screens/update_profile/components/input_profile_name.dart
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/common/register_cubit.dart';
+import '../../core/customs/toasts/loading_custom.dart';
 import '../../core/utils/datetime_utils.dart';
 import '../../data/enums/status_enum.dart';
 import 'components/input_profile_phone.dart';
@@ -55,71 +57,79 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.black,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: Dimens.d20.responsive()),
-          child: MultiBlocListener(
-            listeners: [
-              BlocListener<UpdateProfileCubit, UpdateProfileState>(
-                listenWhen: (p, c) => p.status != c.status,
-                listener: (context, state) {
-                  if (state.status == StatusEnum.success) {
-                    ToastCustom.show(
-                      message: 'update_profile_success'.tr(),
-                      type: ToastType.success,
-                    );
-                    context.pop();
-                  } else if (state.status == StatusEnum.failure) {
-                    ToastCustom.show(message: state.errorMessage);
-                  }
-                },
-              ),
-
-              BlocListener<UpdateProfileCubit, UpdateProfileState>(
-                listenWhen: (p, c) => p.initUser != c.initUser,
-                listener: (context, state) {
-                  if (state.initUser != null) {
-                    if (!mounted) {
-                      return;
-                    }
-                    setState(() {
-                      _phoneController.text = state.initUser?.phoneNumber ?? '';
-                      _nameController.text = state.initUser?.name ?? '';
-                      _dateOfBirthController.text = DatetimeUtils.fromIso8601(
-                        state.initUser?.dateOfBirth,
+    return KeyboardDismissOnTap(
+      child: Scaffold(
+        backgroundColor: AppColors.black,
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
+            child: MultiBlocListener(
+              listeners: [
+                BlocListener<UpdateProfileCubit, UpdateProfileState>(
+                  listenWhen: (p, c) => p.status != c.status,
+                  listener: (context, state) {
+                    if (state.status == StatusEnum.success) {
+                      LoadingCustom.hideLoading();
+                      ToastCustom.show(
+                        message: 'update_profile_success'.tr(),
+                        type: ToastType.success,
                       );
-                      _gender = _normalizeGender(state.initUser?.gender);
-                    });
-                  }
-                },
-              ),
-            ],
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                VerticalSpacing(of: Dimens.d20.responsive()),
-                VerticalSpacing(of: Dimens.d20.responsive()),
-                HeaderCustom(title: 'update_profile'.tr()),
-                VerticalSpacing(of: Dimens.d32.responsive()),
-                InputProfileName(nameController: _nameController),
-                VerticalSpacing(of: Dimens.d16.responsive()),
-                InputProfilePhone(phoneController: _phoneController),
-                VerticalSpacing(of: Dimens.d16.responsive()),
-                _buildTextField(
-                  label: 'date_of_birth'.tr(),
-                  hintText: 'yyyy-MM-dd',
-                  controller: _dateOfBirthController,
-                  readOnly: true,
-                  onTap: _pickDateOfBirth,
+                      context.pop();
+                    } else if (state.status == StatusEnum.failure) {
+                      LoadingCustom.hideLoading();
+                      ToastCustom.show(message: state.errorMessage);
+                    } else if (state.status == StatusEnum.processing) {
+                      LoadingCustom.show();
+                    } else {
+                      LoadingCustom.hideLoading();
+                    }
+                  },
                 ),
-                VerticalSpacing(of: Dimens.d16.responsive()),
-                _buildGenderDropdown(),
-                VerticalSpacing(of: Dimens.d32.responsive()),
-                _buildButtonSave(),
-                VerticalSpacing(of: Dimens.d20.responsive()),
+
+                BlocListener<UpdateProfileCubit, UpdateProfileState>(
+                  listenWhen: (p, c) => p.initUser != c.initUser,
+                  listener: (context, state) {
+                    if (state.initUser != null) {
+                      if (!mounted) {
+                        return;
+                      }
+                      setState(() {
+                        _phoneController.text = state.initUser?.phoneNumber ?? '';
+                        _nameController.text = state.initUser?.name ?? '';
+                        _dateOfBirthController.text = DatetimeUtils.fromIso8601(
+                          state.initUser?.dateOfBirth,
+                        );
+                        _gender = _normalizeGender(state.initUser?.gender);
+                      });
+                    }
+                  },
+                ),
               ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  VerticalSpacing(of: SizeConfig.getSpaceWithAppBarHeight()),
+                  HeaderCustom(title: 'update_profile'.tr()),
+                  VerticalSpacing(of: Dimens.d32.responsive()),
+                  InputProfileName(nameController: _nameController),
+                  VerticalSpacing(of: Dimens.d16.responsive()),
+                  InputProfilePhone(phoneController: _phoneController),
+                  VerticalSpacing(of: Dimens.d16.responsive()),
+                  _buildTextField(
+                    label: 'date_of_birth'.tr(),
+                    hintText: 'yyyy-MM-dd',
+                    controller: _dateOfBirthController,
+                    readOnly: true,
+                    onTap: _pickDateOfBirth,
+                  ),
+                  VerticalSpacing(of: Dimens.d16.responsive()),
+                  _buildGenderDropdown(),
+                  VerticalSpacing(of: Dimens.d32.responsive()),
+                  _buildButtonSave(),
+                  VerticalSpacing(of: Dimens.d20.responsive()),
+                ],
+              ),
             ),
           ),
         ),

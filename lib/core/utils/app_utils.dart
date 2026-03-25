@@ -1,3 +1,4 @@
+import 'package:client/core/common/register_cubit.dart';
 import 'package:client/core/customs/dialogs/dialog_custom.dart';
 import 'package:client/core/utils/validator.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -50,6 +51,17 @@ class AppUtils {
     }
   }
 
+  static String validationNewPassword(String newPassword) {
+    final value = newPassword.trim();
+    if (value.isEmpty) {
+      return 'new_password_empty_error'.tr();
+    } else if (value.length > 50) {
+      return 'new_password_too_long_error'.tr();
+    } else {
+      return Validator.isValidPassword(value) ? '' : 'new_password_fail'.tr();
+    }
+  }
+
   static bool isLoggedIn() {
     return Preferences.instance.accessToken.isNotEmpty;
   }
@@ -64,5 +76,11 @@ class AppUtils {
         context.push(NavigationService.signIn);
       },
     );
+  }
+
+  static void logout(BuildContext context) {
+    context.dashboardCubit.logout();
+    Preferences.instance.clearCurrentUserData();
+    context.go(NavigationService.auth);
   }
 }
