@@ -36,8 +36,14 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/ic_arrow_right.svg
   SvgGenImage get icArrowRight => const SvgGenImage('assets/svgs/ic_arrow_right.svg');
 
+  /// File path: assets/svgs/ic_calendar.svg
+  SvgGenImage get icCalendar => const SvgGenImage('assets/svgs/ic_calendar.svg');
+
   /// File path: assets/svgs/ic_call.svg
   SvgGenImage get icCall => const SvgGenImage('assets/svgs/ic_call.svg');
+
+  /// File path: assets/svgs/ic_clock.svg
+  SvgGenImage get icClock => const SvgGenImage('assets/svgs/ic_clock.svg');
 
   /// File path: assets/svgs/ic_close.svg
   SvgGenImage get icClose => const SvgGenImage('assets/svgs/ic_close.svg');
@@ -72,6 +78,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/ic_password.svg
   SvgGenImage get icPassword => const SvgGenImage('assets/svgs/ic_password.svg');
 
+  /// File path: assets/svgs/ic_picture.svg
+  SvgGenImage get icPicture => const SvgGenImage('assets/svgs/ic_picture.svg');
+
   /// File path: assets/svgs/ic_search.svg
   SvgGenImage get icSearch => const SvgGenImage('assets/svgs/ic_search.svg');
 
@@ -103,7 +112,9 @@ class $AssetsSvgsGen {
   List<SvgGenImage> get values => [
     icArrowLeft,
     icArrowRight,
+    icCalendar,
     icCall,
+    icClock,
     icClose,
     icEdit,
     icEmail,
@@ -115,6 +126,7 @@ class $AssetsSvgsGen {
     icLock,
     icNotification,
     icPassword,
+    icPicture,
     icSearch,
     icShoppingCart,
     icStar,
