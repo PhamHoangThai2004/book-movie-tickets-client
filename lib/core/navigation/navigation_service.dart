@@ -20,6 +20,7 @@ import 'package:go_router/go_router.dart';
 import 'package:bot_toast/bot_toast.dart';
 
 import '../../screens/dashboard/dashboard_screen.dart';
+import '../../screens/movie/cubit/movie_cubit.dart';
 import '../../screens/sign_up/cubit/sign_up_cubit.dart';
 import '../di/injection.dart';
 
@@ -236,7 +237,16 @@ class NavigationService {
           ),
 
           StatefulShellBranch(
-            routes: [GoRoute(path: movie, builder: (_, _) => MovieScreen(), routes: const [])],
+            routes: [
+              GoRoute(
+                path: movie,
+                builder: (_, _) => BlocProvider(
+                  create: (context) => MovieCubit(movieRepository: getIt()),
+                  child: MovieScreen(),
+                ),
+                routes: const [],
+              ),
+            ],
           ),
 
           StatefulShellBranch(

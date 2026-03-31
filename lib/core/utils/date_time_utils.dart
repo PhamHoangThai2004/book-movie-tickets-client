@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 
-class DatetimeUtils {
+class DateTimeUtils {
   static String fromIso8601(String? isoDate,
       {String targetFormat = 'dd/MM/yyyy'}) {
     if (isoDate == null || isoDate.isEmpty) return '';

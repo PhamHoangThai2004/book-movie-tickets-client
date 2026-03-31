@@ -17,7 +17,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/common/register_cubit.dart';
 import '../../core/customs/toasts/loading_custom.dart';
-import '../../core/utils/datetime_utils.dart';
+import '../../core/utils/date_time_utils.dart';
 import '../../data/enums/status_enum.dart';
 import 'components/input_profile_phone.dart';
 import 'cubit/update_profile_cubit.dart';
@@ -99,7 +99,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         setState(() {
                           _phoneController.text = state.initUser?.phoneNumber ?? '';
                           _nameController.text = state.initUser?.name ?? '';
-                          _dateOfBirthController.text = DatetimeUtils.fromIso8601(
+                          _dateOfBirthController.text = DateTimeUtils.fromIso8601(
                             state.initUser?.dateOfBirth,
                           );
                           _gender = _normalizeGender(state.initUser?.gender);
