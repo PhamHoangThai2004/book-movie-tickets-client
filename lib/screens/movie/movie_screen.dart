@@ -1,11 +1,13 @@
 import 'package:client/core/common/register_cubit.dart';
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
+import 'package:client/core/customs/toasts/shimmer_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/styles/app_text_styles.dart';
 import 'package:client/core/themes/app_colors.dart';
 import 'package:client/core/themes/app_themes.dart';
 import 'package:client/screens/movie/components/movie_item.dart';
+import 'package:client/screens/movie/components/movie_item_shimmer.dart';
 import 'package:client/screens/movie/cubit/movie_cubit.dart';
 import 'package:client/screens/movie/cubit/movie_state.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -83,7 +85,7 @@ class _MovieState extends State<MovieScreen> {
 
   Widget _buildContent(MovieState state) {
     if (state.status == StatusEnum.processing && state.currentMovies.isEmpty) {
-      return const Center(child: CircularProgressIndicator(color: AppColors.amberYellow));
+      return _buildLoadingShimmer();
     }
 
     if (state.status == StatusEnum.failure && state.currentMovies.isEmpty) {
@@ -106,6 +108,22 @@ class _MovieState extends State<MovieScreen> {
       itemBuilder: (context, index) {
         return MovieItem(movie: state.currentMovies[index], isNowPlaying: state.isNowPlaying);
       },
+    );
+  }
+
+  Widget _buildLoadingShimmer() {
+    return ShimmerEffect(
+      child: GridView.builder(
+        physics: const AlwaysScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: Dimens.d16.responsive(),
+          crossAxisSpacing: Dimens.d16.responsive(),
+          childAspectRatio: 0.5,
+        ),
+        itemCount: 6,
+        itemBuilder: (_, _) => const MovieItemShimmer(),
+      ),
     );
   }
 
