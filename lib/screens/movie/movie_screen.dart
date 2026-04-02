@@ -10,7 +10,6 @@ import 'package:client/core/themes/app_themes.dart';
 import 'package:client/screens/movie/components/movie_item.dart';
 import 'package:client/screens/movie/components/movie_item_shimmer.dart';
 import 'package:client/screens/movie/cubit/movie_cubit.dart';
-import 'package:client/screens/movie/cubit/movie_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

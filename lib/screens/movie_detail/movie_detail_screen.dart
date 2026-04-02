@@ -1,4 +1,6 @@
+import 'package:client/core/common/register_cubit.dart';
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
+import 'package:client/core/customs/buttons/button_custom.dart';
 import 'package:client/core/customs/images/image_custom.dart';
 import 'package:client/core/customs/toasts/toast_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
@@ -11,10 +13,14 @@ import 'package:client/data/enums/age_rating_enum.dart';
 import 'package:client/generated/assets.gen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/size_config/size_config.dart';
+import '../../data/enums/status_enum.dart';
+import '../../data/model/cinema_model.dart';
 import '../../data/model/movie_model.dart';
+import 'cubit/movie_detail_cubit.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   final MovieModel movie;
@@ -30,6 +36,12 @@ class _MovieDetailState extends State<MovieDetailScreen> {
 
   MovieModel get _movie => widget.movie;
 
+  @override
+  void initState() {
+    super.initState();
+    context.movieDetailCubit.getCinemas(_movie.id);
+  }
+
   List<String> _splitPeople(String source) {
     return source.split(',').map((item) => item.trim()).where((item) => item.isNotEmpty).toList();
   }
@@ -39,6 +51,7 @@ class _MovieDetailState extends State<MovieDetailScreen> {
     final directors = _splitPeople(_movie.director);
     final casts = _splitPeople(_movie.cast);
     final genres = _movie.genres.map((item) => item.name).join(', ');
+
     return Scaffold(
       backgroundColor: AppColors.black,
       extendBodyBehindAppBar: true,
@@ -47,48 +60,76 @@ class _MovieDetailState extends State<MovieDetailScreen> {
         decoration: AppThemes.mainBackground,
         child: SafeArea(
           top: false,
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(child: _buildTopBanner()),
-              SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
-                sliver: SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      VerticalSpacing(of: Dimens.d16.responsive()),
-                      _buildInfoRow(label: '${'genre'.tr()}:', value: genres),
-                      _buildInfoRow(label: '${'censorship'.tr()}:', value: _movie.ageRating.displayName),
-                      _buildInfoRow(label: '${'language'.tr()}:', value: _movie.languages),
-                      VerticalSpacing(of: Dimens.d8.responsive()),
-                      Text('storyline'.tr(), style: AppTextStyles.style.s32.w700.whiteColor),
-                      VerticalSpacing(of: Dimens.d12.responsive()),
-                      Text(
-                        _movie.description,
-                        style: AppTextStyles.style.s16.w900.whiteColor,
-                        maxLines: _isStoryExpanded ? null : 4,
-                        overflow: _isStoryExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+          child: Stack(
+            children: [
+              CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(child: _buildTopBanner()),
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
+                    sliver: SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          VerticalSpacing(of: Dimens.d16.responsive()),
+                          _buildInfoRow(label: '${'genre'.tr()}:', value: genres),
+                          _buildInfoRow(
+                            label: '${'censorship'.tr()}:',
+                            value: _movie.ageRating.displayName,
+                          ),
+                          _buildInfoRow(label: '${'language'.tr()}:', value: _movie.languages),
+                          VerticalSpacing(of: Dimens.d8.responsive()),
+                          Text('storyline'.tr(), style: AppTextStyles.style.s24.w700.whiteColor),
+                          VerticalSpacing(of: Dimens.d12.responsive()),
+                          Text(
+                            _movie.description,
+                            style: AppTextStyles.style.s16.w700.whiteColor,
+                            maxLines: _isStoryExpanded ? null : 4,
+                            overflow: _isStoryExpanded
+                                ? TextOverflow.visible
+                                : TextOverflow.ellipsis,
+                          ),
+                          VerticalSpacing(of: Dimens.d4.responsive()),
+                          CupertinoButtonCustom(
+                            onPressed: () => setState(() => _isStoryExpanded = !_isStoryExpanded),
+                            child: Text(
+                              _isStoryExpanded ? 'see_less'.tr() : 'see_more'.tr(),
+                              style: AppTextStyles.style.s16.w700.amberYellowColor,
+                            ),
+                          ),
+                          VerticalSpacing(of: Dimens.d20.responsive()),
+                          _buildPeopleSection(title: 'director'.tr(), items: directors),
+                          VerticalSpacing(of: Dimens.d20.responsive()),
+                          _buildPeopleSection(title: 'actor'.tr(), items: casts),
+                          VerticalSpacing(of: Dimens.d20.responsive()),
+                          _buildCinemasSection(),
+                          VerticalSpacing(of: Dimens.d100.responsive()),
+                        ],
                       ),
-                      VerticalSpacing(of: Dimens.d4.responsive()),
-                      GestureDetector(
-                        onTap: () => setState(() => _isStoryExpanded = !_isStoryExpanded),
-                        child: Text(
-                          _isStoryExpanded ? 'see_less'.tr() : 'see_more'.tr(),
-                          style: AppTextStyles.style.s16.w700.amberYellowColor,
-                        ),
-                      ),
-                      VerticalSpacing(of: Dimens.d20.responsive()),
-                      _buildPeopleSection(title: 'director'.tr(), items: directors),
-                      VerticalSpacing(of: Dimens.d20.responsive()),
-                      _buildPeopleSection(title: 'actor'.tr(), items: casts),
-                      VerticalSpacing(of: Dimens.d24.responsive()),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
+              Align(alignment: Alignment.bottomCenter, child: _buildBottomAction()),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildBottomAction() {
+    return SafeArea(
+      top: false,
+      child: Container(
+        decoration: BoxDecoration(color: AppColors.transparent),
+        padding: EdgeInsets.fromLTRB(
+          SizeConfig.appDefaultPadding,
+          Dimens.d10.responsive(),
+          SizeConfig.appDefaultPadding,
+          Dimens.d12.responsive(),
+        ),
+        child: ButtonCustom(title: 'continue'.tr(), onPressed: () {}),
       ),
     );
   }
@@ -289,7 +330,7 @@ class _MovieDetailState extends State<MovieDetailScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: AppTextStyles.style.s32.w700.whiteColor),
+        Text(title, style: AppTextStyles.style.s24.w700.whiteColor),
         VerticalSpacing(of: Dimens.d12.responsive()),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -315,11 +356,11 @@ class _MovieDetailState extends State<MovieDetailScreen> {
                         backgroundColor: AppColors.darkGray,
                         child: Text(
                           name.isNotEmpty ? name[0].toUpperCase() : '?',
-                          style: AppTextStyles.style.s12.w700.whiteColor,
+                          style: AppTextStyles.style.s15.w700.whiteColor,
                         ),
                       ),
                       HorizontalSpacing(of: Dimens.d8.responsive()),
-                      Text(name, style: AppTextStyles.style.s14.w500.whiteColor),
+                      Text(name, style: AppTextStyles.style.s14.w400.whiteColor),
                     ],
                   ),
                 ),
@@ -328,6 +369,75 @@ class _MovieDetailState extends State<MovieDetailScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildCinemasSection() {
+    return BlocBuilder<MovieDetailCubit, MovieDetailState>(
+      buildWhen: (previous, current) =>
+          previous.cinemasStatus != current.cinemasStatus || previous.cinemas != current.cinemas,
+      builder: (context, state) {
+        if (state.cinemasStatus == StatusEnum.processing) {
+          return _buildCinemaLoading();
+        }
+
+        if (state.cinemas.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('cinema'.tr(), style: AppTextStyles.style.s24.w700.whiteColor),
+            VerticalSpacing(of: Dimens.d12.responsive()),
+            ...state.cinemas.map(_buildCinemaCard),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildCinemaLoading() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('cinema'.tr(), style: AppTextStyles.style.s24.w700.whiteColor),
+        VerticalSpacing(of: Dimens.d12.responsive()),
+        ...List.generate(2, (_) {
+          return Container(
+            margin: EdgeInsets.only(bottom: Dimens.d12.responsive()),
+            height: Dimens.d74.responsive(),
+            decoration: BoxDecoration(
+              color: AppColors.white.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(Dimens.d12.responsive()),
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  Widget _buildCinemaCard(CinemaModel cinema) {
+    return Container(
+      margin: EdgeInsets.only(bottom: Dimens.d12.responsive()),
+      padding: EdgeInsets.all(Dimens.d20.responsive()),
+      decoration: BoxDecoration(
+        color: AppColors.obsidian,
+        borderRadius: BorderRadius.circular(Dimens.d12.responsive()),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(cinema.name, style: AppTextStyles.style.s20.w700.whiteSmokeColor),
+          VerticalSpacing(of: Dimens.d4.responsive()),
+          Text(
+            cinema.address,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.style.s14.w400.silverGrayColor,
+          ),
+        ],
+      ),
     );
   }
 }

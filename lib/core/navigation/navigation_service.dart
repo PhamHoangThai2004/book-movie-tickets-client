@@ -22,6 +22,7 @@ import 'package:bot_toast/bot_toast.dart';
 import '../../data/model/movie_model.dart';
 import '../../screens/dashboard/dashboard_screen.dart';
 import '../../screens/movie/cubit/movie_cubit.dart';
+import '../../screens/movie_detail/cubit/movie_detail_cubit.dart';
 import '../../screens/movie_detail/movie_detail_screen.dart';
 import '../../screens/sign_up/cubit/sign_up_cubit.dart';
 import '../di/injection.dart';
@@ -233,7 +234,10 @@ class NavigationService {
 
           return CustomTransitionPage(
             key: state.pageKey,
-            child: MovieDetailScreen(movie: movie),
+            child: BlocProvider(
+              create: (context) => MovieDetailCubit(movieRepository: getIt()),
+              child: MovieDetailScreen(movie: movie),
+            ),
             transitionDuration: const Duration(milliseconds: 300),
             reverseTransitionDuration: const Duration(milliseconds: 300),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {

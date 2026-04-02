@@ -1,11 +1,16 @@
 import 'package:client/data/enums/movie_status_enum.dart';
 import 'package:client/data/network/exceptions/api_exception.dart';
 import 'package:client/data/repositories/movie_repository.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/enums/status_enum.dart';
+import '../../../data/model/movie_model.dart';
+import '../../../data/model/movie_preview_model.dart';
 import '../../../data/remote/requests/movie_preview_request.dart';
-import 'movie_state.dart';
+import '../../../data/remote/responses/pagination_response.dart';
+
+part 'movie_state.dart';
 
 class MovieCubit extends Cubit<MovieState> {
   final MovieRepository movieRepository;

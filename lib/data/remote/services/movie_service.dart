@@ -1,3 +1,4 @@
+import 'package:client/data/model/cinema_model.dart';
 import 'package:client/data/model/movie_preview_model.dart';
 import 'package:client/data/network/exceptions/api_exception.dart';
 import 'package:client/data/remote/requests/movie_preview_request.dart';
@@ -37,6 +38,20 @@ class MovieService {
       final result = ModelResponse.fromJson(
         response.data,
         (json) => MovieModel.fromJson(json as Map<String, dynamic>),
+      );
+      return result.data;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<List<CinemaModel>> getCinemasByMovieId(String movieId) async {
+    try {
+      final response = await _dio.get('$_moviePath/$movieId/cinemas');
+      final result = ModelResponse.fromJson(
+        response.data,
+        (json) =>
+            (json as List).map((e) => CinemaModel.fromJson(e as Map<String, dynamic>)).toList(),
       );
       return result.data;
     } on ApiException {

@@ -1,9 +1,4 @@
-import 'package:client/data/enums/status_enum.dart';
-import 'package:client/data/model/movie_preview_model.dart';
-import 'package:client/data/remote/responses/pagination_response.dart';
-import 'package:equatable/equatable.dart';
-
-import '../../../data/model/movie_model.dart';
+part of 'movie_cubit.dart';
 
 class MovieState extends Equatable {
   final bool isNowPlaying;
