@@ -23,4 +23,8 @@ class DateTimeUtils {
       return '';
     }
   }
+
+  static String convertDuration(int duration) {
+    return '${duration ~/ 60} ${'hours'.tr()} ${duration % 60} ${'minutes'.tr()}';
+  }
 }

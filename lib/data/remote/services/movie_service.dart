@@ -1,12 +1,14 @@
 import 'package:client/data/model/movie_preview_model.dart';
 import 'package:client/data/network/exceptions/api_exception.dart';
 import 'package:client/data/remote/requests/movie_preview_request.dart';
+import 'package:client/data/remote/responses/model_response.dart';
 import 'package:client/data/remote/responses/pagination_response.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/common/app_config.dart';
+import '../../model/movie_model.dart';
 import '../../network/interceptors/general_interceptor.dart';
 
 @injectable
@@ -24,6 +26,19 @@ class MovieService {
         (json) => MoviePreviewModel.fromJson(json as Map<String, dynamic>),
       );
       return result;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<MovieModel> getMovieById(String id) async {
+    try {
+      final response = await _dio.get('$_moviePath/$id');
+      final result = ModelResponse.fromJson(
+        response.data,
+        (json) => MovieModel.fromJson(json as Map<String, dynamic>),
+      );
+      return result.data;
     } on ApiException {
       rethrow;
     }

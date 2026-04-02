@@ -19,8 +19,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bot_toast/bot_toast.dart';
 
+import '../../data/model/movie_model.dart';
 import '../../screens/dashboard/dashboard_screen.dart';
 import '../../screens/movie/cubit/movie_cubit.dart';
+import '../../screens/movie_detail/movie_detail_screen.dart';
 import '../../screens/sign_up/cubit/sign_up_cubit.dart';
 import '../di/injection.dart';
 
@@ -53,6 +55,8 @@ class NavigationService {
   static String get updateProfile => '/update-profile';
 
   static String get changePassword => '/change-password';
+
+  static String get movieDetail => '/movie-detail';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -217,6 +221,26 @@ class NavigationService {
             return FadeTransition(opacity: animation, child: child);
           },
         ),
+      ),
+
+      /// movieDetailScreen
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: movieDetail,
+        path: movieDetail,
+        pageBuilder: (context, state) {
+          final movie = state.extra as MovieModel;
+
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: MovieDetailScreen(movie: movie),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
       ),
 
       /// dashboardScreen

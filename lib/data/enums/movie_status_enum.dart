@@ -20,8 +20,8 @@ extension MovieStatusEnumX on MovieStatusEnum {
     }
   }
 
-  static String toKey(MovieStatusEnum status) {
-    switch (status) {
+  String get toKey  {
+    switch (this) {
       case MovieStatusEnum.comingSoon:
         return 'coming_soon';
       case MovieStatusEnum.nowShowing:

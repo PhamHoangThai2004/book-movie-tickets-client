@@ -71,5 +71,19 @@
   "now_playing": "Đang chiếu",
   "coming_soon": "Sắp chiếu",
   "hours": "giờ",
-  "minutes": "phút"
+  "minutes": "phút",
+  "review": "Đánh giá",
+  "watch_trailer": "Xem trailer",
+  "genre": "Thể loại",
+  "censorship": "Kiểm duyệt",
+  "language": "Ngôn ngữ",
+  "see_more": "Xem thêm",
+  "see_less": "Thu gọn",
+  "storyline": "Nội dung",
+  "director": "Đạo diễn",
+  "actor": "Diễn viên",
+  "popular_all_ages": "Phổ biến với mọi lứa tuổi",
+  "children_under_13_with_parent": "Dành cho trẻ em dưới 13 tuổi với điều kiện xem cùng cha mẹ",
+  "audiences_under_X_years_old": "Cấm khán giả dưới {age} tuổi",
+  "movie_not_trailer": "Bộ phim này chưa có trailer"
 }

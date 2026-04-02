@@ -30,8 +30,8 @@ class MovieCubit extends Cubit<MovieState> {
         search: null,
         genre: null,
         status: state.isNowPlaying
-            ? MovieStatusEnumX.toKey(MovieStatusEnum.nowShowing)
-            : MovieStatusEnumX.toKey(MovieStatusEnum.comingSoon),
+            ? MovieStatusEnum.nowShowing.toKey
+            : MovieStatusEnum.comingSoon.toKey,
         page: state.isNowPlaying
             ? state.nowPlayingMovies?.page ?? 1
             : state.comingSoonMovies?.page ?? 1,
@@ -54,8 +54,8 @@ class MovieCubit extends Cubit<MovieState> {
         search: null,
         genre: null,
         status: state.isNowPlaying
-            ? MovieStatusEnumX.toKey(MovieStatusEnum.nowShowing)
-            : MovieStatusEnumX.toKey(MovieStatusEnum.comingSoon),
+            ? MovieStatusEnum.nowShowing.toKey
+            : MovieStatusEnum.comingSoon.toKey,
         page: 1,
         size: 10,
       );
@@ -85,8 +85,8 @@ class MovieCubit extends Cubit<MovieState> {
         search: null,
         genre: null,
         status: state.isNowPlaying
-            ? MovieStatusEnumX.toKey(MovieStatusEnum.nowShowing)
-            : MovieStatusEnumX.toKey(MovieStatusEnum.comingSoon),
+            ? MovieStatusEnum.nowShowing.toKey
+            : MovieStatusEnum.comingSoon.toKey,
         page: nextPage,
         size: 10,
       );
@@ -127,6 +127,16 @@ class MovieCubit extends Cubit<MovieState> {
           isLoadingMore: false,
         ),
       );
+    }
+  }
+
+  Future<void> getMovieDetail(String movieId) async {
+    emit(state.copyWith(movieStatus: StatusEnum.processing, errorMessage: ''));
+    try {
+      final response = await movieRepository.getMovieById(movieId);
+      emit(state.copyWith(movie: response, movieStatus: StatusEnum.success));
+    } on ApiException catch (e) {
+      emit(state.copyWith(movieStatus: StatusEnum.failure, errorMessage: e.errorMessage));
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:client/core/common/register_cubit.dart';
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
+import 'package:client/core/customs/toasts/loading_custom.dart';
 import 'package:client/core/customs/toasts/shimmer_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
@@ -13,8 +14,11 @@ import 'package:client/screens/movie/cubit/movie_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../data/enums/status_enum.dart';
+import '../../core/customs/toasts/toast_custom.dart';
+import '../../core/navigation/navigation_service.dart';
 import '../../core/size_config/size_config.dart';
 
 class MovieScreen extends StatefulWidget {
@@ -44,7 +48,7 @@ class _MovieState extends State<MovieScreen> {
   void _onScroll() {
     final state = context.read<MovieCubit>().state;
     if (state.isLoadingMore) return;
-    
+
     if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 500) {
       context.movieCubit.loadMoreMovies();
     }
@@ -57,25 +61,41 @@ class _MovieState extends State<MovieScreen> {
       body: Container(
         decoration: AppThemes.mainBackground,
         child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
-            child: BlocBuilder<MovieCubit, MovieState>(
-              builder: (context, state) {
-                return Column(
-                  children: [
-                    VerticalSpacing(of: Dimens.d24.responsive()),
-                    _buildSwitchButton(state),
-                    VerticalSpacing(of: Dimens.d24.responsive()),
-                    Expanded(
-                      child: RefreshIndicator(
-                        color: AppColors.amberYellow,
-                        onRefresh: () => context.movieCubit.refreshMovies(),
-                        child: _buildContent(state),
+          child: BlocListener<MovieCubit, MovieState>(
+            listenWhen: (previous, current) => previous.movieStatus != current.movieStatus,
+            listener: (context, state) {
+              if (state.movieStatus.isProcessing) {
+                LoadingCustom.show();
+              } else if (state.movieStatus == StatusEnum.success) {
+                LoadingCustom.hideLoading();
+                if (state.movie != null) {
+                  context.pushNamed(NavigationService.movieDetail, extra: state.movie);
+                }
+              } else if (state.movieStatus == StatusEnum.failure) {
+                LoadingCustom.hideLoading();
+                ToastCustom.show(message: state.errorMessage);
+              }
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
+              child: BlocBuilder<MovieCubit, MovieState>(
+                builder: (context, state) {
+                  return Column(
+                    children: [
+                      VerticalSpacing(of: Dimens.d24.responsive()),
+                      _buildSwitchButton(state),
+                      VerticalSpacing(of: Dimens.d24.responsive()),
+                      Expanded(
+                        child: RefreshIndicator(
+                          color: AppColors.amberYellow,
+                          onRefresh: () => context.movieCubit.refreshMovies(),
+                          child: _buildContent(state),
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              },
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),

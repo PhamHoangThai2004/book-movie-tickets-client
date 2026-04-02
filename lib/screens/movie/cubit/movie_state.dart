@@ -3,6 +3,8 @@ import 'package:client/data/model/movie_preview_model.dart';
 import 'package:client/data/remote/responses/pagination_response.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../data/model/movie_model.dart';
+
 class MovieState extends Equatable {
   final bool isNowPlaying;
   final PaginationResponse<MoviePreviewModel>? nowPlayingMovies;
@@ -10,6 +12,8 @@ class MovieState extends Equatable {
   final StatusEnum status;
   final String errorMessage;
   final bool isLoadingMore;
+  final MovieModel? movie;
+  final StatusEnum movieStatus;
 
   const MovieState({
     this.isNowPlaying = true,
@@ -18,6 +22,8 @@ class MovieState extends Equatable {
     this.status = StatusEnum.initial,
     this.errorMessage = '',
     this.isLoadingMore = false,
+    this.movie,
+    this.movieStatus = StatusEnum.initial,
   });
 
   List<MoviePreviewModel> get currentMovies =>
@@ -30,6 +36,8 @@ class MovieState extends Equatable {
     StatusEnum? status,
     String? errorMessage,
     bool? isLoadingMore,
+    MovieModel? movie,
+    StatusEnum? movieStatus,
   }) {
     return MovieState(
       isNowPlaying: isNowPlaying ?? this.isNowPlaying,
@@ -38,6 +46,8 @@ class MovieState extends Equatable {
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      movie: movie ?? this.movie,
+      movieStatus: movieStatus ?? this.movieStatus,
     );
   }
 
@@ -49,5 +59,7 @@ class MovieState extends Equatable {
     status,
     errorMessage,
     isLoadingMore,
+    movie,
+    movieStatus,
   ];
 }

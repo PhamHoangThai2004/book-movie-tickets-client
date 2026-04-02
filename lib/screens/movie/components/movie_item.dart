@@ -1,3 +1,4 @@
+import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
 import 'package:client/core/customs/images/image_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
@@ -6,9 +7,9 @@ import 'package:client/core/themes/app_colors.dart';
 import 'package:client/core/utils/date_time_utils.dart';
 import 'package:client/data/model/movie_preview_model.dart';
 import 'package:client/generated/assets.gen.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/common/register_cubit.dart';
 import '../../../core/size_config/size_config.dart';
 
 class MovieItem extends StatelessWidget {
@@ -19,71 +20,74 @@ class MovieItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(Dimens.d16.responsive()),
-            child: ImageCustom(
-              imageUrl: movie.poster,
-              height: Dimens.d267.responsive(),
-              width: Dimens.d191.responsive(),
-              fit: BoxFit.cover,
-              errorWidget: Assets.svgs.icPicture.svg(
-                height: Dimens.d25.responsive(),
-                width: Dimens.d25.responsive(),
-                colorFilter: const ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
+    return CupertinoButtonCustom(
+      onPressed: () => context.movieCubit.getMovieDetail(movie.id),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(Dimens.d16.responsive()),
+              child: ImageCustom(
+                imageUrl: movie.poster,
+                height: Dimens.d267.responsive(),
+                width: Dimens.d191.responsive(),
+                fit: BoxFit.cover,
+                errorWidget: Assets.svgs.icPicture.svg(
+                  height: Dimens.d25.responsive(),
+                  width: Dimens.d25.responsive(),
+                  colorFilter: const ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
+                ),
               ),
             ),
           ),
-        ),
-        VerticalSpacing(of: Dimens.d8.responsive()),
-        Text(
-          movie.title,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: AppTextStyles.style.s16.w700.amberYellowColor,
-        ),
-        VerticalSpacing(of: Dimens.d8.responsive()),
-        if (isNowPlaying) ...[
-          _buildInfoRow(
-            icon: Assets.svgs.icStar.svg(
-              width: Dimens.d16.responsive(),
-              height: Dimens.d16.responsive(),
-              colorFilter: const ColorFilter.mode(AppColors.amberYellow, BlendMode.srcIn),
-            ),
-            text: '${movie.rating} (${movie.reviewCount})',
+          VerticalSpacing(of: Dimens.d8.responsive()),
+          Text(
+            movie.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.style.s16.w700.amberYellowColor,
           ),
+          VerticalSpacing(of: Dimens.d8.responsive()),
+          if (isNowPlaying) ...[
+            _buildInfoRow(
+              icon: Assets.svgs.icStar.svg(
+                width: Dimens.d16.responsive(),
+                height: Dimens.d16.responsive(),
+                colorFilter: const ColorFilter.mode(AppColors.amberYellow, BlendMode.srcIn),
+              ),
+              text: '${movie.rating} (${movie.reviewCount})',
+            ),
+            VerticalSpacing(of: Dimens.d4.responsive()),
+            _buildInfoRow(
+              icon: Assets.svgs.icClock.svg(
+                height: Dimens.d16.responsive(),
+                width: Dimens.d16.responsive(),
+                colorFilter: const ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
+              ),
+              text: DateTimeUtils.convertDuration(movie.duration),
+            ),
+          ] else ...[
+            _buildInfoRow(
+              icon: Assets.svgs.icCalendar.svg(
+                height: Dimens.d16.responsive(),
+                width: Dimens.d16.responsive(),
+                colorFilter: const ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
+              ),
+              text: DateTimeUtils.fromIso8601(movie.releaseDate),
+            ),
+          ],
           VerticalSpacing(of: Dimens.d4.responsive()),
           _buildInfoRow(
-            icon: Assets.svgs.icClock.svg(
+            icon: Assets.svgs.icVideoOutline.svg(
               height: Dimens.d16.responsive(),
               width: Dimens.d16.responsive(),
               colorFilter: const ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
             ),
-            text: _convertDuration(movie.duration),
-          ),
-        ] else ...[
-          _buildInfoRow(
-            icon: Assets.svgs.icCalendar.svg(
-              height: Dimens.d16.responsive(),
-              width: Dimens.d16.responsive(),
-              colorFilter: const ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
-            ),
-            text: DateTimeUtils.fromIso8601(movie.releaseDate),
+            text: movie.genres.take(2).map((e) => e.name).join(', '),
           ),
         ],
-        VerticalSpacing(of: Dimens.d4.responsive()),
-        _buildInfoRow(
-          icon: Assets.svgs.icVideoOutline.svg(
-            height: Dimens.d16.responsive(),
-            width: Dimens.d16.responsive(),
-            colorFilter: const ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
-          ),
-          text: movie.genres.take(2).map((e) => e.name).join(', '),
-        ),
-      ],
+      ),
     );
   }
 
@@ -102,9 +106,5 @@ class MovieItem extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String _convertDuration(int duration) {
-    return '${duration ~/ 60} ${'hours'.tr()} ${duration % 60} ${'minutes'.tr()}';
   }
 }

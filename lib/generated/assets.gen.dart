@@ -81,6 +81,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/ic_picture.svg
   SvgGenImage get icPicture => const SvgGenImage('assets/svgs/ic_picture.svg');
 
+  /// File path: assets/svgs/ic_play.svg
+  SvgGenImage get icPlay => const SvgGenImage('assets/svgs/ic_play.svg');
+
   /// File path: assets/svgs/ic_search.svg
   SvgGenImage get icSearch => const SvgGenImage('assets/svgs/ic_search.svg');
 
@@ -127,6 +130,7 @@ class $AssetsSvgsGen {
     icNotification,
     icPassword,
     icPicture,
+    icPlay,
     icSearch,
     icShoppingCart,
     icStar,
