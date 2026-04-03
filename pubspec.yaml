@@ -23,6 +23,9 @@ dependencies:
   flutter_svg: ^2.2.4
   flutter_keyboard_visibility: ^6.0.0
   pin_code_fields: ^9.1.0
+  cached_network_image: ^3.4.1
+  video_player: ^2.11.1
+  validators: ^3.0.0
 
   # Network
   dio: ^5.9.2
