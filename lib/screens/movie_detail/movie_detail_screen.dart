@@ -1,25 +1,21 @@
 import 'package:client/core/common/register_cubit.dart';
-import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
 import 'package:client/core/customs/buttons/button_custom.dart';
-import 'package:client/core/customs/images/image_custom.dart';
-import 'package:client/core/customs/toasts/toast_custom.dart';
+import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/styles/app_text_styles.dart';
 import 'package:client/core/themes/app_colors.dart';
 import 'package:client/core/themes/app_themes.dart';
-import 'package:client/core/utils/date_time_utils.dart';
 import 'package:client/data/enums/age_rating_enum.dart';
-import 'package:client/generated/assets.gen.dart';
+import 'package:client/screens/movie_detail/components/top_movie_banner.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../core/size_config/size_config.dart';
-import '../../data/enums/status_enum.dart';
-import '../../data/model/cinema_model.dart';
 import '../../data/model/movie_model.dart';
+import 'components/cinemas_section.dart';
+import 'components/trailer_layout.dart';
 import 'cubit/movie_detail_cubit.dart';
 
 class MovieDetailScreen extends StatefulWidget {
@@ -56,64 +52,82 @@ class _MovieDetailState extends State<MovieDetailScreen> {
       backgroundColor: AppColors.black,
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
-      body: Container(
-        decoration: AppThemes.mainBackground,
-        child: SafeArea(
-          top: false,
-          child: Stack(
-            children: [
-              CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(child: _buildTopBanner()),
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
-                    sliver: SliverToBoxAdapter(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          VerticalSpacing(of: Dimens.d16.responsive()),
-                          _buildInfoRow(label: '${'genre'.tr()}:', value: genres),
-                          _buildInfoRow(
-                            label: '${'censorship'.tr()}:',
-                            value: _movie.ageRating.displayName,
+      body: BlocBuilder<MovieDetailCubit, MovieDetailState>(
+        builder: (context, state) {
+          return Container(
+            decoration: AppThemes.mainBackground,
+            child: SafeArea(
+              top: false,
+              child: Stack(
+                children: [
+                  CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: TopMovieBanner(movie: _movie),
+                      ),
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
+                        sliver: SliverToBoxAdapter(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              VerticalSpacing(of: Dimens.d16.responsive()),
+                              _buildInfoRow(label: '${'genre'.tr()}:', value: genres),
+                              _buildInfoRow(
+                                label: '${'censorship'.tr()}:',
+                                value: _movie.ageRating.displayName,
+                              ),
+                              _buildInfoRow(label: '${'language'.tr()}:', value: _movie.languages),
+                              VerticalSpacing(of: Dimens.d8.responsive()),
+                              Text('storyline'.tr(), style: AppTextStyles.style.s24.w700.whiteColor),
+                              VerticalSpacing(of: Dimens.d12.responsive()),
+                              Text(
+                                _movie.description,
+                                style: AppTextStyles.style.s16.w700.whiteColor,
+                                maxLines: _isStoryExpanded ? null : 4,
+                                overflow: _isStoryExpanded
+                                    ? TextOverflow.visible
+                                    : TextOverflow.ellipsis,
+                              ),
+                              VerticalSpacing(of: Dimens.d4.responsive()),
+                              CupertinoButtonCustom(
+                                onPressed: () => setState(() => _isStoryExpanded = !_isStoryExpanded),
+                                child: Text(
+                                  _isStoryExpanded ? 'see_less'.tr() : 'see_more'.tr(),
+                                  style: AppTextStyles.style.s16.w700.amberYellowColor,
+                                ),
+                              ),
+                              VerticalSpacing(of: Dimens.d20.responsive()),
+                              _buildPeopleSection(title: 'director'.tr(), items: directors),
+                              VerticalSpacing(of: Dimens.d20.responsive()),
+                              _buildPeopleSection(title: 'actor'.tr(), items: casts),
+                              VerticalSpacing(of: Dimens.d20.responsive()),
+                              CinemasSection(),
+                              VerticalSpacing(of: Dimens.d100.responsive()),
+                            ],
                           ),
-                          _buildInfoRow(label: '${'language'.tr()}:', value: _movie.languages),
-                          VerticalSpacing(of: Dimens.d8.responsive()),
-                          Text('storyline'.tr(), style: AppTextStyles.style.s24.w700.whiteColor),
-                          VerticalSpacing(of: Dimens.d12.responsive()),
-                          Text(
-                            _movie.description,
-                            style: AppTextStyles.style.s16.w700.whiteColor,
-                            maxLines: _isStoryExpanded ? null : 4,
-                            overflow: _isStoryExpanded
-                                ? TextOverflow.visible
-                                : TextOverflow.ellipsis,
-                          ),
-                          VerticalSpacing(of: Dimens.d4.responsive()),
-                          CupertinoButtonCustom(
-                            onPressed: () => setState(() => _isStoryExpanded = !_isStoryExpanded),
-                            child: Text(
-                              _isStoryExpanded ? 'see_less'.tr() : 'see_more'.tr(),
-                              style: AppTextStyles.style.s16.w700.amberYellowColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Align(alignment: Alignment.bottomCenter, child: _buildBottomAction()),
+                  if (state.isPlaying)
+                    Positioned.fill(
+                      child: Container(
+                          color: Colors.black.withValues(alpha: 0.7),
+                          child: Center(
+                            child: TrailerLayout(
+                              trailerUrl: _movie.trailer ?? '',
+                              onClose: () => context.movieDetailCubit.setIsPlaying(false),
                             ),
                           ),
-                          VerticalSpacing(of: Dimens.d20.responsive()),
-                          _buildPeopleSection(title: 'director'.tr(), items: directors),
-                          VerticalSpacing(of: Dimens.d20.responsive()),
-                          _buildPeopleSection(title: 'actor'.tr(), items: casts),
-                          VerticalSpacing(of: Dimens.d20.responsive()),
-                          _buildCinemasSection(),
-                          VerticalSpacing(of: Dimens.d100.responsive()),
-                        ],
                       ),
                     ),
-                  ),
                 ],
               ),
-              Align(alignment: Alignment.bottomCenter, child: _buildBottomAction()),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -129,183 +143,7 @@ class _MovieDetailState extends State<MovieDetailScreen> {
           SizeConfig.appDefaultPadding,
           Dimens.d12.responsive(),
         ),
-        child: ButtonCustom(title: 'continue'.tr(), onPressed: () {}),
-      ),
-    );
-  }
-
-  Widget _buildTopBanner() {
-    final statusBarTop = MediaQuery.paddingOf(context).top;
-    return SizedBox(
-      height: Dimens.d380.responsive() + statusBarTop,
-      child: Stack(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(Dimens.d24.responsive()),
-              bottomRight: Radius.circular(Dimens.d24.responsive()),
-            ),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                ImageCustom(
-                  imageUrl: _movie.poster,
-                  fit: BoxFit.cover,
-                  errorWidget: Assets.svgs.icPicture.svg(
-                    height: Dimens.d28.responsive(),
-                    width: Dimens.d28.responsive(),
-                    colorFilter: const ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
-                  ),
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Color(0x22000000), Color(0xCC000000)],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            left: Dimens.d16.responsive(),
-            top: statusBarTop + Dimens.d16.responsive(),
-            child: CupertinoButtonCustom(
-              onPressed: context.pop,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.black.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(Dimens.d8.responsive()),
-                ),
-                alignment: Alignment.center,
-                child: Assets.svgs.icArrowLeft.svg(
-                  width: Dimens.d48.responsive(),
-                  height: Dimens.d48.responsive(),
-                  colorFilter: const ColorFilter.mode(AppColors.whiteSmoke, BlendMode.srcIn),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            left: Dimens.d16.responsive(),
-            right: Dimens.d16.responsive(),
-            bottom: Dimens.d8.responsive(),
-            child: _buildInfoCard(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoCard() {
-    return Container(
-      padding: EdgeInsets.all(Dimens.d20.responsive()),
-      decoration: BoxDecoration(
-        color: AppColors.obsidian,
-        borderRadius: BorderRadius.circular(Dimens.d16.responsive()),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            _movie.title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.style.s24.w700.whiteSmokeColor,
-          ),
-          VerticalSpacing(of: Dimens.d4.responsive()),
-          Text(
-            '${DateTimeUtils.convertDuration(_movie.duration)} · ${DateTimeUtils.fromIso8601(_movie.releaseDate)}',
-            style: AppTextStyles.style.s16.w400.silverGrayColor,
-          ),
-          VerticalSpacing(of: Dimens.d12.responsive()),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text('review'.tr(), style: AppTextStyles.style.s16.w700.whiteSmokeColor),
-                        HorizontalSpacing(of: Dimens.d6.responsive()),
-                        Assets.svgs.icStar.svg(
-                          width: Dimens.d16.responsive(),
-                          height: Dimens.d16.responsive(),
-                          colorFilter: const ColorFilter.mode(
-                            AppColors.amberYellow,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                        HorizontalSpacing(of: Dimens.d4.responsive()),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: _movie.rating.toString(),
-                                style: AppTextStyles.style.s16.w700.whiteSmokeColor,
-                              ),
-                              TextSpan(
-                                text: ' (${_movie.reviewCount})',
-                                style: AppTextStyles.style.s14.w400.silverGrayColor,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    VerticalSpacing(of: Dimens.d8.responsive()),
-                    Row(
-                      children: List.generate(5, (index) {
-                        final isFilled = index < _movie.rating;
-                        return Padding(
-                          padding: EdgeInsets.only(right: Dimens.d6.responsive()),
-                          child: Assets.svgs.icStar.svg(
-                            width: Dimens.d22.responsive(),
-                            height: Dimens.d22.responsive(),
-                            colorFilter: ColorFilter.mode(
-                              isFilled ? AppColors.amberYellow : AppColors.slateGray,
-                              BlendMode.srcIn,
-                            ),
-                          ),
-                        );
-                      }),
-                    ),
-                  ],
-                ),
-              ),
-              CupertinoButtonCustom(
-                onPressed: () {
-                  if (_movie.trailer == null) {
-                    ToastCustom.show(message: 'movie_not_trailer'.tr());
-                  }
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Dimens.d12.responsive(),
-                    vertical: Dimens.d8.responsive(),
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.silverGray),
-                    borderRadius: BorderRadius.circular(Dimens.d4.responsive()),
-                  ),
-                  child: Row(
-                    children: [
-                      Assets.svgs.icPlay.svg(),
-                      HorizontalSpacing(of: Dimens.d8.responsive()),
-                      Text(
-                        'watch_trailer'.tr(),
-                        style: AppTextStyles.style.s12.w700.silverGrayColor,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+        child: ButtonCustom(title: 'book_tickets'.tr(), onPressed: () {}),
       ),
     );
   }
@@ -369,75 +207,6 @@ class _MovieDetailState extends State<MovieDetailScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildCinemasSection() {
-    return BlocBuilder<MovieDetailCubit, MovieDetailState>(
-      buildWhen: (previous, current) =>
-          previous.cinemasStatus != current.cinemasStatus || previous.cinemas != current.cinemas,
-      builder: (context, state) {
-        if (state.cinemasStatus == StatusEnum.processing) {
-          return _buildCinemaLoading();
-        }
-
-        if (state.cinemas.isEmpty) {
-          return const SizedBox.shrink();
-        }
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('cinema'.tr(), style: AppTextStyles.style.s24.w700.whiteColor),
-            VerticalSpacing(of: Dimens.d12.responsive()),
-            ...state.cinemas.map(_buildCinemaCard),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildCinemaLoading() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('cinema'.tr(), style: AppTextStyles.style.s24.w700.whiteColor),
-        VerticalSpacing(of: Dimens.d12.responsive()),
-        ...List.generate(2, (_) {
-          return Container(
-            margin: EdgeInsets.only(bottom: Dimens.d12.responsive()),
-            height: Dimens.d74.responsive(),
-            decoration: BoxDecoration(
-              color: AppColors.white.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(Dimens.d12.responsive()),
-            ),
-          );
-        }),
-      ],
-    );
-  }
-
-  Widget _buildCinemaCard(CinemaModel cinema) {
-    return Container(
-      margin: EdgeInsets.only(bottom: Dimens.d12.responsive()),
-      padding: EdgeInsets.all(Dimens.d20.responsive()),
-      decoration: BoxDecoration(
-        color: AppColors.obsidian,
-        borderRadius: BorderRadius.circular(Dimens.d12.responsive()),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(cinema.name, style: AppTextStyles.style.s20.w700.whiteSmokeColor),
-          VerticalSpacing(of: Dimens.d4.responsive()),
-          Text(
-            cinema.address,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.style.s14.w400.silverGrayColor,
-          ),
-        ],
-      ),
     );
   }
 }

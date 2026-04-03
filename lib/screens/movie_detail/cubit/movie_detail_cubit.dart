@@ -18,9 +18,26 @@ class MovieDetailCubit extends Cubit<MovieDetailState> {
     emit(state.copyWith(cinemasStatus: StatusEnum.processing, errorMessage: ''));
     try {
       final response = await movieRepository.getCinemasByMovieId(movieId);
-      emit(state.copyWith(cinemas: response, cinemasStatus: StatusEnum.success, errorMessage: ''));
+      emit(
+        state.copyWith(
+          cinemas: response,
+          cinemasStatus: StatusEnum.success,
+          selectedCinemaId: response.isNotEmpty ? response.first.id : null,
+        ),
+      );
     } on ApiException catch (e) {
       emit(state.copyWith(cinemasStatus: StatusEnum.failure, errorMessage: e.errorMessage));
     }
+  }
+
+  void selectCinema(String cinemaId) {
+    if (!state.cinemas.any((cinema) => cinema.id == cinemaId)) {
+      return;
+    }
+    emit(state.copyWith(selectedCinemaId: cinemaId));
+  }
+
+  void setIsPlaying(bool isPlaying) {
+    emit(state.copyWith(isPlaying: isPlaying));
   }
 }

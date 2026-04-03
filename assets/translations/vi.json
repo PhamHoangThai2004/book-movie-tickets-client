@@ -86,5 +86,6 @@
   "popular_all_ages": "Phổ biến với mọi lứa tuổi",
   "children_under_13_with_parent": "Dành cho trẻ em dưới 13 tuổi với điều kiện xem cùng cha mẹ",
   "audiences_under_X_years_old": "Cấm khán giả dưới {age} tuổi",
-  "movie_not_trailer": "Bộ phim này chưa có trailer"
+  "movie_not_trailer": "Bộ phim này chưa có trailer",
+  "book_tickets": "Đặt vé"
 }
