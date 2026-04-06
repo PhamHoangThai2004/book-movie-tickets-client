@@ -56,7 +56,7 @@ class _MovieState extends State<MovieScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.black,
+      backgroundColor: AppColors.warmBlack,
       body: Container(
         decoration: AppThemes.mainBackground,
         child: SafeArea(

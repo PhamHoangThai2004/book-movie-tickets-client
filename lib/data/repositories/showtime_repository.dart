@@ -1,0 +1,41 @@
+import 'package:client/data/remote/services/showtime_service.dart';
+import 'package:injectable/injectable.dart';
+
+import '../model/showtime_model.dart';
+import '../model/showtime_preview_model.dart';
+import '../network/exceptions/api_exception.dart';
+import '../remote/requests/showtime_request.dart';
+
+abstract class ShowtimeRepository {
+  Future<List<ShowtimePreviewModel>> getShowtimes(ShowtimeRequest request);
+
+  Future<ShowtimeModel> getShowtimeById(String id);
+}
+
+@Injectable(as: ShowtimeRepository)
+class ShowtimeRepositoryImpl implements ShowtimeRepository {
+  final ShowtimeService _showtimeService;
+
+  ShowtimeRepositoryImpl({required ShowtimeService showtimeService})
+    : _showtimeService = showtimeService;
+
+  @override
+  Future<ShowtimeModel> getShowtimeById(String id) async {
+   try {
+     final response = await _showtimeService.getShowtimeById(id);
+     return response;
+   } catch (e) {
+     throw ApiException.error(e);
+   }
+  }
+
+  @override
+  Future<List<ShowtimePreviewModel>> getShowtimes(ShowtimeRequest request) async {
+    try {
+      final response = await _showtimeService.getShowtimes(request);
+      return response;
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+}

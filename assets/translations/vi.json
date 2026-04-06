@@ -87,5 +87,8 @@
   "children_under_13_with_parent": "Dành cho trẻ em dưới 13 tuổi với điều kiện xem cùng cha mẹ",
   "audiences_under_X_years_old": "Cấm khán giả dưới {age} tuổi",
   "movie_not_trailer": "Bộ phim này chưa có trailer",
-  "book_tickets": "Đặt vé"
+  "book_tickets": "Đặt vé",
+  "pay": "Thanh toán",
+  "total": "Tổng cộng",
+  "select_showtime": "Chọn suất chiếu"
 }

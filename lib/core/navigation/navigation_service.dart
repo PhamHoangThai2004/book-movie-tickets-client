@@ -20,6 +20,8 @@ import 'package:go_router/go_router.dart';
 import 'package:bot_toast/bot_toast.dart';
 
 import '../../data/model/movie_model.dart';
+import '../../screens/book_tickets/book_tickets_screen.dart';
+import '../../screens/book_tickets/cubit/book_tickets_cubit.dart';
 import '../../screens/dashboard/dashboard_screen.dart';
 import '../../screens/movie/cubit/movie_cubit.dart';
 import '../../screens/movie_detail/cubit/movie_detail_cubit.dart';
@@ -58,6 +60,8 @@ class NavigationService {
   static String get changePassword => '/change-password';
 
   static String get movieDetail => '/movie-detail';
+
+  static String get bookTickets => '/book-tickets';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -237,6 +241,32 @@ class NavigationService {
             child: BlocProvider(
               create: (context) => MovieDetailCubit(movieRepository: getIt()),
               child: MovieDetailScreen(movie: movie),
+            ),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
+      /// bookTicketsScreen
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: bookTickets,
+        path: bookTickets,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (context) => BookTicketsCubit(),
+              child: BookTicketsScreen(
+                movieId: "d",
+                movieTitle: "d",
+                cinemaName: "d",
+                pricePerSeat: 100000,
+              ),
             ),
             transitionDuration: const Duration(milliseconds: 300),
             reverseTransitionDuration: const Duration(milliseconds: 300),
