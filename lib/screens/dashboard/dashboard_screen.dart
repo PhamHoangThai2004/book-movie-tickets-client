@@ -23,7 +23,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardState extends State<DashboardScreen> {
-  int currentId = 0;
 
   @override
   void initState() {
@@ -74,7 +73,7 @@ class _DashboardState extends State<DashboardScreen> {
 
               return NavigationBarItem(
                 type: item,
-                isSelected: item.index == currentId,
+                isSelected: item.index ==  widget.navigationShell.currentIndex,
                 onTap: () => _goToTab(item.index),
               );
             }).toList(),
@@ -96,6 +95,5 @@ class _DashboardState extends State<DashboardScreen> {
       index,
       initialLocation: index == widget.navigationShell.currentIndex,
     );
-    currentId = index;
   }
 }
