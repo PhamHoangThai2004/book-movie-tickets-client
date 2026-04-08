@@ -257,16 +257,16 @@ class NavigationService {
         name: bookTickets,
         path: bookTickets,
         pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final movie = extra['movie'] as MovieModel;
+          final cinemaId = extra['cinemaId'] as String;
+
           return CustomTransitionPage(
             key: state.pageKey,
             child: BlocProvider(
-              create: (context) => BookTicketsCubit(),
-              child: BookTicketsScreen(
-                movieId: "d",
-                movieTitle: "d",
-                cinemaName: "d",
-                pricePerSeat: 100000,
-              ),
+              create: (context) =>
+                  BookTicketsCubit(showtimeRepository: getIt(), movie: movie, cinemaId: cinemaId),
+              child: BookTicketsScreen(),
             ),
             transitionDuration: const Duration(milliseconds: 300),
             reverseTransitionDuration: const Duration(milliseconds: 300),

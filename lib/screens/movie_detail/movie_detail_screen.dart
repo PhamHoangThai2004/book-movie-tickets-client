@@ -1,6 +1,7 @@
 import 'package:client/core/common/register_cubit.dart';
 import 'package:client/core/customs/buttons/button_custom.dart';
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
+import 'package:client/core/customs/toasts/toast_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/styles/app_text_styles.dart';
@@ -148,15 +149,27 @@ class _MovieDetailState extends State<MovieDetailScreen> {
           SizeConfig.appDefaultPadding,
           Dimens.d12.responsive(),
         ),
-        child: ButtonCustom(
-          title: 'book_tickets'.tr(),
-          onPressed: () {
-            final loggedIn = AppUtils.isLoggedIn();
-            if (!loggedIn) {
-              AppUtils.requestLogin(context: context);
-              return;
-            }
-            context.pushNamed(NavigationService.bookTickets);
+        child: BlocBuilder<MovieDetailCubit, MovieDetailState>(
+          buildWhen: (previous, current) => current.selectedCinemaId != previous.selectedCinemaId,
+          builder: (context, state) {
+            return ButtonCustom(
+              title: 'book_tickets'.tr(),
+              onPressed: () {
+                final loggedIn = AppUtils.isLoggedIn();
+                if (!loggedIn) {
+                  AppUtils.requestLogin(context: context);
+                  return;
+                }
+                if (state.selectedCinemaId != null) {
+                  context.pushNamed(
+                    NavigationService.bookTickets,
+                    extra: {"movie": _movie, "cinemaId": state.selectedCinemaId},
+                  );
+                } else {
+                  ToastCustom.show(message: 'movie_not_showtimes'.tr());
+                }
+              },
+            );
           },
         ),
       ),

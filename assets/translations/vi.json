@@ -90,5 +90,13 @@
   "book_tickets": "Đặt vé",
   "pay": "Thanh toán",
   "total": "Tổng cộng",
-  "select_showtime": "Chọn suất chiếu"
+  "select_showtime": "Chọn suất chiếu",
+  "movie_not_showtimes": "Bộ phim này chưa có suất chiếu nào",
+  "showtime_not_found": "Không tìm thấy suất chiếu",
+  "find_day_have_showtimes": "Tìm ngày có suất chiếu",
+  "standard": "Thường",
+  "vip": "Vip",
+  "booked": "Đã đặt",
+  "selected": "Đã chọn",
+  "locked": "Bị khoá"
 }

@@ -10,14 +10,14 @@ import 'package:flutter/material.dart';
 
 class BookingSummary extends StatefulWidget {
   final int selectedSeatsCount;
-  final int pricePerSeat;
+  final int totalPrice;
   final VoidCallback onBookPressed;
   final bool isLoading;
 
   const BookingSummary({
     super.key,
     required this.selectedSeatsCount,
-    required this.pricePerSeat,
+    required this.totalPrice,
     required this.onBookPressed,
     this.isLoading = false,
   });
@@ -27,8 +27,6 @@ class BookingSummary extends StatefulWidget {
 }
 
 class _BookingSummaryState extends State<BookingSummary> {
-  int get totalPrice => widget.selectedSeatsCount * widget.pricePerSeat;
-
   @override
   Widget build(BuildContext context) {
     final double systemPaddingBottom = MediaQuery.of(context).padding.bottom;
@@ -50,7 +48,7 @@ class _BookingSummaryState extends State<BookingSummary> {
                   children: [
                     Text('total'.tr(), style: AppTextStyles.style.s16.w400.whiteSmokeColor),
                     Text(
-                      StringUtils.formatVND(totalPrice),
+                      StringUtils.formatVND(widget.totalPrice),
                       style: AppTextStyles.style.s24.w700.amberYellowColor,
                     ),
                   ],

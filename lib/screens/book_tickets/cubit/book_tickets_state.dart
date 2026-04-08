@@ -1,59 +1,77 @@
 part of 'book_tickets_cubit.dart';
 
-enum SeatType { available, reserved, selected }
-
-class SeatState {
-  final String id;
-  final SeatType type;
-
-  SeatState({required this.id, required this.type});
-
-  SeatState copyWith({String? id, SeatType? type}) {
-    return SeatState(
-      id: id ?? this.id,
-      type: type ?? this.type,
-    );
-  }
-}
-
 class BookTicketsState {
-  final List<SeatState> seats;
+  final List<ShowtimePreviewModel> showtimes;
+  final ShowtimeModel? showtime;
   final List<String> selectedSeatIds;
   final DateTime? selectedDate;
-  final String? selectedShowtime;
+  final String? selectedShowtimeId;
   final StatusEnum status;
+  final StatusEnum loadShowtime;
   final String errorMessage;
 
   const BookTicketsState({
-    this.seats = const [],
+    this.showtimes = const [],
+    this.showtime,
+    this.loadShowtime = StatusEnum.initial,
     this.selectedSeatIds = const [],
     this.selectedDate,
-    this.selectedShowtime,
+    this.selectedShowtimeId,
     this.status = StatusEnum.initial,
     this.errorMessage = '',
   });
 
   BookTicketsState copyWith({
-    List<SeatState>? seats,
+    List<ShowtimePreviewModel>? showtimes,
+    ShowtimeModel? showtime,
+    StatusEnum? loadShowtime,
     List<String>? selectedSeatIds,
     DateTime? selectedDate,
-    String? selectedShowtime,
+    String? selectedShowtimeId,
     StatusEnum? status,
     String? errorMessage,
   }) {
     return BookTicketsState(
-      seats: seats ?? this.seats,
+      showtimes: showtimes ?? this.showtimes,
+      showtime: showtime ?? this.showtime,
+      loadShowtime: loadShowtime ?? this.loadShowtime,
       selectedSeatIds: selectedSeatIds ?? this.selectedSeatIds,
       selectedDate: selectedDate ?? this.selectedDate,
-      selectedShowtime: selectedShowtime ?? this.selectedShowtime,
+      selectedShowtimeId: selectedShowtimeId ?? this.selectedShowtimeId,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
-  double calculateTotalPrice({required double pricePerSeat}) {
-    return selectedSeatIds.length * pricePerSeat;
+  BookTicketsState setSelectedShowtime(String? showtimeId) {
+    return BookTicketsState(
+      showtimes: showtimes,
+      showtime: showtimeId != null ? showtime : null,
+      loadShowtime: loadShowtime,
+      selectedSeatIds: showtimeId != null ? selectedSeatIds : [],
+      selectedDate: selectedDate,
+      selectedShowtimeId: showtimeId,
+      status: status,
+      errorMessage: errorMessage,
+    );
+  }
+
+  double calculateTotalPrice() {
+    if (showtime == null) return 0;
+    double total = 0;
+    for (final seatId in selectedSeatIds) {
+      final seat = showtime!.seats.firstWhere(
+        (s) => s.id == seatId,
+        orElse: () => Seat(
+          id: '',
+          seatCode: '',
+          seatType: SeatTypeEnum.normal,
+          price: 0,
+          status: SeatStatusEnum.available,
+        ),
+      );
+      total += seat.price;
+    }
+    return total;
   }
 }
-
-

@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 enum SeatTypeEnum { normal, vip }
 
 extension SeatTypeEnumX on SeatTypeEnum {
@@ -13,6 +15,15 @@ extension SeatTypeEnumX on SeatTypeEnum {
         return SeatTypeEnum.vip;
       default:
         throw Exception('Invalid seat type: $seatType');
+    }
+  }
+
+  String get name {
+    switch (this) {
+      case SeatTypeEnum.normal:
+        return 'standard'.tr();
+      case SeatTypeEnum.vip:
+        return 'vip'.tr();
     }
   }
 }
