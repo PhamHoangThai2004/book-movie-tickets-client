@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/date_time_utils.dart';
+import '../../../data/model/booking_preview_model.dart';
 import '../../../data/model/movie_model.dart';
 import '../../../data/model/showtime_model.dart';
 import '../../../data/network/exceptions/api_exception.dart';
@@ -63,7 +64,7 @@ class BookTicketsCubit extends Cubit<BookTicketsState> {
     try {
       final request = BookingRequest(showtimeId: state.showtime!.id, seatId: seatId);
       final response = await showtimeRepository.pickSeat(request);
-      emit(state.copyWith(totalAmount: response));
+      emit(state.copyWith(booking: response));
     } on ApiException catch (e) {
       _reloadShowtime();
       emit(state.copyWith(seatStatus: StatusEnum.failure, errorMessage: e.errorMessage));
@@ -77,7 +78,7 @@ class BookTicketsCubit extends Cubit<BookTicketsState> {
     try {
       final request = BookingRequest(showtimeId: state.showtime!.id, seatId: seatId);
       final response = await showtimeRepository.unpickSeat(request);
-      emit(state.copyWith(totalAmount: response));
+      emit(state.copyWith(booking: response));
     } on ApiException catch (e) {
       _reloadShowtime();
       emit(state.copyWith(seatStatus: StatusEnum.failure, errorMessage: e.errorMessage));

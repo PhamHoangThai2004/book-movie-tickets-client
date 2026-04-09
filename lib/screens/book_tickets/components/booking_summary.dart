@@ -32,7 +32,7 @@ class _BookingSummaryState extends State<BookingSummary> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
             child: BlocBuilder<BookTicketsCubit, BookTicketsState>(
-              buildWhen: (p, c) => p.totalAmount != c.totalAmount,
+              buildWhen: (p, c) => p.booking != c.booking,
               builder: (context, state) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,7 +43,7 @@ class _BookingSummaryState extends State<BookingSummary> {
                       children: [
                         Text('total'.tr(), style: AppTextStyles.style.s16.w400.whiteSmokeColor),
                         Text(
-                          StringUtils.formatVND(state.totalAmount),
+                          StringUtils.formatVND(state.booking?.totalAmount ?? 0),
                           style: AppTextStyles.style.s24.w700.amberYellowColor,
                         ),
                       ],
