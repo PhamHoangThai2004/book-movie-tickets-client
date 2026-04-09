@@ -21,4 +21,6 @@ final class AppColors {
   static const Color mineShaft = Color(0xFF383838);
   static const Color obsidian = Color(0xFF1C1C1C);
   static const Color slateGray = Color(0xFF575757);
+  static const Color graphite = Color(0xFF1D1D1D);
+  static const Color carbonGray = Color(0xFF3B3B3B);
 }

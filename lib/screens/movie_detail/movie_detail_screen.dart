@@ -1,6 +1,7 @@
 import 'package:client/core/common/register_cubit.dart';
 import 'package:client/core/customs/buttons/button_custom.dart';
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
+import 'package:client/core/customs/toasts/toast_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/styles/app_text_styles.dart';
@@ -11,8 +12,11 @@ import 'package:client/screens/movie_detail/components/top_movie_banner.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../core/navigation/navigation_service.dart';
 import '../../core/size_config/size_config.dart';
+import '../../core/utils/app_utils.dart';
 import '../../data/model/movie_model.dart';
 import 'components/cinemas_section.dart';
 import 'components/trailer_layout.dart';
@@ -49,7 +53,7 @@ class _MovieDetailState extends State<MovieDetailScreen> {
     final genres = _movie.genres.map((item) => item.name).join(', ');
 
     return Scaffold(
-      backgroundColor: AppColors.black,
+      backgroundColor: AppColors.warmBlack,
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       body: BlocBuilder<MovieDetailCubit, MovieDetailState>(
@@ -62,9 +66,7 @@ class _MovieDetailState extends State<MovieDetailScreen> {
                 children: [
                   CustomScrollView(
                     slivers: [
-                      SliverToBoxAdapter(
-                        child: TopMovieBanner(movie: _movie),
-                      ),
+                      SliverToBoxAdapter(child: TopMovieBanner(movie: _movie)),
                       SliverPadding(
                         padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
                         sliver: SliverToBoxAdapter(
@@ -79,7 +81,10 @@ class _MovieDetailState extends State<MovieDetailScreen> {
                               ),
                               _buildInfoRow(label: '${'language'.tr()}:', value: _movie.languages),
                               VerticalSpacing(of: Dimens.d8.responsive()),
-                              Text('storyline'.tr(), style: AppTextStyles.style.s24.w700.whiteColor),
+                              Text(
+                                'storyline'.tr(),
+                                style: AppTextStyles.style.s24.w700.whiteColor,
+                              ),
                               VerticalSpacing(of: Dimens.d12.responsive()),
                               Text(
                                 _movie.description,
@@ -91,7 +96,8 @@ class _MovieDetailState extends State<MovieDetailScreen> {
                               ),
                               VerticalSpacing(of: Dimens.d4.responsive()),
                               CupertinoButtonCustom(
-                                onPressed: () => setState(() => _isStoryExpanded = !_isStoryExpanded),
+                                onPressed: () =>
+                                    setState(() => _isStoryExpanded = !_isStoryExpanded),
                                 child: Text(
                                   _isStoryExpanded ? 'see_less'.tr() : 'see_more'.tr(),
                                   style: AppTextStyles.style.s16.w700.amberYellowColor,
@@ -114,13 +120,13 @@ class _MovieDetailState extends State<MovieDetailScreen> {
                   if (state.isPlaying)
                     Positioned.fill(
                       child: Container(
-                          color: Colors.black.withValues(alpha: 0.7),
-                          child: Center(
-                            child: TrailerLayout(
-                              trailerUrl: _movie.trailer ?? '',
-                              onClose: () => context.movieDetailCubit.setIsPlaying(false),
-                            ),
+                        color: Colors.black.withValues(alpha: 0.7),
+                        child: Center(
+                          child: TrailerLayout(
+                            trailerUrl: _movie.trailer ?? '',
+                            onClose: () => context.movieDetailCubit.setIsPlaying(false),
                           ),
+                        ),
                       ),
                     ),
                 ],
@@ -143,7 +149,29 @@ class _MovieDetailState extends State<MovieDetailScreen> {
           SizeConfig.appDefaultPadding,
           Dimens.d12.responsive(),
         ),
-        child: ButtonCustom(title: 'book_tickets'.tr(), onPressed: () {}),
+        child: BlocBuilder<MovieDetailCubit, MovieDetailState>(
+          buildWhen: (previous, current) => current.selectedCinemaId != previous.selectedCinemaId,
+          builder: (context, state) {
+            return ButtonCustom(
+              title: 'book_tickets'.tr(),
+              onPressed: () {
+                final loggedIn = AppUtils.isLoggedIn();
+                if (!loggedIn) {
+                  AppUtils.requestLogin(context: context);
+                  return;
+                }
+                if (state.selectedCinemaId != null) {
+                  context.pushNamed(
+                    NavigationService.bookTickets,
+                    extra: {"movie": _movie, "cinemaId": state.selectedCinemaId},
+                  );
+                } else {
+                  ToastCustom.show(message: 'movie_not_showtimes'.tr());
+                }
+              },
+            );
+          },
+        ),
       ),
     );
   }

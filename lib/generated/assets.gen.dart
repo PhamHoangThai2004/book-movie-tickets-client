@@ -23,8 +23,11 @@ class $AssetsImagesGen {
   /// File path: assets/images/img_name_app.png
   AssetGenImage get imgNameApp => const AssetGenImage('assets/images/img_name_app.png');
 
+  /// File path: assets/images/img_projector_range.png
+  AssetGenImage get imgProjectorRange => const AssetGenImage('assets/images/img_projector_range.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [appLogo, imgNameApp];
+  List<AssetGenImage> get values => [appLogo, imgNameApp, imgProjectorRange];
 }
 
 class $AssetsSvgsGen {
