@@ -4,12 +4,14 @@ import 'package:client/core/themes/app_colors.dart';
 import 'package:client/data/enums/seat_type_enum.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-enum SeatStatusEnum { available, reserved, booked, disabled }
+enum SeatStatusEnum { available, reserved, selected, booked, disabled }
 
 extension SeatStatusEnumX on SeatStatusEnum {
   bool get isAvailable => this == SeatStatusEnum.available;
 
   bool get isReserved => this == SeatStatusEnum.reserved;
+
+  bool get isSelected => this == SeatStatusEnum.selected;
 
   bool get isBooked => this == SeatStatusEnum.booked;
 
@@ -21,6 +23,8 @@ extension SeatStatusEnumX on SeatStatusEnum {
         return SeatStatusEnum.available;
       case 'reserved':
         return SeatStatusEnum.reserved;
+      case 'selected':
+        return SeatStatusEnum.selected;
       case 'booked':
         return SeatStatusEnum.booked;
       case 'disabled':
@@ -36,6 +40,8 @@ extension SeatStatusEnumX on SeatStatusEnum {
         if (seatType.isNormal) return seatType.name;
         return seatType.name;
       case SeatStatusEnum.reserved:
+        return 'booked'.tr();
+      case SeatStatusEnum.selected:
         return 'selected'.tr();
       case SeatStatusEnum.booked:
         return 'booked'.tr();
@@ -50,6 +56,8 @@ extension SeatStatusEnumX on SeatStatusEnum {
         if (seatType.isNormal) return AppColors.obsidian;
         return AppColors.amberYellow.withValues(alpha: 0.1);
       case SeatStatusEnum.reserved:
+        return AppColors.amberYellow.withValues(alpha: 0.5);
+      case SeatStatusEnum.selected:
         return AppColors.amberYellow;
       case SeatStatusEnum.booked:
         return AppColors.amberYellow.withValues(alpha: 0.5);
@@ -64,6 +72,8 @@ extension SeatStatusEnumX on SeatStatusEnum {
         if (seatType.isNormal) return AppColors.silverGray;
         return AppColors.amberYellow;
       case SeatStatusEnum.reserved:
+        return AppColors.black;
+      case SeatStatusEnum.selected:
         return AppColors.black;
       case SeatStatusEnum.booked:
         return AppColors.amberYellow;

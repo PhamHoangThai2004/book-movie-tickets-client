@@ -28,6 +28,7 @@ class _BookTicketsScreenState extends State<BookTicketsScreen> {
   @override
   void initState() {
     super.initState();
+    context.bookTicketsCubit.removePendingBooking();
     context.bookTicketsCubit.fetchShowtimes();
   }
 
@@ -96,18 +97,7 @@ class _BookTicketsScreenState extends State<BookTicketsScreen> {
         ),
       ),
       extendBody: true,
-      bottomNavigationBar: BlocBuilder<BookTicketsCubit, BookTicketsState>(
-        builder: (context, state) {
-          return BookingSummary(
-            selectedSeatsCount: state.selectedSeatIds.length,
-            totalPrice: context.read<BookTicketsCubit>().getTotalPrice().toInt(),
-            isLoading: state.status.isProcessing,
-            onBookPressed: () {
-              context.read<BookTicketsCubit>().confirmBooking();
-            },
-          );
-        },
-      ),
+      bottomNavigationBar: BookingSummary(),
     );
   }
 }

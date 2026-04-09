@@ -1,13 +1,13 @@
 import 'package:client/data/enums/status_enum.dart';
 import 'package:client/data/model/showtime_preview_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/date_time_utils.dart';
-import '../../../data/enums/seat_status_enum.dart';
-import '../../../data/enums/seat_type_enum.dart';
 import '../../../data/model/movie_model.dart';
 import '../../../data/model/showtime_model.dart';
 import '../../../data/network/exceptions/api_exception.dart';
+import '../../../data/remote/requests/booking_request.dart';
 import '../../../data/remote/requests/showtime_request.dart';
 import '../../../data/repositories/showtime_repository.dart';
 
@@ -57,70 +57,59 @@ class BookTicketsCubit extends Cubit<BookTicketsState> {
     }
   }
 
-  void selectSeat(String seatId) {
+  Future<void> _pickSeat(String seatId) async {
     if (state.showtime == null) return;
-
-    final seatIndex = state.showtime!.seats.indexWhere((s) => s.id == seatId);
-    if (seatIndex == -1) return;
-
-    final seat = state.showtime!.seats[seatIndex];
-
-    if (seat.status.isReserved || seat.status.isBooked) {
-      return;
+    try {
+      final request = BookingRequest(showtimeId: state.showtime!.id, seatId: seatId);
+      final response = await showtimeRepository.pickSeat(request);
+      emit(state.copyWith(totalAmount: response));
+    } on ApiException catch (e) {
+      debugPrint(e.errorMessage);
     }
-
-    List<String> updatedSelectedIds = List.from(state.selectedSeatIds);
-    List<Seat> updatedSeats = List.from(state.showtime!.seats);
-
-    if (updatedSelectedIds.contains(seatId)) {
-      updatedSelectedIds.remove(seatId);
-      updatedSeats[seatIndex] = seat.copyWith(status: SeatStatusEnum.available);
-    } else {
-      updatedSelectedIds.add(seatId);
-      updatedSeats[seatIndex] = seat.copyWith(status: SeatStatusEnum.reserved);
-    }
-
-    emit(
-      state.copyWith(
-        selectedSeatIds: updatedSelectedIds,
-        showtime: state.showtime!.copyWith(seats: updatedSeats),
-      ),
-    );
   }
 
-  void selectDate(DateTime date) {
+  Future<void> _unpickSeat(String seatId) async {
+    if (state.showtime == null) return;
+    try {
+      final request = BookingRequest(showtimeId: state.showtime!.id, seatId: seatId);
+      final response = await showtimeRepository.unpickSeat(request);
+      emit(state.copyWith(totalAmount: response));
+    } on ApiException catch (e) {
+      debugPrint(e.errorMessage);
+    }
+  }
+
+  void toggleSeat(String seatId, bool isSelected) async {
+    if (isSelected) {
+      await _unpickSeat(seatId);
+    } else {
+      await _pickSeat(seatId);
+    }
+    try {
+      final response = await showtimeRepository.getShowtimeById(state.selectedShowtimeId!);
+      emit(state.copyWith(showtime: response));
+    } on ApiException catch (e) {
+      debugPrint(e.errorMessage);
+    }
+  }
+
+  void selectDate(DateTime date) async {
     emit(state.copyWith(selectedDate: date));
+    await removePendingBooking();
     fetchShowtimes();
   }
 
-  void selectShowtime(String showtimeId) {
+  void selectShowtime(String showtimeId) async {
     emit(state.copyWith(selectedShowtimeId: showtimeId));
+    await removePendingBooking();
     fetchShowtimeDetail();
   }
 
-  double getTotalPrice() {
-    return state.calculateTotalPrice();
-  }
-
-  Future<void> confirmBooking() async {
-    if (state.selectedSeatIds.isEmpty ||
-        state.selectedDate == null ||
-        state.selectedShowtimeId == null) {
-      emit(
-        state.copyWith(
-          status: StatusEnum.failure,
-          errorMessage: 'Please select seats, date and showtime',
-        ),
-      );
-      return;
-    }
-
-    emit(state.copyWith(status: StatusEnum.processing));
+  Future<void> removePendingBooking() async {
     try {
-      await Future.delayed(const Duration(seconds: 1));
-      emit(state.copyWith(status: StatusEnum.success));
-    } catch (e) {
-      emit(state.copyWith(status: StatusEnum.failure, errorMessage: e.toString()));
+      await showtimeRepository.removePendingBooking();
+    } on ApiException catch (e) {
+      debugPrint(e.errorMessage);
     }
   }
 }

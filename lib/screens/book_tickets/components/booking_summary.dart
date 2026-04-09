@@ -7,20 +7,12 @@ import 'package:client/core/themes/app_colors.dart';
 import 'package:client/core/utils/string_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../cubit/book_tickets_cubit.dart';
 
 class BookingSummary extends StatefulWidget {
-  final int selectedSeatsCount;
-  final int totalPrice;
-  final VoidCallback onBookPressed;
-  final bool isLoading;
-
-  const BookingSummary({
-    super.key,
-    required this.selectedSeatsCount,
-    required this.totalPrice,
-    required this.onBookPressed,
-    this.isLoading = false,
-  });
+  const BookingSummary({super.key});
 
   @override
   State<StatefulWidget> createState() => _BookingSummaryState();
@@ -39,26 +31,31 @@ class _BookingSummaryState extends State<BookingSummary> {
           Divider(color: AppColors.darkCharcoal, thickness: Dimens.d1.responsive()),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: Dimens.d4.responsive(),
+            child: BlocBuilder<BookTicketsCubit, BookTicketsState>(
+              buildWhen: (p, c) => p.totalAmount != c.totalAmount,
+              builder: (context, state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('total'.tr(), style: AppTextStyles.style.s16.w400.whiteSmokeColor),
-                    Text(
-                      StringUtils.formatVND(widget.totalPrice),
-                      style: AppTextStyles.style.s24.w700.amberYellowColor,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: Dimens.d4.responsive(),
+                      children: [
+                        Text('total'.tr(), style: AppTextStyles.style.s16.w400.whiteSmokeColor),
+                        Text(
+                          StringUtils.formatVND(state.totalAmount),
+                          style: AppTextStyles.style.s24.w700.amberYellowColor,
+                        ),
+                      ],
+                    ),
+                    ButtonCustom(
+                      title: 'pay'.tr(),
+                      onPressed: () {},
+                      width: Dimens.d191.responsive(),
                     ),
                   ],
-                ),
-                ButtonCustom(
-                  title: 'pay'.tr(),
-                  onPressed: widget.onBookPressed,
-                  width: Dimens.d191.responsive(),
-                ),
-              ],
+                );
+              }
             ),
           ),
         ],

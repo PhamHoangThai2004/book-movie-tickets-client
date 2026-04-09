@@ -4,12 +4,19 @@ import 'package:injectable/injectable.dart';
 import '../model/showtime_model.dart';
 import '../model/showtime_preview_model.dart';
 import '../network/exceptions/api_exception.dart';
+import '../remote/requests/booking_request.dart';
 import '../remote/requests/showtime_request.dart';
 
 abstract class ShowtimeRepository {
   Future<List<ShowtimePreviewModel>> getShowtimes(ShowtimeRequest request);
 
   Future<ShowtimeModel> getShowtimeById(String id);
+
+  Future<int> pickSeat(BookingRequest request);
+
+  Future<int> unpickSeat(BookingRequest request);
+
+  Future<void> removePendingBooking();
 }
 
 @Injectable(as: ShowtimeRepository)
@@ -21,12 +28,12 @@ class ShowtimeRepositoryImpl implements ShowtimeRepository {
 
   @override
   Future<ShowtimeModel> getShowtimeById(String id) async {
-   try {
-     final response = await _showtimeService.getShowtimeById(id);
-     return response;
-   } catch (e) {
-     throw ApiException.error(e);
-   }
+    try {
+      final response = await _showtimeService.getShowtimeById(id);
+      return response;
+    } catch (e) {
+      throw ApiException.error(e);
+    }
   }
 
   @override
@@ -34,6 +41,35 @@ class ShowtimeRepositoryImpl implements ShowtimeRepository {
     try {
       final response = await _showtimeService.getShowtimes(request);
       return response;
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+
+  @override
+  Future<int> pickSeat(BookingRequest request) async {
+    try {
+      final response = await _showtimeService.pickSeat(request);
+      return response;
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+
+  @override
+  Future<int> unpickSeat(BookingRequest request) async {
+    try {
+      final response = await _showtimeService.unpickSeat(request);
+      return response;
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+
+  @override
+  Future<void> removePendingBooking() async {
+    try {
+      await _showtimeService.removePendingBooking();
     } catch (e) {
       throw ApiException.error(e);
     }

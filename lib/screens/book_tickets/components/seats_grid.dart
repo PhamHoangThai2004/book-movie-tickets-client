@@ -47,7 +47,7 @@ class SeatsGrid extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: BlocBuilder<BookTicketsCubit, BookTicketsState>(
-        buildWhen: (p, c) => p.showtime != c.showtime || p.selectedSeatIds != c.selectedSeatIds,
+        buildWhen: (p, c) => p.showtime != c.showtime,
         builder: (context, state) {
           final seats = state.showtime?.seats ?? [];
           const int seatsPerRow = 10;
@@ -65,12 +65,12 @@ class SeatsGrid extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: rowSeats.map((seat) {
-                    final isSelected = state.selectedSeatIds.contains(seat.id);
                     return _buildSeatButton(
                       context,
                       seat: seat,
-                      isSelected: isSelected,
-                      onTap: () => context.bookTicketsCubit.selectSeat(seat.id),
+                      isSelected: seat.status.isSelected,
+                      onTap: () =>
+                          context.bookTicketsCubit.toggleSeat(seat.id, seat.status.isSelected),
                     );
                   }).toList(),
                 ),
@@ -110,10 +110,18 @@ class SeatsGrid extends StatelessWidget {
           borderRadius: BorderRadius.circular(Dimens.d6.responsive()),
         ),
         alignment: Alignment.center,
-        child: Text(
-          seat.seatCode,
-          style: AppTextStyles.style.s12.w400.copyWith(color: seat.status.color(seat.seatType)),
-        ),
+        child: seat.status.isBooked || seat.status.isReserved
+            ? Assets.svgs.icLock.svg(
+                width: Dimens.d16.responsive(),
+                height: Dimens.d16.responsive(),
+                colorFilter: ColorFilter.mode(seat.status.color(seat.seatType), BlendMode.srcIn),
+              )
+            : Text(
+                seat.seatCode,
+                style: AppTextStyles.style.s12.w400.copyWith(
+                  color: seat.status.color(seat.seatType),
+                ),
+              ),
       ),
     );
   }
@@ -133,8 +141,8 @@ class SeatsGrid extends StatelessWidget {
         ),
         HorizontalSpacing(of: Dimens.d24.responsive()),
         _buildLegendItem(
-          label: SeatStatusEnum.reserved.name(SeatTypeEnum.normal),
-          color: SeatStatusEnum.reserved.background(SeatTypeEnum.normal),
+          label: SeatStatusEnum.selected.name(SeatTypeEnum.normal),
+          color: SeatStatusEnum.selected.background(SeatTypeEnum.normal),
         ),
         HorizontalSpacing(of: Dimens.d24.responsive()),
         _buildLegendItem(

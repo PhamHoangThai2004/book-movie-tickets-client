@@ -1,4 +1,5 @@
 import 'package:client/data/model/showtime_preview_model.dart';
+import 'package:client/data/remote/requests/booking_request.dart';
 import 'package:client/data/remote/requests/showtime_request.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
@@ -13,6 +14,9 @@ import '../responses/model_response.dart';
 @injectable
 class ShowtimeService {
   final String _showtimePath = 'users/showtimes';
+  final String _seatPickPath = 'users/bookings/pick';
+  final String _seatUnpickPath = 'users/bookings/unpick';
+  final String _removePendingBookingPath = 'users/bookings/remove-pending';
 
   final Dio _dio = Dio(BaseOptions(baseUrl: AppConfig.baseUrl))
     ..interceptors.addAll([CurlLoggerDioInterceptor(printOnSuccess: true), AuthInterceptor()]);
@@ -40,6 +44,32 @@ class ShowtimeService {
         (json) => ShowtimeModel.fromJson(json as Map<String, dynamic>),
       );
       return result.data;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<int> pickSeat(BookingRequest request) async {
+    try {
+      final response = await _dio.post(_seatPickPath, data: request.toJson());
+      return response.data['data']['totalAmount'];
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<int> unpickSeat(BookingRequest request) async {
+    try {
+      final response = await _dio.post(_seatUnpickPath, data: request.toJson());
+      return response.data['data']['totalAmount'];
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<void> removePendingBooking() async {
+    try {
+      await _dio.delete(_removePendingBookingPath);
     } on ApiException {
       rethrow;
     }
