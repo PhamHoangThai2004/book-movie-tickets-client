@@ -59,22 +59,28 @@ class BookTicketsCubit extends Cubit<BookTicketsState> {
 
   Future<void> _pickSeat(String seatId) async {
     if (state.showtime == null) return;
+    emit(state.copyWith(seatStatus: StatusEnum.initial));
     try {
       final request = BookingRequest(showtimeId: state.showtime!.id, seatId: seatId);
       final response = await showtimeRepository.pickSeat(request);
       emit(state.copyWith(totalAmount: response));
     } on ApiException catch (e) {
+      _reloadShowtime();
+      emit(state.copyWith(seatStatus: StatusEnum.failure, errorMessage: e.errorMessage));
       debugPrint(e.errorMessage);
     }
   }
 
   Future<void> _unpickSeat(String seatId) async {
     if (state.showtime == null) return;
+    emit(state.copyWith(seatStatus: StatusEnum.initial));
     try {
       final request = BookingRequest(showtimeId: state.showtime!.id, seatId: seatId);
       final response = await showtimeRepository.unpickSeat(request);
       emit(state.copyWith(totalAmount: response));
     } on ApiException catch (e) {
+      _reloadShowtime();
+      emit(state.copyWith(seatStatus: StatusEnum.failure, errorMessage: e.errorMessage));
       debugPrint(e.errorMessage);
     }
   }
@@ -85,6 +91,10 @@ class BookTicketsCubit extends Cubit<BookTicketsState> {
     } else {
       await _pickSeat(seatId);
     }
+    _reloadShowtime();
+  }
+
+  void _reloadShowtime() async {
     try {
       final response = await showtimeRepository.getShowtimeById(state.selectedShowtimeId!);
       emit(state.copyWith(showtime: response));

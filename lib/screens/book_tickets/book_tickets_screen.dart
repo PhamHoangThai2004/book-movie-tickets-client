@@ -36,61 +36,78 @@ class _BookTicketsScreenState extends State<BookTicketsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.warmBlack,
-      body: BlocListener<BookTicketsCubit, BookTicketsState>(
-        listenWhen: (p, c) => p.status != c.status,
-        listener: (context, state) {
-          if (state.status.isFailure) {
-            LoadingCustom.hideLoading();
-            ToastCustom.show(message: state.errorMessage);
-          } else if (state.status.isProcessing) {
-            LoadingCustom.show();
-          } else if (state.status.isSuccess) {
-            LoadingCustom.hideLoading();
-            if (state.selectedShowtimeId != null) {
-              context.bookTicketsCubit.fetchShowtimeDetail();
-            }
-          } else {
-            LoadingCustom.hideLoading();
-          }
-        },
-        child: BlocListener<BookTicketsCubit, BookTicketsState>(
-          listenWhen: (p, c) => p.loadShowtime != c.loadShowtime,
-          listener: (context, state) {
-            if (state.loadShowtime.isProcessing) {
-              LoadingCustom.show();
-            } else if (state.loadShowtime.isSuccess || state.loadShowtime.isFailure) {
-              LoadingCustom.hideLoading();
-            }
-          },
-          child: Container(
-            decoration: AppThemes.mainBackground,
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
-                child: Column(
-                  children: [
-                    VerticalSpacing(of: SizeConfig.getSpaceWithAppBarHeight()),
-                    HeaderCustom(title: 'book_tickets'.tr()),
-                    VerticalSpacing(of: Dimens.d20.responsive()),
-                    Expanded(
-                      child: CustomScrollView(
-                        slivers: [
-                          SliverToBoxAdapter(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SeatsGrid(),
-                                VerticalSpacing(of: Dimens.d32.responsive()),
-                                DateTimeSelector(),
-                                VerticalSpacing(of: Dimens.d20.responsive()),
-                              ],
-                            ),
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<BookTicketsCubit, BookTicketsState>(
+            listenWhen: (p, c) => p.status != c.status,
+            listener: (context, state) {
+              if (state.status.isFailure) {
+                LoadingCustom.hideLoading();
+                ToastCustom.show(message: state.errorMessage);
+              } else if (state.status.isProcessing) {
+                LoadingCustom.show();
+              } else if (state.status.isSuccess) {
+                LoadingCustom.hideLoading();
+                if (state.selectedShowtimeId != null) {
+                  context.bookTicketsCubit.fetchShowtimeDetail();
+                }
+              } else {
+                LoadingCustom.hideLoading();
+              }
+            },
+          ),
+          BlocListener<BookTicketsCubit, BookTicketsState>(
+            listenWhen: (p, c) => p.loadShowtime != c.loadShowtime,
+            listener: (context, state) {
+              if (state.loadShowtime.isProcessing) {
+                LoadingCustom.show();
+              } else if (state.loadShowtime.isSuccess) {
+                LoadingCustom.hideLoading();
+              } else if (state.loadShowtime.isFailure) {
+                LoadingCustom.hideLoading();
+                ToastCustom.show(message: state.errorMessage);
+              } else {
+                LoadingCustom.hideLoading();
+              }
+            },
+          ),
+          BlocListener<BookTicketsCubit, BookTicketsState>(
+            listenWhen: (p, c) => p.seatStatus != c.seatStatus,
+            listener: (context, state) {
+              if (state.seatStatus.isFailure) {
+                ToastCustom.show(message: state.errorMessage);
+              }
+            },
+          ),
+        ],
+        child: Container(
+          decoration: AppThemes.mainBackground,
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
+              child: Column(
+                children: [
+                  VerticalSpacing(of: SizeConfig.getSpaceWithAppBarHeight()),
+                  HeaderCustom(title: 'book_tickets'.tr()),
+                  VerticalSpacing(of: Dimens.d20.responsive()),
+                  Expanded(
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SeatsGrid(),
+                              VerticalSpacing(of: Dimens.d32.responsive()),
+                              DateTimeSelector(),
+                              VerticalSpacing(of: Dimens.d20.responsive()),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

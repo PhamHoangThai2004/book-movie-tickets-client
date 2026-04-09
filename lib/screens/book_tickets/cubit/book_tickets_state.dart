@@ -9,6 +9,7 @@ class BookTicketsState {
   final StatusEnum loadShowtime;
   final String errorMessage;
   final int totalAmount;
+  final StatusEnum seatStatus;
 
   const BookTicketsState({
     this.totalAmount = 0,
@@ -19,6 +20,7 @@ class BookTicketsState {
     this.selectedShowtimeId,
     this.status = StatusEnum.initial,
     this.errorMessage = '',
+    this.seatStatus = StatusEnum.initial,
   });
 
   BookTicketsState copyWith({
@@ -30,6 +32,7 @@ class BookTicketsState {
     StatusEnum? status,
     String? errorMessage,
     int? totalAmount,
+    StatusEnum? seatStatus,
   }) {
     return BookTicketsState(
       showtimes: showtimes ?? this.showtimes,
@@ -40,6 +43,7 @@ class BookTicketsState {
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       totalAmount: totalAmount ?? this.totalAmount,
+      seatStatus: seatStatus ?? this.seatStatus,
     );
   }
 
