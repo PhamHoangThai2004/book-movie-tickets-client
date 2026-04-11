@@ -8,7 +8,10 @@ import 'package:client/core/utils/string_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../core/customs/toasts/toast_custom.dart';
+import '../../../core/navigation/navigation_service.dart';
 import '../cubit/book_tickets_cubit.dart';
 
 class BookingSummary extends StatefulWidget {
@@ -50,12 +53,18 @@ class _BookingSummaryState extends State<BookingSummary> {
                     ),
                     ButtonCustom(
                       title: 'pay'.tr(),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (state.booking != null && state.booking!.tickets.isNotEmpty) {
+                          context.pushNamed(NavigationService.payment, extra: state.booking!.id);
+                        } else {
+                          ToastCustom.show(message: 'pls_select_seat'.tr());
+                        }
+                      },
                       width: Dimens.d191.responsive(),
                     ),
                   ],
                 );
-              }
+              },
             ),
           ),
         ],

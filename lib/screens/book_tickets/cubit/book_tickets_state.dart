@@ -60,4 +60,15 @@ class BookTicketsState {
       booking: null
     );
   }
+
+  BookTicketsState resetBooking() => BookTicketsState(
+    showtimes: showtimes,
+    showtime: showtime,
+    loadShowtime: loadShowtime,
+    selectedDate: selectedDate,
+    selectedShowtimeId: selectedShowtimeId,
+    status: status,
+    errorMessage: errorMessage,
+    booking: null
+  );
 }

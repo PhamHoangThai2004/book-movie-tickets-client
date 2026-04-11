@@ -119,6 +119,7 @@ class BookTicketsCubit extends Cubit<BookTicketsState> {
   Future<void> removePendingBooking() async {
     try {
       await showtimeRepository.removePendingBooking();
+      emit(state.resetBooking());
     } on ApiException catch (e) {
       debugPrint(e.errorMessage);
     }

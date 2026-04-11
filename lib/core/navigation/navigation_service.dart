@@ -6,6 +6,7 @@ import 'package:client/screens/forget_password/cubit/forget_password_cubit.dart'
 import 'package:client/screens/forget_password/forget_password_screen.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/movie/movie_screen.dart';
+import 'package:client/screens/payment/payment_screen.dart';
 import 'package:client/screens/profile/profile_screen.dart';
 import 'package:client/screens/sign_in/cubit/sign_in_cubit.dart';
 import 'package:client/screens/sign_in/sign_in_screen.dart';
@@ -26,6 +27,7 @@ import '../../screens/dashboard/dashboard_screen.dart';
 import '../../screens/movie/cubit/movie_cubit.dart';
 import '../../screens/movie_detail/cubit/movie_detail_cubit.dart';
 import '../../screens/movie_detail/movie_detail_screen.dart';
+import '../../screens/payment/cubit/payment_cubit.dart';
 import '../../screens/sign_up/cubit/sign_up_cubit.dart';
 import '../di/injection.dart';
 
@@ -62,6 +64,8 @@ class NavigationService {
   static String get movieDetail => '/movie-detail';
 
   static String get bookTickets => '/book-tickets';
+
+  static String get payment => '/payment';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -267,6 +271,29 @@ class NavigationService {
               create: (context) =>
                   BookTicketsCubit(showtimeRepository: getIt(), movie: movie, cinemaId: cinemaId),
               child: BookTicketsScreen(),
+            ),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
+      /// paymentScreen
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: payment,
+        path: payment,
+        pageBuilder: (context, state) {
+          final bookingId = state.extra as String;
+
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (context) => PaymentCubit(paymentRepository: getIt()),
+              child: PaymentScreen(bookingId: bookingId),
             ),
             transitionDuration: const Duration(milliseconds: 300),
             reverseTransitionDuration: const Duration(milliseconds: 300),
