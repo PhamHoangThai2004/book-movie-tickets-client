@@ -11,7 +11,7 @@ class PaymentLoadingShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return ShimmerCustom(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,20 +44,11 @@ class PaymentLoadingShimmer extends StatelessWidget {
                     children: [
                       _buildLine(height: Dimens.d20.responsive()),
                       VerticalSpacing(of: Dimens.d8.responsive()),
-                      SizedBox(
-                        width: 150,
-                        child: _buildLine(height: Dimens.d12.responsive()),
-                      ),
+                      SizedBox(width: 150, child: _buildLine(height: Dimens.d12.responsive())),
                       VerticalSpacing(of: Dimens.d8.responsive()),
-                      SizedBox(
-                        width: 200,
-                        child: _buildLine(height: Dimens.d12.responsive()),
-                      ),
+                      SizedBox(width: 200, child: _buildLine(height: Dimens.d12.responsive())),
                       VerticalSpacing(of: Dimens.d8.responsive()),
-                      SizedBox(
-                        width: 150,
-                        child: _buildLine(height: Dimens.d12.responsive()),
-                      ),
+                      SizedBox(width: 150, child: _buildLine(height: Dimens.d12.responsive())),
                     ],
                   ),
                 ),
@@ -65,39 +56,30 @@ class PaymentLoadingShimmer extends StatelessWidget {
             ),
           ),
           VerticalSpacing(of: Dimens.d24.responsive()),
-          
+
           // Order Info
-          SizedBox(
-            width: 80,
-            child: _buildLine(height: Dimens.d16.responsive()),
-          ),
+          SizedBox(width: 80, child: _buildLine(height: Dimens.d16.responsive())),
           VerticalSpacing(of: Dimens.d12.responsive()),
           _buildLine(height: Dimens.d16.responsive()),
           VerticalSpacing(of: Dimens.d12.responsive()),
           _buildLine(height: Dimens.d16.responsive()),
           VerticalSpacing(of: Dimens.d14.responsive()),
-          
+
           // Divider
           ShimmerLoading(
             isLoading: true,
-            child: Container(
-              height: Dimens.d1.responsive(),
-              color: AppColors.white,
-            ),
+            child: Container(height: Dimens.d1.responsive(), color: AppColors.white),
           ),
           VerticalSpacing(of: Dimens.d14.responsive()),
-          
+
           // Total Section
           _buildLine(height: Dimens.d24.responsive()),
           VerticalSpacing(of: Dimens.d24.responsive()),
-          
+
           // Payment Method Label
-          SizedBox(
-            width: 100,
-            child: _buildLine(height: Dimens.d18.responsive()),
-          ),
+          SizedBox(width: 100, child: _buildLine(height: Dimens.d18.responsive())),
           VerticalSpacing(of: Dimens.d16.responsive()),
-          
+
           // Payment Method Card
           Container(
             padding: EdgeInsets.all(Dimens.d16.responsive()),
@@ -119,35 +101,11 @@ class PaymentLoadingShimmer extends StatelessWidget {
                   ),
                 ),
                 HorizontalSpacing(of: Dimens.d16.responsive()),
-                Expanded(
-                  child: _buildLine(height: Dimens.d16.responsive()),
-                ),
+                Expanded(child: _buildLine(height: Dimens.d16.responsive())),
               ],
             ),
           ),
           VerticalSpacing(of: Dimens.d24.responsive()),
-          
-          // Countdown Timer
-          Container(
-            padding: EdgeInsets.all(Dimens.d16.responsive()),
-            decoration: BoxDecoration(
-              color: AppColors.obsidian,
-              borderRadius: BorderRadius.circular(Dimens.d12.responsive()),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: _buildLine(height: Dimens.d16.responsive()),
-                ),
-                HorizontalSpacing(of: Dimens.d16.responsive()),
-                SizedBox(
-                  width: 60,
-                  child: _buildLine(height: Dimens.d16.responsive()),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
@@ -166,4 +124,3 @@ class PaymentLoadingShimmer extends StatelessWidget {
     );
   }
 }
-

@@ -131,7 +131,7 @@ class _MovieState extends State<MovieScreen> {
   }
 
   Widget _buildLoadingShimmer() {
-    return ShimmerEffect(
+    return ShimmerCustom(
       child: GridView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

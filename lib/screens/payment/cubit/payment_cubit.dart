@@ -22,4 +22,14 @@ class PaymentCubit extends Cubit<PaymentState> {
       debugPrint(e.toString());
     }
   }
+
+  Future<void> createPayment(String bookingId) async {
+    emit(state.copyWith(statusPayment: StatusEnum.processing));
+    try {
+      final response = await paymentRepository.createPayment(bookingId);
+      emit(state.copyWith(statusPayment: StatusEnum.success, paymentUrl: response));
+    } on ApiException catch (e) {
+      emit(state.copyWith(statusPayment: StatusEnum.failure, errorMessage: e.errorMessage));
+    }
+  }
 }

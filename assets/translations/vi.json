@@ -104,6 +104,6 @@
   "seat": "Ghế",
   "total_amount": "Tổng tiền",
   "payment_method": "Phương thức thanh toán",
-  "complete_payment_in": "Hoàn thành thanh toán trong",
-  "vn_pay": "Ví VnPay"
+  "vn_pay": "Ví VnPay",
+  "has_error": "Có lỗi xảy ra"
 }

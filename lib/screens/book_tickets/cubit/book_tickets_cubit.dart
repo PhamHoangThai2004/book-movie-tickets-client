@@ -112,7 +112,7 @@ class BookTicketsCubit extends Cubit<BookTicketsState> {
 
   void selectShowtime(String showtimeId) async {
     emit(state.copyWith(selectedShowtimeId: showtimeId));
-    await removePendingBooking();
+    removePendingBooking();
     fetchShowtimeDetail();
   }
 

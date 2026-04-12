@@ -66,15 +66,23 @@ class CinemaInfo {
 class MovieInfo {
   final String id;
   final String title;
-  final String poster;
+  final String? poster;
+  final int duration;
   final List<GenreInfo> genres;
 
-  MovieInfo({required this.id, required this.title, required this.poster, required this.genres});
+  MovieInfo({
+    required this.id,
+    required this.title,
+    required this.poster,
+    required this.genres,
+    required this.duration,
+  });
 
   factory MovieInfo.fromJson(Map<String, dynamic> json) => MovieInfo(
     id: json["id"],
     title: json["title"],
     poster: json["poster"],
+    duration: json["duration"],
     genres: List<GenreInfo>.from(json["genres"].map((x) => GenreInfo.fromJson(x))),
   );
 
@@ -82,6 +90,7 @@ class MovieInfo {
     "id": id,
     "title": title,
     "poster": poster,
+    "duration": duration,
     "genres": List<dynamic>.from(genres.map((x) => x.toJson())),
   };
 }

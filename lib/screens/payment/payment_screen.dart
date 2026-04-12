@@ -1,13 +1,15 @@
 import 'package:client/core/customs/app_bars/header_custom.dart';
 import 'package:client/core/customs/buttons/button_custom.dart';
 import 'package:client/core/customs/images/image_custom.dart';
-import 'package:client/core/customs/toasts/shimmer_custom.dart';
+import 'package:client/core/customs/toasts/loading_custom.dart';
+import 'package:client/core/customs/toasts/toast_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/size_config/size_config.dart';
 import 'package:client/core/styles/app_text_styles.dart';
 import 'package:client/core/themes/app_colors.dart';
 import 'package:client/core/themes/app_themes.dart';
+import 'package:client/core/utils/app_utils.dart';
 import 'package:client/core/utils/date_time_utils.dart';
 import 'package:client/core/utils/string_utils.dart';
 import 'package:client/data/enums/status_enum.dart';
@@ -43,7 +45,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.warmBlack,
-      body: ShimmerEffect(
+      body: BlocListener<PaymentCubit, PaymentState>(
+        listenWhen: (previous, current) => previous.statusPayment != current.statusPayment,
+        listener: (context, state) {
+          if (state.statusPayment.isProcessing) {
+            LoadingCustom.show();
+          } else if (state.statusPayment.isSuccess) {
+            LoadingCustom.hideLoading();
+            if (state.paymentUrl != null) {
+              AppUtils.openLink(state.paymentUrl!);
+            } else {
+              ToastCustom.show(message: 'has_error'.tr());
+            }
+          } else if (state.statusPayment.isFailure) {
+            LoadingCustom.hideLoading();
+            ToastCustom.show(message: state.errorMessage);
+          }
+        },
         child: Container(
           decoration: AppThemes.mainBackground,
           child: SafeArea(
@@ -75,6 +93,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               children: [
                                 _buildMoviePaymentInfo(state.booking!),
                                 VerticalSpacing(of: Dimens.d24.responsive()),
+                                _buildCinemaInfo(state.booking!.cinema),
+                                VerticalSpacing(of: Dimens.d24.responsive()),
                                 _buildOrderInfo(state.booking!),
                                 VerticalSpacing(of: Dimens.d14.responsive()),
                                 Divider(
@@ -90,8 +110,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                                 VerticalSpacing(of: Dimens.d16.responsive()),
                                 _buildPaymentMethods(),
-                                VerticalSpacing(of: Dimens.d24.responsive()),
-                                _buildCountdownTimer(),
                                 VerticalSpacing(of: Dimens.d24.responsive()),
                               ],
                             ),
@@ -148,14 +166,47 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 VerticalSpacing(of: Dimens.d8.responsive()),
                 _buildInfoRow(Assets.svgs.icVideoPlay, booking.movie.genres.first.name),
                 VerticalSpacing(of: Dimens.d6.responsive()),
-                _buildInfoRow(Assets.svgs.icLocation, booking.cinema.address),
-                VerticalSpacing(of: Dimens.d6.responsive()),
                 _buildInfoRow(
                   Assets.svgs.icClock,
+                  DateTimeUtils.convertDuration(booking.movie.duration),
+                ),
+                VerticalSpacing(of: Dimens.d6.responsive()),
+                _buildInfoRow(
+                  Assets.svgs.icCalendar,
                   '${DateTimeUtils.fromIso8601(booking.showtime.showDate, targetFormat: 'dd.MM.yyyy')} • ${DateTimeUtils.fromIso8601(booking.showtime.startTime, targetFormat: 'HH:mm')}',
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCinemaInfo(CinemaInfo cinema) {
+    return Container(
+      width: SizeConfig.screenWidth,
+      padding: EdgeInsets.all(Dimens.d16.responsive()),
+      decoration: BoxDecoration(
+        color: AppColors.obsidian,
+        borderRadius: BorderRadius.circular(Dimens.d16.responsive()),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(cinema.name, style: AppTextStyles.style.s20.w700.whiteSmokeColor),
+          VerticalSpacing(of: Dimens.d8.responsive()),
+          Row(
+            spacing: Dimens.d4.responsive(),
+            children: [
+              Assets.svgs.icLocation.svg(),
+              Text(
+                cinema.address,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.style.s12.w400.whiteSmokeColor,
+              ),
+            ],
           ),
         ],
       ),
@@ -242,23 +293,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 
-  Widget _buildCountdownTimer() {
-    return Container(
-      padding: EdgeInsets.all(Dimens.d16.responsive()),
-      decoration: BoxDecoration(
-        color: AppColors.amberYellow.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(Dimens.d12.responsive()),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('complete_payment_in'.tr(), style: AppTextStyles.style.s16.w500.whiteSmokeColor),
-          Text('15:00', style: AppTextStyles.style.s16.w700.amberYellowColor),
-        ],
-      ),
-    );
-  }
-
   Widget _buildContinueButton() {
     return BlocBuilder<PaymentCubit, PaymentState>(
       buildWhen: (previous, current) => previous.booking != current.booking,
@@ -268,7 +302,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         }
         return ButtonCustom(
           title: 'continue'.tr(),
-          onPressed: () {},
+          onPressed: () => context.paymentCubit.createPayment(widget.bookingId),
           titleStyle: AppTextStyles.style.s18.w700.blackColor,
         );
       },

@@ -11,6 +11,7 @@ import '../responses/model_response.dart';
 @injectable
 class PaymentService {
   final String _bookingPath = 'users/bookings';
+  final String _paymentPath = 'users/payments';
 
   final Dio _dio = Dio(BaseOptions(baseUrl: AppConfig.baseUrl))
     ..interceptors.addAll([CurlLoggerDioInterceptor(printOnSuccess: true), AuthInterceptor()]);
@@ -24,6 +25,21 @@ class PaymentService {
         (json) => BookingModel.fromJson(json as Map<String, dynamic>),
       );
       return result.data;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<String> createPayment(String bookingId) async {
+    try {
+      final response = await _dio.post(_paymentPath, data: {'bookingId': bookingId});
+      String paymentUrl = response.data['data']['paymentUrl'];
+
+      if (paymentUrl.startsWith("VNP_URL=")) {
+        paymentUrl = paymentUrl.substring("VNP_URL=".length);
+      }
+
+      return paymentUrl;
     } on ApiException {
       rethrow;
     }
