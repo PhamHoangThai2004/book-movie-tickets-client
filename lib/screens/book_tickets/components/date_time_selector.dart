@@ -95,7 +95,11 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
     }
 
     return CupertinoButtonCustom(
-      onPressed: () => context.bookTicketsCubit.selectDate(date),
+      onPressed: () {
+        if (!isSelected) {
+          context.bookTicketsCubit.selectDate(date);
+        }
+      },
       child: Container(
         width: Dimens.d55.responsive(),
         height: Dimens.d130.responsive(),
@@ -182,7 +186,11 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
 
   Widget _buildShowtimeButton({required ShowtimePreviewModel showtime, required bool isSelected}) {
     return CupertinoButtonCustom(
-      onPressed: () => context.bookTicketsCubit.selectShowtime(showtime.id),
+      onPressed: () {
+        if (!isSelected) {
+          context.bookTicketsCubit.selectShowtime(showtime.id);
+        }
+      },
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: Dimens.d26.responsive(),

@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/common/app_config.dart';
+import '../../model/booking_preview_model.dart';
 import '../../model/showtime_model.dart';
 import '../../network/exceptions/api_exception.dart';
 import '../../network/interceptors/auth_interceptor.dart';
@@ -49,19 +50,27 @@ class ShowtimeService {
     }
   }
 
-  Future<int> pickSeat(BookingRequest request) async {
+  Future<BookingPreviewModel> pickSeat(BookingRequest request) async {
     try {
       final response = await _dio.post(_seatPickPath, data: request.toJson());
-      return response.data['data']['totalAmount'];
+      final result = ModelResponse.fromJson(
+        response.data,
+        (json) => BookingPreviewModel.fromJson(json as Map<String, dynamic>),
+      );
+      return result.data;
     } on ApiException {
       rethrow;
     }
   }
 
-  Future<int> unpickSeat(BookingRequest request) async {
+  Future<BookingPreviewModel> unpickSeat(BookingRequest request) async {
     try {
       final response = await _dio.post(_seatUnpickPath, data: request.toJson());
-      return response.data['data']['totalAmount'];
+      final result = ModelResponse.fromJson(
+        response.data,
+        (json) => BookingPreviewModel.fromJson(json as Map<String, dynamic>),
+      );
+      return result.data;
     } on ApiException {
       rethrow;
     }

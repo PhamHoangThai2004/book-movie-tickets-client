@@ -98,5 +98,12 @@
   "vip": "Vip",
   "booked": "Đã đặt",
   "selected": "Đã chọn",
-  "locked": "Bị khoá"
+  "locked": "Bị khoá",
+  "pls_select_seat": "Vui lòng chọn ít nhất 1 ghế",
+  "order_id": "Mã hoá đơn",
+  "seat": "Ghế",
+  "total_amount": "Tổng tiền",
+  "payment_method": "Phương thức thanh toán",
+  "vn_pay": "Ví VnPay",
+  "has_error": "Có lỗi xảy ra"
 }

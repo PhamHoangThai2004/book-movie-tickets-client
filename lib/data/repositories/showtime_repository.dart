@@ -1,6 +1,7 @@
 import 'package:client/data/remote/services/showtime_service.dart';
 import 'package:injectable/injectable.dart';
 
+import '../model/booking_preview_model.dart';
 import '../model/showtime_model.dart';
 import '../model/showtime_preview_model.dart';
 import '../network/exceptions/api_exception.dart';
@@ -12,9 +13,9 @@ abstract class ShowtimeRepository {
 
   Future<ShowtimeModel> getShowtimeById(String id);
 
-  Future<int> pickSeat(BookingRequest request);
+  Future<BookingPreviewModel> pickSeat(BookingRequest request);
 
-  Future<int> unpickSeat(BookingRequest request);
+  Future<BookingPreviewModel> unpickSeat(BookingRequest request);
 
   Future<void> removePendingBooking();
 }
@@ -47,7 +48,7 @@ class ShowtimeRepositoryImpl implements ShowtimeRepository {
   }
 
   @override
-  Future<int> pickSeat(BookingRequest request) async {
+  Future<BookingPreviewModel> pickSeat(BookingRequest request) async {
     try {
       final response = await _showtimeService.pickSeat(request);
       return response;
@@ -57,7 +58,7 @@ class ShowtimeRepositoryImpl implements ShowtimeRepository {
   }
 
   @override
-  Future<int> unpickSeat(BookingRequest request) async {
+  Future<BookingPreviewModel> unpickSeat(BookingRequest request) async {
     try {
       final response = await _showtimeService.unpickSeat(request);
       return response;

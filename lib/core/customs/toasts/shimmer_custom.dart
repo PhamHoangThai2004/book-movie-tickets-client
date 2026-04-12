@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 
 import '../../themes/app_colors.dart';
 
-class ShimmerEffect extends StatefulWidget {
+class ShimmerCustom extends StatefulWidget {
   // ignore: library_private_types_in_public_api
-  static _ShimmerEffectState? of(BuildContext context) {
-    return context.findAncestorStateOfType<_ShimmerEffectState>();
+  static _ShimmerCustomState? of(BuildContext context) {
+    return context.findAncestorStateOfType<_ShimmerCustomState>();
   }
 
-  const ShimmerEffect({super.key, required this.child, this.gradient});
+  const ShimmerCustom({super.key, required this.child, this.gradient});
 
   final Widget child;
   final LinearGradient? gradient;
 
   @override
   // ignore: library_private_types_in_public_api
-  _ShimmerEffectState createState() => _ShimmerEffectState();
+  _ShimmerCustomState createState() => _ShimmerCustomState();
 }
 
-class _ShimmerEffectState extends State<ShimmerEffect> with TickerProviderStateMixin {
+class _ShimmerCustomState extends State<ShimmerCustom> with TickerProviderStateMixin {
   late AnimationController _controller;
   late LinearGradient _gradient;
 
@@ -89,7 +89,7 @@ class _ShimmerLoadingState extends State<ShimmerLoading> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final shimmer = ShimmerEffect.of(context);
+    final shimmer = ShimmerCustom.of(context);
     if (shimmer != null) {
       _shimmerChanges?.removeListener(_onShimmerChange);
       _shimmerChanges = shimmer.shimmerChanges;
@@ -112,7 +112,7 @@ class _ShimmerLoadingState extends State<ShimmerLoading> {
   Widget build(BuildContext context) {
     if (!widget.isLoading) return widget.child;
 
-    final shimmer = ShimmerEffect.of(context);
+    final shimmer = ShimmerCustom.of(context);
     if (shimmer == null) return widget.child;
 
     return FadeTransition(

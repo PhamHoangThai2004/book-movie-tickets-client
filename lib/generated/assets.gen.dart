@@ -26,8 +26,11 @@ class $AssetsImagesGen {
   /// File path: assets/images/img_projector_range.png
   AssetGenImage get imgProjectorRange => const AssetGenImage('assets/images/img_projector_range.png');
 
+  /// File path: assets/images/img_vnpay.png
+  AssetGenImage get imgVnpay => const AssetGenImage('assets/images/img_vnpay.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [appLogo, imgNameApp, imgProjectorRange];
+  List<AssetGenImage> get values => [appLogo, imgNameApp, imgProjectorRange, imgVnpay];
 }
 
 class $AssetsSvgsGen {
@@ -72,6 +75,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/ic_home_outline.svg
   SvgGenImage get icHomeOutline => const SvgGenImage('assets/svgs/ic_home_outline.svg');
 
+  /// File path: assets/svgs/ic_location.svg
+  SvgGenImage get icLocation => const SvgGenImage('assets/svgs/ic_location.svg');
+
   /// File path: assets/svgs/ic_lock.svg
   SvgGenImage get icLock => const SvgGenImage('assets/svgs/ic_lock.svg');
 
@@ -114,6 +120,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/ic_video_outline.svg
   SvgGenImage get icVideoOutline => const SvgGenImage('assets/svgs/ic_video_outline.svg');
 
+  /// File path: assets/svgs/ic_video_play.svg
+  SvgGenImage get icVideoPlay => const SvgGenImage('assets/svgs/ic_video_play.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
     icArrowLeft,
@@ -129,6 +138,7 @@ class $AssetsSvgsGen {
     icEyesOpen,
     icHome,
     icHomeOutline,
+    icLocation,
     icLock,
     icNotification,
     icPassword,
@@ -143,6 +153,7 @@ class $AssetsSvgsGen {
     icUserOutline,
     icVideo,
     icVideoOutline,
+    icVideoPlay,
   ];
 }
 

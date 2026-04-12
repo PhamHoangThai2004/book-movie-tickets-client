@@ -11,6 +11,7 @@ import '../../../core/styles/app_text_styles.dart';
 import '../../../core/themes/app_colors.dart';
 import '../../../data/enums/status_enum.dart';
 import '../../../data/model/cinema_model.dart';
+import '../../../generated/assets.gen.dart';
 import '../cubit/movie_detail_cubit.dart';
 
 class CinemasSection extends StatelessWidget {
@@ -108,12 +109,18 @@ class CinemasSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(cinema.name, style: AppTextStyles.style.s20.w700.whiteSmokeColor),
-            VerticalSpacing(of: Dimens.d6.responsive()),
-            Text(
-              cinema.address,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.style.s12.w400.whiteSmokeColor,
+            VerticalSpacing(of: Dimens.d8.responsive()),
+            Row(
+              spacing: Dimens.d4.responsive(),
+              children: [
+                Assets.svgs.icLocation.svg(),
+                Text(
+                  cinema.address,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.style.s12.w400.whiteSmokeColor,
+                ),
+              ],
             ),
           ],
         ),
