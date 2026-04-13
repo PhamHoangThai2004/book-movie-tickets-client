@@ -7,6 +7,8 @@ import 'package:client/screens/forget_password/forget_password_screen.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/movie/movie_screen.dart';
 import 'package:client/screens/payment/payment_screen.dart';
+import 'package:client/screens/payment_history/cubit/payment_history_cubit.dart';
+import 'package:client/screens/payment_history/payment_history_screen.dart';
 import 'package:client/screens/profile/profile_screen.dart';
 import 'package:client/screens/sign_in/cubit/sign_in_cubit.dart';
 import 'package:client/screens/sign_in/sign_in_screen.dart';
@@ -66,6 +68,8 @@ class NavigationService {
   static String get bookTickets => '/book-tickets';
 
   static String get payment => '/payment';
+
+  static String get paymentHistory => '/payment-history';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -294,6 +298,27 @@ class NavigationService {
             child: BlocProvider(
               create: (context) => PaymentCubit(paymentRepository: getIt()),
               child: PaymentScreen(bookingId: bookingId),
+            ),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
+      /// paymentHistoryScreen
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: paymentHistory,
+        path: paymentHistory,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (context) => PaymentHistoryCubit(paymentRepository: getIt()),
+              child: const PaymentHistoryScreen(),
             ),
             transitionDuration: const Duration(milliseconds: 300),
             reverseTransitionDuration: const Duration(milliseconds: 300),
