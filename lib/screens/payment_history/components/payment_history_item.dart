@@ -10,6 +10,7 @@ import 'package:client/data/model/payment_preview_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/common/register_cubit.dart';
 import '../../../core/size_config/app_dimen.dart';
 import '../../../generated/assets.gen.dart';
 
@@ -21,7 +22,7 @@ class PaymentHistoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoButtonCustom(
-      onPressed: () {},
+      onPressed: () => context.paymentHistoryCubit.getPaymentDetail(payment.id),
       child: Container(
         margin: EdgeInsets.only(bottom: Dimens.d12.responsive()),
         padding: EdgeInsets.symmetric(

@@ -1,6 +1,6 @@
 import 'package:client/core/customs/app_bars/header_custom.dart';
 import 'package:client/core/customs/buttons/button_custom.dart';
-import 'package:client/core/customs/toasts/shimmer_custom.dart';
+import 'package:client/core/customs/toasts/loading_custom.dart';
 import 'package:client/core/customs/toasts/toast_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
@@ -13,8 +13,10 @@ import 'package:client/screens/payment_history/cubit/payment_history_cubit.dart'
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/common/register_cubit.dart';
+import '../../core/navigation/navigation_service.dart';
 import '../../core/size_config/size_config.dart';
 import '../../data/enums/status_enum.dart';
 
@@ -55,13 +57,33 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.warmBlack,
-      body: BlocListener<PaymentHistoryCubit, PaymentHistoryState>(
-        listenWhen: (previous, current) => previous.status != current.status,
-        listener: (context, state) {
-          if (state.status == StatusEnum.failure && state.errorMessage.isNotEmpty) {
-            ToastCustom.show(message: state.errorMessage);
-          }
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<PaymentHistoryCubit, PaymentHistoryState>(
+            listenWhen: (previous, current) => previous.status != current.status,
+            listener: (context, state) {
+              if (state.status.isFailure && state.errorMessage.isNotEmpty) {
+                ToastCustom.show(message: state.errorMessage);
+              }
+            },
+          ),
+          BlocListener<PaymentHistoryCubit, PaymentHistoryState>(
+            listenWhen: (previous, current) => previous.statusLoad != current.statusLoad,
+            listener: (context, state) {
+              if (state.statusLoad.isProcessing) {
+                LoadingCustom.show();
+              }
+              else if (state.statusLoad.isSuccess && state.payment != null) {
+                LoadingCustom.hideLoading();
+                context.pushNamed(NavigationService.paymentDetail, extra: state.payment!);
+              }
+              else if (state.statusLoad.isFailure) {
+                LoadingCustom.hideLoading();
+                ToastCustom.show(message: state.errorMessage);
+              }
+            },
+          ),
+        ],
         child: SafeArea(
           child: Container(
             decoration: AppThemes.mainBackground,

@@ -7,6 +7,7 @@ import 'package:client/screens/forget_password/forget_password_screen.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/movie/movie_screen.dart';
 import 'package:client/screens/payment/payment_screen.dart';
+import 'package:client/screens/payment_detail/payment_detail_screen.dart';
 import 'package:client/screens/payment_history/cubit/payment_history_cubit.dart';
 import 'package:client/screens/payment_history/payment_history_screen.dart';
 import 'package:client/screens/profile/profile_screen.dart';
@@ -23,6 +24,7 @@ import 'package:go_router/go_router.dart';
 import 'package:bot_toast/bot_toast.dart';
 
 import '../../data/model/movie_model.dart';
+import '../../data/model/payment_model.dart';
 import '../../screens/book_tickets/book_tickets_screen.dart';
 import '../../screens/book_tickets/cubit/book_tickets_cubit.dart';
 import '../../screens/dashboard/dashboard_screen.dart';
@@ -70,6 +72,8 @@ class NavigationService {
   static String get payment => '/payment';
 
   static String get paymentHistory => '/payment-history';
+
+  static String get paymentDetail => '/payment-detail';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -320,6 +324,25 @@ class NavigationService {
               create: (context) => PaymentHistoryCubit(paymentRepository: getIt()),
               child: const PaymentHistoryScreen(),
             ),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
+      /// paymentDetail
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: paymentDetail,
+        path: paymentDetail,
+        pageBuilder: (context, state) {
+          final payment = state.extra as PaymentModel;
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: PaymentDetailScreen(payment: payment),
             transitionDuration: const Duration(milliseconds: 300),
             reverseTransitionDuration: const Duration(milliseconds: 300),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {

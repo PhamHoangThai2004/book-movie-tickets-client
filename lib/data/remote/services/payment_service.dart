@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../core/common/app_config.dart';
 import '../../model/booking_model.dart';
+import '../../model/payment_model.dart';
 import '../../model/payment_preview_model.dart';
 import '../../network/exceptions/api_exception.dart';
 import '../../network/interceptors/auth_interceptor.dart';
@@ -56,6 +57,20 @@ class PaymentService {
         (json) => PaymentPreviewModel.fromJson(json as Map<String, dynamic>),
       );
       return result;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<PaymentModel> getPaymentById(String id) async {
+    try {
+      final path = '$_paymentPath/$id';
+      final response = await _dio.get(path);
+      final result = ModelResponse<PaymentModel>.fromJson(
+        response.data,
+        (json) => PaymentModel.fromJson(json as Map<String, dynamic>),
+      );
+      return result.data;
     } on ApiException {
       rethrow;
     }

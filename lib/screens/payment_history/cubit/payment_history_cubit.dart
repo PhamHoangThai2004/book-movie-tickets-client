@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../data/model/payment_model.dart';
 import '../../../data/model/payment_preview_model.dart';
 import '../../../data/remote/requests/payment_request.dart';
 import '../../../data/remote/responses/pagination_response.dart';
@@ -46,5 +47,15 @@ class PaymentHistoryCubit extends Cubit<PaymentHistoryState> {
   Future<void> refreshBookingHistory() async {
     emit(state.copyWith(status: StatusEnum.processing));
     await fetchBookingHistory();
+  }
+
+  Future<void> getPaymentDetail(String id) async {
+    emit(state.copyWith(statusLoad: StatusEnum.processing));
+    try {
+      final response = await paymentRepository.getPaymentById(id);
+      emit(state.copyWith(statusLoad: StatusEnum.success, payment: response));
+    } on ApiException catch (e) {
+      emit(state.copyWith(statusLoad: StatusEnum.failure, errorMessage: e.errorMessage));
+    }
   }
 }
