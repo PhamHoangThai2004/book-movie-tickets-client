@@ -105,5 +105,21 @@
   "total_amount": "Tổng tiền",
   "payment_method": "Phương thức thanh toán",
   "vn_pay": "Ví VnPay",
-  "has_error": "Có lỗi xảy ra"
+  "error_occurred": "Có lỗi xảy ra",
+  "cancel_short": "Huỷ",
+  "failure": "Thất bại",
+  "paid": "Đã thanh toán",
+  "unpaid": "Chưa thanh toán",
+  "not_have_payment_history": "Bạn chưa có thanh toán nào",
+  "retry": "Thử lại",
+  "payment_detail": "Chi tiết thanh toán",
+  "transaction_info": "Thông tin giao dịch",
+  "showtime_info": "Thông tin suất chiếu",
+  "transaction_id": "Mã giao dịch",
+  "payment_date": "Thời gian thanh toán",
+  "payment_created_at": "Thời gian tạo hoá đơn",
+  "movie_name": "Tên phim",
+  "address": "Địa chỉ",
+  "room": "Phòng chiếu",
+  "showtime": "Suất chiếu"
 }

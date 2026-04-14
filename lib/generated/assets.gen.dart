@@ -108,6 +108,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/ic_ticket_outline.svg
   SvgGenImage get icTicketOutline => const SvgGenImage('assets/svgs/ic_ticket_outline.svg');
 
+  /// File path: assets/svgs/ic_usd_circle.svg
+  SvgGenImage get icUsdCircle => const SvgGenImage('assets/svgs/ic_usd_circle.svg');
+
   /// File path: assets/svgs/ic_user.svg
   SvgGenImage get icUser => const SvgGenImage('assets/svgs/ic_user.svg');
 
@@ -122,6 +125,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/ic_video_play.svg
   SvgGenImage get icVideoPlay => const SvgGenImage('assets/svgs/ic_video_play.svg');
+
+  /// File path: assets/svgs/ic_wallet.svg
+  SvgGenImage get icWallet => const SvgGenImage('assets/svgs/ic_wallet.svg');
 
   /// List of all assets
   List<SvgGenImage> get values => [
@@ -149,25 +155,24 @@ class $AssetsSvgsGen {
     icStar,
     icTicket,
     icTicketOutline,
+    icUsdCircle,
     icUser,
     icUserOutline,
     icVideo,
     icVideoOutline,
     icVideoPlay,
+    icWallet,
   ];
 }
 
 class $AssetsTranslationsGen {
   const $AssetsTranslationsGen();
 
-  /// File path: assets/translations/en.json
-  String get en => 'assets/translations/en.json';
-
   /// File path: assets/translations/vi.json
   String get vi => 'assets/translations/vi.json';
 
   /// List of all assets
-  List<String> get values => [en, vi];
+  List<String> get values => [vi];
 }
 
 class Assets {

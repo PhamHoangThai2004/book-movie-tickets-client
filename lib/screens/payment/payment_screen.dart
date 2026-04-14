@@ -55,7 +55,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             if (state.paymentUrl != null) {
               AppUtils.openLink(state.paymentUrl!);
             } else {
-              ToastCustom.show(message: 'has_error'.tr());
+              ToastCustom.show(message: 'error_occurred'.tr());
             }
           } else if (state.statusPayment.isFailure) {
             LoadingCustom.hideLoading();

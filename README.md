@@ -8,4 +8,4 @@ This is a mobile project about booking movie tickets online
 4) Execute command: `$ flutter run` to install app
 
 # Gen code:
-- Gen assets: Execute command: `$  dart run build_runner build`
+- Gen assets: Execute command: `$ dart run build_runner build`
