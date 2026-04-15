@@ -121,5 +121,11 @@
   "movie_name": "Tên phim",
   "address": "Địa chỉ",
   "room": "Phòng chiếu",
-  "showtime": "Suất chiếu"
+  "showtime": "Suất chiếu",
+  "my_tickets": "Vé của tôi",
+  "no_tickets_found": "Không tìm thấy vé nào",
+  "cancelled": "Đã huỷ",
+  "checked_in": "Đã check-in",
+  "issued": "Đã phát hành",
+  "expired": "Đã hết hạn"
 }

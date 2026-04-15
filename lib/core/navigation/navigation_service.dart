@@ -15,6 +15,7 @@ import 'package:client/screens/sign_in/cubit/sign_in_cubit.dart';
 import 'package:client/screens/sign_in/sign_in_screen.dart';
 import 'package:client/screens/sign_up/sign_up_screen.dart';
 import 'package:client/screens/startup/startup_screen.dart';
+import 'package:client/screens/ticket/cubit/ticket_cubit.dart';
 import 'package:client/screens/ticket/ticket_screen.dart';
 import 'package:client/screens/update_profile/cubit/update_profile_cubit.dart';
 import 'package:client/screens/update_profile/update_profile_screen.dart';
@@ -362,11 +363,20 @@ class NavigationService {
         },
         branches: [
           StatefulShellBranch(
-            routes: [GoRoute(path: home, builder: (_, _) => HomeScreen(), routes: const [])],
+            routes: [GoRoute(path: home, builder: (_, _) => const HomeScreen(), routes: const [])],
           ),
 
           StatefulShellBranch(
-            routes: [GoRoute(path: ticket, builder: (_, _) => TicketScreen(), routes: const [])],
+            routes: [
+              GoRoute(
+                path: ticket,
+                builder: (_, _) => BlocProvider(
+                  create: (context) => TicketCubit(ticketRepository: getIt()),
+                  child: const TicketScreen(),
+                ),
+                routes: const [],
+              ),
+            ],
           ),
 
           StatefulShellBranch(
@@ -375,7 +385,7 @@ class NavigationService {
                 path: movie,
                 builder: (_, _) => BlocProvider(
                   create: (context) => MovieCubit(movieRepository: getIt()),
-                  child: MovieScreen(),
+                  child: const MovieScreen(),
                 ),
                 routes: const [],
               ),
@@ -383,7 +393,7 @@ class NavigationService {
           ),
 
           StatefulShellBranch(
-            routes: [GoRoute(path: profile, builder: (_, _) => ProfileScreen(), routes: const [])],
+            routes: [GoRoute(path: profile, builder: (_, _) => const ProfileScreen(), routes: const [])],
           ),
         ],
       ),
