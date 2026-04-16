@@ -6,12 +6,18 @@ import 'package:client/screens/forget_password/cubit/forget_password_cubit.dart'
 import 'package:client/screens/forget_password/forget_password_screen.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/movie/movie_screen.dart';
+import 'package:client/screens/payment/payment_screen.dart';
+import 'package:client/screens/payment_detail/payment_detail_screen.dart';
+import 'package:client/screens/payment_history/cubit/payment_history_cubit.dart';
+import 'package:client/screens/payment_history/payment_history_screen.dart';
 import 'package:client/screens/profile/profile_screen.dart';
 import 'package:client/screens/sign_in/cubit/sign_in_cubit.dart';
 import 'package:client/screens/sign_in/sign_in_screen.dart';
 import 'package:client/screens/sign_up/sign_up_screen.dart';
 import 'package:client/screens/startup/startup_screen.dart';
+import 'package:client/screens/ticket/cubit/ticket_cubit.dart';
 import 'package:client/screens/ticket/ticket_screen.dart';
+import 'package:client/screens/ticket_detail/ticket_detail_screen.dart';
 import 'package:client/screens/update_profile/cubit/update_profile_cubit.dart';
 import 'package:client/screens/update_profile/update_profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +26,15 @@ import 'package:go_router/go_router.dart';
 import 'package:bot_toast/bot_toast.dart';
 
 import '../../data/model/movie_model.dart';
+import '../../data/model/payment_model.dart';
+import '../../data/model/ticket_model.dart';
+import '../../screens/book_tickets/book_tickets_screen.dart';
+import '../../screens/book_tickets/cubit/book_tickets_cubit.dart';
 import '../../screens/dashboard/dashboard_screen.dart';
 import '../../screens/movie/cubit/movie_cubit.dart';
 import '../../screens/movie_detail/cubit/movie_detail_cubit.dart';
 import '../../screens/movie_detail/movie_detail_screen.dart';
+import '../../screens/payment/cubit/payment_cubit.dart';
 import '../../screens/sign_up/cubit/sign_up_cubit.dart';
 import '../di/injection.dart';
 
@@ -58,6 +69,16 @@ class NavigationService {
   static String get changePassword => '/change-password';
 
   static String get movieDetail => '/movie-detail';
+
+  static String get bookTickets => '/book-tickets';
+
+  static String get payment => '/payment';
+
+  static String get paymentHistory => '/payment-history';
+
+  static String get paymentDetail => '/payment-detail';
+
+  static String get ticketDetail => '/ticket-detail';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -247,6 +268,114 @@ class NavigationService {
         },
       ),
 
+      /// bookTicketsScreen
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: bookTickets,
+        path: bookTickets,
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final movie = extra['movie'] as MovieModel;
+          final cinemaId = extra['cinemaId'] as String;
+
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (context) =>
+                  BookTicketsCubit(showtimeRepository: getIt(), movie: movie, cinemaId: cinemaId),
+              child: BookTicketsScreen(),
+            ),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
+      /// paymentScreen
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: payment,
+        path: payment,
+        pageBuilder: (context, state) {
+          final bookingId = state.extra as String;
+
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (context) => PaymentCubit(paymentRepository: getIt()),
+              child: PaymentScreen(bookingId: bookingId),
+            ),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
+      /// paymentHistoryScreen
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: paymentHistory,
+        path: paymentHistory,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (context) => PaymentHistoryCubit(paymentRepository: getIt()),
+              child: const PaymentHistoryScreen(),
+            ),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
+      /// paymentDetail
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: paymentDetail,
+        path: paymentDetail,
+        pageBuilder: (context, state) {
+          final payment = state.extra as PaymentModel;
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: PaymentDetailScreen(payment: payment),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
+      /// ticketDetail
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: ticketDetail,
+        path: ticketDetail,
+        pageBuilder: (context, state) {
+          final ticket = state.extra as TicketModel;
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: TicketDetailScreen(ticket: ticket),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
       /// dashboardScreen
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -257,11 +386,20 @@ class NavigationService {
         },
         branches: [
           StatefulShellBranch(
-            routes: [GoRoute(path: home, builder: (_, _) => HomeScreen(), routes: const [])],
+            routes: [GoRoute(path: home, builder: (_, _) => const HomeScreen(), routes: const [])],
           ),
 
           StatefulShellBranch(
-            routes: [GoRoute(path: ticket, builder: (_, _) => TicketScreen(), routes: const [])],
+            routes: [
+              GoRoute(
+                path: ticket,
+                builder: (_, _) => BlocProvider(
+                  create: (context) => TicketCubit(ticketRepository: getIt()),
+                  child: const TicketScreen(),
+                ),
+                routes: const [],
+              ),
+            ],
           ),
 
           StatefulShellBranch(
@@ -270,7 +408,7 @@ class NavigationService {
                 path: movie,
                 builder: (_, _) => BlocProvider(
                   create: (context) => MovieCubit(movieRepository: getIt()),
-                  child: MovieScreen(),
+                  child: const MovieScreen(),
                 ),
                 routes: const [],
               ),
@@ -278,7 +416,7 @@ class NavigationService {
           ),
 
           StatefulShellBranch(
-            routes: [GoRoute(path: profile, builder: (_, _) => ProfileScreen(), routes: const [])],
+            routes: [GoRoute(path: profile, builder: (_, _) => const ProfileScreen(), routes: const [])],
           ),
         ],
       ),

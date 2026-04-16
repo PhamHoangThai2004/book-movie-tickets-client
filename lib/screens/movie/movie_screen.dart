@@ -56,7 +56,7 @@ class _MovieState extends State<MovieScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.black,
+      backgroundColor: AppColors.warmBlack,
       body: Container(
         decoration: AppThemes.mainBackground,
         child: SafeArea(
@@ -131,7 +131,7 @@ class _MovieState extends State<MovieScreen> {
   }
 
   Widget _buildLoadingShimmer() {
-    return ShimmerEffect(
+    return ShimmerCustom(
       child: GridView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

@@ -55,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             colorFilter: ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
                           ),
                           title: 'payment_history'.tr(),
-                          onTap: () {},
+                          onTap: () => context.pushNamed(NavigationService.paymentHistory),
                         ),
                         _buildDivider(),
                         _buildMenuItem(

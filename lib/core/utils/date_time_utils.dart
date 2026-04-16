@@ -5,7 +5,7 @@ class DateTimeUtils {
       {String targetFormat = 'dd/MM/yyyy'}) {
     if (isoDate == null || isoDate.isEmpty) return '';
     try {
-      final dateTime = DateTime.parse(isoDate).toLocal();
+      final dateTime = DateTime.parse(isoDate);
       final newFormat = DateFormat(targetFormat);
       return newFormat.format(dateTime);
     } catch (_) {
@@ -13,7 +13,7 @@ class DateTimeUtils {
     }
   }
 
-  static String toIso8601(String? date, {String sourceFormat = 'dd/MM/yyyy'}) {
+  static String toIso8601(String? date, {String sourceFormat = 'yyyy/MM/dd'}) {
     if (date == null || date.isEmpty) return '';
     try {
       final format = DateFormat(sourceFormat);

@@ -4,6 +4,7 @@ import 'package:client/core/utils/validator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/local/preferences.dart';
 import '../navigation/navigation_service.dart';
@@ -82,5 +83,21 @@ class AppUtils {
     context.dashboardCubit.logout();
     Preferences.instance.clearCurrentUserData();
     context.go(NavigationService.auth);
+  }
+
+  static void openLink(String link) async {
+    debugPrint('openLink:  $link');
+    final uri = Uri.parse(link);
+    if (await canLaunchUrl(uri)) {
+      final success = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (!success) {
+        await launchUrl(uri, mode: LaunchMode.inAppWebView);
+      }
+    } else {
+      await launchUrl(uri, mode: LaunchMode.inAppWebView);
+    }
   }
 }
