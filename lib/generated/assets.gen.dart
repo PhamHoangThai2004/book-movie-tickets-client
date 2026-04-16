@@ -75,11 +75,20 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/ic_home_outline.svg
   SvgGenImage get icHomeOutline => const SvgGenImage('assets/svgs/ic_home_outline.svg');
 
+  /// File path: assets/svgs/ic_label_vip.svg
+  SvgGenImage get icLabelVip => const SvgGenImage('assets/svgs/ic_label_vip.svg');
+
   /// File path: assets/svgs/ic_location.svg
   SvgGenImage get icLocation => const SvgGenImage('assets/svgs/ic_location.svg');
 
   /// File path: assets/svgs/ic_lock.svg
   SvgGenImage get icLock => const SvgGenImage('assets/svgs/ic_lock.svg');
+
+  /// File path: assets/svgs/ic_money_send.svg
+  SvgGenImage get icMoneySend => const SvgGenImage('assets/svgs/ic_money_send.svg');
+
+  /// File path: assets/svgs/ic_note.svg
+  SvgGenImage get icNote => const SvgGenImage('assets/svgs/ic_note.svg');
 
   /// File path: assets/svgs/ic_notification.svg
   SvgGenImage get icNotification => const SvgGenImage('assets/svgs/ic_notification.svg');
@@ -95,6 +104,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/ic_search.svg
   SvgGenImage get icSearch => const SvgGenImage('assets/svgs/ic_search.svg');
+
+  /// File path: assets/svgs/ic_seat.svg
+  SvgGenImage get icSeat => const SvgGenImage('assets/svgs/ic_seat.svg');
 
   /// File path: assets/svgs/ic_shopping_cart.svg
   SvgGenImage get icShoppingCart => const SvgGenImage('assets/svgs/ic_shopping_cart.svg');
@@ -144,13 +156,17 @@ class $AssetsSvgsGen {
     icEyesOpen,
     icHome,
     icHomeOutline,
+    icLabelVip,
     icLocation,
     icLock,
+    icMoneySend,
+    icNote,
     icNotification,
     icPassword,
     icPicture,
     icPlay,
     icSearch,
+    icSeat,
     icShoppingCart,
     icStar,
     icTicket,

@@ -13,11 +13,13 @@ import 'package:client/data/remote/services/auth_service.dart' as _i787;
 import 'package:client/data/remote/services/movie_service.dart' as _i468;
 import 'package:client/data/remote/services/payment_service.dart' as _i280;
 import 'package:client/data/remote/services/showtime_service.dart' as _i573;
+import 'package:client/data/remote/services/ticket_service.dart' as _i1017;
 import 'package:client/data/remote/services/user_service.dart' as _i906;
 import 'package:client/data/repositories/auth_repository.dart' as _i11;
 import 'package:client/data/repositories/movie_repository.dart' as _i756;
 import 'package:client/data/repositories/payment_repository.dart' as _i724;
 import 'package:client/data/repositories/showtime_repository.dart' as _i904;
+import 'package:client/data/repositories/ticket_repository.dart' as _i652;
 import 'package:client/data/repositories/user_repository.dart' as _i181;
 import 'package:client/screens/payment_history/cubit/payment_history_cubit.dart'
     as _i211;
@@ -35,6 +37,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i468.MovieService>(() => _i468.MovieService());
     gh.factory<_i280.PaymentService>(() => _i280.PaymentService());
     gh.factory<_i573.ShowtimeService>(() => _i573.ShowtimeService());
+    gh.factory<_i1017.TicketService>(() => _i1017.TicketService());
     gh.factory<_i906.UserService>(() => _i906.UserService());
     gh.factory<_i724.PaymentRepository>(
       () => _i724.PaymentRepositoryImpl(
@@ -56,6 +59,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i756.MovieRepository>(
       () => _i756.MovieRepositoryImpl(movieService: gh<_i468.MovieService>()),
+    );
+    gh.factory<_i652.TicketRepository>(
+      () =>
+          _i652.TicketRepositoryImpl(ticketService: gh<_i1017.TicketService>()),
     );
     gh.factory<_i11.AuthRepository>(
       () => _i11.AuthRepositoryImpl(authService: gh<_i787.AuthService>()),

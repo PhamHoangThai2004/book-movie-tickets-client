@@ -121,5 +121,14 @@
   "movie_name": "Tên phim",
   "address": "Địa chỉ",
   "room": "Phòng chiếu",
-  "showtime": "Suất chiếu"
+  "showtime": "Suất chiếu",
+  "my_tickets": "Vé của tôi",
+  "no_tickets_found": "Không tìm thấy vé nào",
+  "cancelled": "Đã huỷ",
+  "checked_in": "Đã check-in",
+  "issued": "Đã phát hành",
+  "expired": "Đã hết hạn",
+  "ticket_detail": "Chi tiết vé",
+  "note_ticket": "Hãy xuất trình mã QR này cho quầy vé để nhận vé của bạn.",
+  "message_ticket_expired": "Vé này sẽ hết hạn vào lúc {expiredAt}."
 }

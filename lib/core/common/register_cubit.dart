@@ -11,6 +11,7 @@ import '../../screens/payment/cubit/payment_cubit.dart';
 import '../../screens/payment_history/cubit/payment_history_cubit.dart';
 import '../../screens/sign_in/cubit/sign_in_cubit.dart';
 import '../../screens/sign_up/cubit/sign_up_cubit.dart';
+import '../../screens/ticket/cubit/ticket_cubit.dart';
 import '../../screens/update_profile/cubit/update_profile_cubit.dart';
 
 extension RegisterCubit on BuildContext {
@@ -35,4 +36,6 @@ extension RegisterCubit on BuildContext {
   PaymentCubit get paymentCubit => read<PaymentCubit>();
 
   PaymentHistoryCubit get paymentHistoryCubit => read<PaymentHistoryCubit>();
+
+  TicketCubit get ticketCubit => read<TicketCubit>();
 }
