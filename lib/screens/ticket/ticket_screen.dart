@@ -11,8 +11,11 @@ import 'package:client/screens/ticket/cubit/ticket_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../core/customs/toasts/loading_custom.dart';
 import '../../core/customs/toasts/toast_custom.dart';
+import '../../core/navigation/navigation_service.dart';
 import '../../core/size_config/size_config.dart';
 import '../../data/enums/status_enum.dart';
 
@@ -56,13 +59,32 @@ class _TicketScreenState extends State<TicketScreen> {
       body: Container(
         decoration: AppThemes.mainBackground,
         child: SafeArea(
-          child: BlocListener<TicketCubit, TicketState>(
-            listenWhen: (previous, current) => previous.status != current.status,
-            listener: (context, state) {
-              if (state.status == StatusEnum.failure) {
-                ToastCustom.show(message: state.errorMessage);
-              }
-            },
+          child: MultiBlocListener(
+            listeners: [
+              BlocListener<TicketCubit, TicketState>(
+                listenWhen: (previous, current) => previous.status != current.status,
+                listener: (context, state) {
+                  if (state.status.isFailure) {
+                    ToastCustom.show(message: state.errorMessage);
+                  }
+                },
+              ),
+              BlocListener<TicketCubit, TicketState>(
+                listenWhen: (previous, current) => previous.statusDetail != current.statusDetail,
+                listener: (context, state) {
+                  if (state.statusDetail.isProcessing) {
+                    LoadingCustom.show();
+                  }
+                  else if (state.statusDetail.isSuccess) {
+                    LoadingCustom.hideLoading();
+                    context.pushNamed(NavigationService.ticketDetail, extra: state.ticket);
+                  } else if (state.statusDetail.isFailure) {
+                    LoadingCustom.hideLoading();
+                    ToastCustom.show(message: state.errorMessage);
+                  }
+                },
+              ),
+            ],
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
               child: BlocBuilder<TicketCubit, TicketState>(
@@ -97,18 +119,6 @@ class _TicketScreenState extends State<TicketScreen> {
   }
 
   Widget _buildContent(TicketState state) {
-    if (state.status == StatusEnum.processing && state.ticketsList.isEmpty) {
-      return _buildLoadingShimmer();
-    }
-
-    if (state.status == StatusEnum.failure && state.ticketsList.isEmpty) {}
-
-    if (state.ticketsList.isEmpty) {
-      return Center(
-        child: Text('no_tickets_found'.tr(), style: AppTextStyles.style.s16.whiteColor),
-      );
-    }
-
     return BlocBuilder<TicketCubit, TicketState>(
       buildWhen: (p, c) => p.status != c.status,
       builder: (context, state) {

@@ -1,3 +1,5 @@
+import 'package:client/core/common/register_cubit.dart';
+import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/styles/app_text_styles.dart';
@@ -18,68 +20,69 @@ class TicketItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: Dimens.d16.responsive()),
-      decoration: BoxDecoration(
-        color: AppColors.obsidian,
-        borderRadius: BorderRadius.circular(Dimens.d12.responsive()),
-      ),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(Dimens.d12.responsive()),
-              bottomLeft: Radius.circular(Dimens.d12.responsive()),
-            ),
-            child: ImageCustom(
-              imageUrl: ticket.moviePoster,
-              width: Dimens.d111.responsive(),
-              height: Dimens.d163.responsive(),
-              fit: BoxFit.cover,
-              errorWidget: Assets.svgs.icPicture.svg(
-                height: Dimens.d25.responsive(),
-                width: Dimens.d25.responsive(),
-                colorFilter: const ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
+    return CupertinoButtonCustom(
+      onPressed: () => context.ticketCubit.fetchTicketById(ticket.id),
+      child: Container(
+        margin: EdgeInsets.only(bottom: Dimens.d16.responsive()),
+        decoration: BoxDecoration(
+          color: AppColors.obsidian,
+          borderRadius: BorderRadius.circular(Dimens.d12.responsive()),
+        ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(Dimens.d12.responsive()),
+                bottomLeft: Radius.circular(Dimens.d12.responsive()),
+              ),
+              child: ImageCustom(
+                imageUrl: ticket.moviePoster,
+                width: Dimens.d111.responsive(),
+                height: Dimens.d163.responsive(),
+                fit: BoxFit.cover,
+                errorWidget: Assets.svgs.icPicture.svg(
+                  height: Dimens.d25.responsive(),
+                  width: Dimens.d25.responsive(),
+                  colorFilter: const ColorFilter.mode(AppColors.silver, BlendMode.srcIn),
+                ),
               ),
             ),
-          ),
-          HorizontalSpacing(of: Dimens.d12.responsive()),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                VerticalSpacing(of: Dimens.d12.responsive()),
-                Text(
-                  ticket.movieTitle,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.style.s20.w700.whiteSmokeColor,
-                ),
-                VerticalSpacing(of: Dimens.d8.responsive()),
-                _buildInfoRow(
-                  icon: Assets.svgs.icClock.svg(
-                    width: Dimens.d16.responsive(),
-                    height: Dimens.d16.responsive(),
+            HorizontalSpacing(of: Dimens.d12.responsive()),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ticket.movieTitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.style.s20.w700.whiteSmokeColor,
                   ),
-                  text:
-                      '${DateTimeUtils.fromIso8601(ticket.showtimeStart, targetFormat: 'HH:mm')} • ${DateTimeUtils.fromIso8601(ticket.showtimeShowDate, targetFormat: 'dd.MM.yyyy')}',
-                ),
-                VerticalSpacing(of: Dimens.d6.responsive()),
+                  VerticalSpacing(of: Dimens.d8.responsive()),
+                  _buildInfoRow(
+                    icon: Assets.svgs.icClock.svg(
+                      width: Dimens.d16.responsive(),
+                      height: Dimens.d16.responsive(),
+                    ),
+                    text:
+                        '${DateTimeUtils.fromIso8601(ticket.showtimeStart, targetFormat: 'HH:mm')} • ${DateTimeUtils.fromIso8601(ticket.showtimeShowDate, targetFormat: 'dd.MM.yyyy')}',
+                  ),
+                  VerticalSpacing(of: Dimens.d6.responsive()),
 
-                _buildInfoRow(
-                  icon: Assets.svgs.icLocation.svg(
-                    width: Dimens.d16.responsive(),
-                    height: Dimens.d16.responsive(),
+                  _buildInfoRow(
+                    icon: Assets.svgs.icLocation.svg(
+                      width: Dimens.d16.responsive(),
+                      height: Dimens.d16.responsive(),
+                    ),
+                    text: ticket.cinemaName,
                   ),
-                  text: ticket.cinemaName,
-                ),
-                VerticalSpacing(of: Dimens.d8.responsive()),
-                _buildStatusBadge(),
-                VerticalSpacing(of: Dimens.d12.responsive()),
-              ],
+                  VerticalSpacing(of: Dimens.d8.responsive()),
+                  _buildStatusBadge(),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -92,7 +95,7 @@ class TicketItem extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: AppTextStyles.style.s12.w400.coolGrayColor,
+            style: AppTextStyles.style.s14.w400.whiteSmokeColor,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

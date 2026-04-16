@@ -17,6 +17,7 @@ import 'package:client/screens/sign_up/sign_up_screen.dart';
 import 'package:client/screens/startup/startup_screen.dart';
 import 'package:client/screens/ticket/cubit/ticket_cubit.dart';
 import 'package:client/screens/ticket/ticket_screen.dart';
+import 'package:client/screens/ticket_detail/ticket_detail_screen.dart';
 import 'package:client/screens/update_profile/cubit/update_profile_cubit.dart';
 import 'package:client/screens/update_profile/update_profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ import 'package:bot_toast/bot_toast.dart';
 
 import '../../data/model/movie_model.dart';
 import '../../data/model/payment_model.dart';
+import '../../data/model/ticket_model.dart';
 import '../../screens/book_tickets/book_tickets_screen.dart';
 import '../../screens/book_tickets/cubit/book_tickets_cubit.dart';
 import '../../screens/dashboard/dashboard_screen.dart';
@@ -75,6 +77,8 @@ class NavigationService {
   static String get paymentHistory => '/payment-history';
 
   static String get paymentDetail => '/payment-detail';
+
+  static String get ticketDetail => '/ticket-detail';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -344,6 +348,25 @@ class NavigationService {
           return CustomTransitionPage(
             key: state.pageKey,
             child: PaymentDetailScreen(payment: payment),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
+      /// ticketDetail
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: ticketDetail,
+        path: ticketDetail,
+        pageBuilder: (context, state) {
+          final ticket = state.extra as TicketModel;
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: TicketDetailScreen(ticket: ticket),
             transitionDuration: const Duration(milliseconds: 300),
             reverseTransitionDuration: const Duration(milliseconds: 300),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {

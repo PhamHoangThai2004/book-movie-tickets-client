@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/enums/status_enum.dart';
+import '../../../data/model/ticket_model.dart';
 import '../../../data/model/ticket_preview_model.dart';
 import '../../../data/remote/requests/ticket_request.dart';
 import '../../../data/remote/responses/pagination_response.dart';
@@ -69,6 +70,16 @@ class TicketCubit extends Cubit<TicketState> {
           isLoadingMore: false,
         ),
       );
+    }
+  }
+
+  Future<void> fetchTicketById(String id) async {
+    emit(state.copyWith(statusDetail: StatusEnum.processing));
+    try {
+      final response = await ticketRepository.getTicketById(id);
+      emit(state.copyWith(ticket: response, statusDetail: StatusEnum.success));
+    } on ApiException catch (e) {
+      emit(state.copyWith(statusDetail: StatusEnum.failure, errorMessage: e.errorMessage));
     }
   }
 }
