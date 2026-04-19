@@ -74,7 +74,7 @@ class AppUtils {
       message: 'please_login_message'.tr(),
       acceptTitle: 'sign_in'.tr(),
       acceptAction: () {
-        context.push(NavigationService.signIn);
+        context.push(NavigationService.auth);
       },
     );
   }
