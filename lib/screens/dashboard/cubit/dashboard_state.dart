@@ -1,4 +1,4 @@
-import '../../../data/model/user_model.dart';
+part of 'dashboard_cubit.dart';
 
 class DashboardState {
   final UserModel? userInfo;

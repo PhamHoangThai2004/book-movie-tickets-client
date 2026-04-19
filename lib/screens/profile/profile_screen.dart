@@ -15,7 +15,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../generated/assets.gen.dart';
 import '../dashboard/cubit/dashboard_cubit.dart';
-import '../dashboard/cubit/dashboard_state.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

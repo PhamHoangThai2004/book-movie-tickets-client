@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/app_utils.dart';
-import 'dashboard_state.dart';
+import '../../../data/model/user_model.dart';
+
+part 'dashboard_state.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {
   final UserRepository userRepository;

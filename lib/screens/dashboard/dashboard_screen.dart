@@ -11,7 +11,6 @@ import '../../core/navigation/navigation_bar_type.dart';
 import '../../core/size_config/size_config.dart';
 import '../../core/themes/app_colors.dart';
 import 'cubit/dashboard_cubit.dart';
-import 'cubit/dashboard_state.dart';
 
 class DashboardScreen extends StatefulWidget {
   final StatefulNavigationShell navigationShell;

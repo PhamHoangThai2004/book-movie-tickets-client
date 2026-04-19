@@ -23,4 +23,5 @@ final class AppColors {
   static const Color slateGray = Color(0xFF575757);
   static const Color graphite = Color(0xFF1D1D1D);
   static const Color carbonGray = Color(0xFF3B3B3B);
+  static const Color neonGreen = Color(0xFF2EF536);
 }
