@@ -18,7 +18,7 @@ abstract class PaymentRepository {
   Future<PaymentModel> getPaymentById(String id);
 }
 
-@Injectable(as: PaymentRepository)
+@LazySingleton(as: PaymentRepository)
 class PaymentRepositoryImpl implements PaymentRepository {
   final PaymentService _paymentService;
 

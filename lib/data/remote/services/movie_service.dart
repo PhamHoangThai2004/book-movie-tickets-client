@@ -12,7 +12,7 @@ import '../../../core/common/app_config.dart';
 import '../../model/movie_model.dart';
 import '../../network/interceptors/general_interceptor.dart';
 
-@injectable
+@singleton
 class MovieService {
   final String _moviePath = 'users/movies';
 

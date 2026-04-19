@@ -14,7 +14,7 @@ abstract class UserRepository {
   Future<void> changePassword(ChangePasswordRequest request);
 }
 
-@Injectable(as: UserRepository)
+@Singleton(as: UserRepository)
 class UserRepositoryImpl implements UserRepository {
   final UserService _userService;
 

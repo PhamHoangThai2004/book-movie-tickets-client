@@ -22,7 +22,7 @@ abstract class AuthRepository {
   Future<void> resetPassword(ResetPasswordRequest request);
 }
 
-@Injectable(as: AuthRepository)
+@LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   final AuthService _authService;
 

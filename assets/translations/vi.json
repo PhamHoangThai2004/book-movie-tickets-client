@@ -130,5 +130,8 @@
   "expired": "Đã hết hạn",
   "ticket_detail": "Chi tiết vé",
   "note_ticket": "Hãy xuất trình mã QR này cho quầy vé để nhận vé của bạn.",
-  "message_ticket_expired": "Vé này sẽ hết hạn vào lúc {expiredAt}."
+  "message_ticket_expired": "Vé này sẽ hết hạn vào lúc {expiredAt}.",
+  "loading_trailer": "Đang tải trailer...",
+  "load_trailer_failed": "Tải trailer thất bại",
+  "not_load_trailer": "Không thể tải trailer"
 }

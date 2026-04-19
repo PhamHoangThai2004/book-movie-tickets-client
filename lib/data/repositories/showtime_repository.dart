@@ -20,7 +20,7 @@ abstract class ShowtimeRepository {
   Future<void> removePendingBooking();
 }
 
-@Injectable(as: ShowtimeRepository)
+@LazySingleton(as: ShowtimeRepository)
 class ShowtimeRepositoryImpl implements ShowtimeRepository {
   final ShowtimeService _showtimeService;
 

@@ -12,7 +12,7 @@ import '../requests/payment_request.dart';
 import '../responses/model_response.dart';
 import '../responses/pagination_response.dart';
 
-@injectable
+@lazySingleton
 class PaymentService {
   final String _bookingPath = 'users/bookings';
   final String _paymentPath = 'users/payments';

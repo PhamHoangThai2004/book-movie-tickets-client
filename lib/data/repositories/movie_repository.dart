@@ -16,7 +16,7 @@ abstract class MovieRepository {
   Future<List<CinemaModel>> getCinemasByMovieId(String movieId);
 }
 
-@Injectable(as: MovieRepository)
+@Singleton(as: MovieRepository)
 class MovieRepositoryImpl implements MovieRepository {
   final MovieService _movieService;
 

@@ -12,7 +12,7 @@ import '../../network/exceptions/api_exception.dart';
 import '../../network/interceptors/general_interceptor.dart';
 import '../requests/reset_password_request.dart';
 
-@injectable
+@lazySingleton
 class AuthService {
   final signInPath = 'account/auth/login';
   final signUpPath = 'account/auth/register';

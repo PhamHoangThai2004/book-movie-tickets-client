@@ -3,7 +3,6 @@ import 'package:client/data/network/exceptions/api_exception.dart';
 import 'package:client/data/repositories/payment_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../data/model/payment_model.dart';
 import '../../../data/model/payment_preview_model.dart';
@@ -12,7 +11,6 @@ import '../../../data/remote/responses/pagination_response.dart';
 
 part 'payment_history_state.dart';
 
-@injectable
 class PaymentHistoryCubit extends Cubit<PaymentHistoryState> {
   final PaymentRepository paymentRepository;
 

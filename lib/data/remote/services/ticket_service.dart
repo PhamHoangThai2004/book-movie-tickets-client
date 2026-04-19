@@ -11,7 +11,7 @@ import '../../network/interceptors/auth_interceptor.dart';
 import '../requests/ticket_request.dart';
 import '../responses/pagination_response.dart';
 
-@injectable
+@lazySingleton
 class TicketService {
   final String _ticketPath = 'users/tickets';
 

@@ -21,8 +21,6 @@ import 'package:client/data/repositories/payment_repository.dart' as _i724;
 import 'package:client/data/repositories/showtime_repository.dart' as _i904;
 import 'package:client/data/repositories/ticket_repository.dart' as _i652;
 import 'package:client/data/repositories/user_repository.dart' as _i181;
-import 'package:client/screens/payment_history/cubit/payment_history_cubit.dart'
-    as _i211;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -33,38 +31,33 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    gh.factory<_i787.AuthService>(() => _i787.AuthService());
-    gh.factory<_i468.MovieService>(() => _i468.MovieService());
-    gh.factory<_i280.PaymentService>(() => _i280.PaymentService());
-    gh.factory<_i573.ShowtimeService>(() => _i573.ShowtimeService());
-    gh.factory<_i1017.TicketService>(() => _i1017.TicketService());
-    gh.factory<_i906.UserService>(() => _i906.UserService());
-    gh.factory<_i724.PaymentRepository>(
+    gh.singleton<_i468.MovieService>(() => _i468.MovieService());
+    gh.singleton<_i906.UserService>(() => _i906.UserService());
+    gh.lazySingleton<_i787.AuthService>(() => _i787.AuthService());
+    gh.lazySingleton<_i280.PaymentService>(() => _i280.PaymentService());
+    gh.lazySingleton<_i573.ShowtimeService>(() => _i573.ShowtimeService());
+    gh.lazySingleton<_i1017.TicketService>(() => _i1017.TicketService());
+    gh.lazySingleton<_i724.PaymentRepository>(
       () => _i724.PaymentRepositoryImpl(
         paymentService: gh<_i280.PaymentService>(),
       ),
     );
-    gh.factory<_i211.PaymentHistoryCubit>(
-      () => _i211.PaymentHistoryCubit(
-        paymentRepository: gh<_i724.PaymentRepository>(),
-      ),
-    );
-    gh.factory<_i904.ShowtimeRepository>(
+    gh.lazySingleton<_i904.ShowtimeRepository>(
       () => _i904.ShowtimeRepositoryImpl(
         showtimeService: gh<_i573.ShowtimeService>(),
       ),
     );
-    gh.factory<_i181.UserRepository>(
+    gh.singleton<_i181.UserRepository>(
       () => _i181.UserRepositoryImpl(userService: gh<_i906.UserService>()),
     );
-    gh.factory<_i756.MovieRepository>(
+    gh.singleton<_i756.MovieRepository>(
       () => _i756.MovieRepositoryImpl(movieService: gh<_i468.MovieService>()),
     );
-    gh.factory<_i652.TicketRepository>(
+    gh.lazySingleton<_i652.TicketRepository>(
       () =>
           _i652.TicketRepositoryImpl(ticketService: gh<_i1017.TicketService>()),
     );
-    gh.factory<_i11.AuthRepository>(
+    gh.lazySingleton<_i11.AuthRepository>(
       () => _i11.AuthRepositoryImpl(authService: gh<_i787.AuthService>()),
     );
     return this;
