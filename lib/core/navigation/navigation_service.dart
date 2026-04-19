@@ -1,4 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:client/screens/auth/auth_screen.dart';
+import 'package:client/screens/auth/cubit/auth_cubit.dart';
 import 'package:client/screens/change_password/change_password_screen.dart';
 import 'package:client/screens/change_password/cubit/change_password_cubit.dart';
 import 'package:client/screens/dashboard/cubit/dashboard_cubit.dart';
@@ -23,7 +25,6 @@ import 'package:client/screens/update_profile/update_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bot_toast/bot_toast.dart';
 
 import '../../data/model/movie_model.dart';
 import '../../data/model/payment_model.dart';
@@ -141,7 +142,10 @@ class NavigationService {
         path: auth,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: const AuthScreen(),
+          child: BlocProvider(
+            create: (context) => AuthCubit(movieRepository: getIt()),
+            child: const AuthScreen(),
+          ),
           transitionDuration: const Duration(milliseconds: 300),
           reverseTransitionDuration: const Duration(milliseconds: 300),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -416,7 +420,9 @@ class NavigationService {
           ),
 
           StatefulShellBranch(
-            routes: [GoRoute(path: profile, builder: (_, _) => const ProfileScreen(), routes: const [])],
+            routes: [
+              GoRoute(path: profile, builder: (_, _) => const ProfileScreen(), routes: const []),
+            ],
           ),
         ],
       ),
