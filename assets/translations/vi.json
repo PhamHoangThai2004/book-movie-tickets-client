@@ -133,5 +133,13 @@
   "message_ticket_expired": "Vé này sẽ hết hạn vào lúc {expiredAt}.",
   "loading_trailer": "Đang tải trailer...",
   "load_trailer_failed": "Tải trailer thất bại",
-  "not_load_trailer": "Không thể tải trailer"
+  "not_load_trailer": "Không thể tải trailer",
+  "hello": "Xin chào, {fullName} \uD83D\uDC4B",
+  "welcome_back": "Chào mừng trở lại!",
+  "search": "Tìm kiếm",
+  "see_all": "Xem tất cả",
+  "other_error": "Lỗi khác",
+  "unexpected_error": "Lỗi không xác định",
+  "promo_and_discount": "Khuyến mãi & giảm giá",
+  "new_movie": "Phim mới"
 }

@@ -401,4 +401,6 @@ class Dimens {
   static const double d398 = 398;
   static const double d399 = 399;
   static const double d400 = 400;
+
+  static const double d440 = 440;
 }

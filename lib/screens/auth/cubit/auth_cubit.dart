@@ -2,7 +2,6 @@ import 'package:client/data/local/preferences.dart';
 import 'package:client/data/model/movie_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../data/enums/status_enum.dart';
 import '../../../data/model/movie_poster_preview_model.dart';
@@ -11,7 +10,6 @@ import '../../../data/repositories/movie_repository.dart';
 
 part 'auth_state.dart';
 
-@injectable
 class AuthCubit extends Cubit<AuthState> {
   final MovieRepository _movieRepository;
 

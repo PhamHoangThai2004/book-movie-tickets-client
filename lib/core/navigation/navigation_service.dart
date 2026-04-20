@@ -6,6 +6,7 @@ import 'package:client/screens/change_password/cubit/change_password_cubit.dart'
 import 'package:client/screens/dashboard/cubit/dashboard_cubit.dart';
 import 'package:client/screens/forget_password/cubit/forget_password_cubit.dart';
 import 'package:client/screens/forget_password/forget_password_screen.dart';
+import 'package:client/screens/home/cubit/home_cubit.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/movie/movie_screen.dart';
 import 'package:client/screens/payment/payment_screen.dart';
@@ -390,7 +391,16 @@ class NavigationService {
         },
         branches: [
           StatefulShellBranch(
-            routes: [GoRoute(path: home, builder: (_, _) => const HomeScreen(), routes: const [])],
+            routes: [
+              GoRoute(
+                path: home,
+                builder: (_, _) => BlocProvider(
+                  create: (context) => HomeCubit(movieRepository: getIt()),
+                  child: const HomeScreen(),
+                ),
+                routes: const [],
+              ),
+            ],
           ),
 
           StatefulShellBranch(
