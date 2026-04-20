@@ -1,3 +1,4 @@
+import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -67,13 +68,16 @@ class _NowPlayingCarouselState extends State<NowPlayingCarousel> {
                   final movie = movies[index];
                   return Padding(
                     padding: EdgeInsets.symmetric(horizontal: Dimens.d8.responsive()),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(Dimens.d20.responsive()),
-                      child: ImageCustom(
-                        imageUrl: movie.poster,
-                        fit: BoxFit.cover,
-                        height: Dimens.d440.responsive(),
-                        width: Dimens.d310.responsive(),
+                    child: CupertinoButtonCustom(
+                      onPressed: () {},
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(Dimens.d20.responsive()),
+                        child: ImageCustom(
+                          imageUrl: movie.poster,
+                          fit: BoxFit.cover,
+                          height: Dimens.d440.responsive(),
+                          width: Dimens.d310.responsive(),
+                        ),
                       ),
                     ),
                   );

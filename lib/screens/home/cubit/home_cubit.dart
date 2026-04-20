@@ -1,5 +1,6 @@
 import 'package:client/data/enums/movie_status_enum.dart';
 import 'package:client/data/model/movie_preview_model.dart';
+import 'package:client/data/model/movie_poster_preview_model.dart';
 import 'package:client/data/network/exceptions/api_exception.dart';
 import 'package:client/data/remote/requests/movie_preview_request.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +29,16 @@ class HomeCubit extends Cubit<HomeState> {
       } else if (status.isNowShowing) {
         emit(state.copyWith(nowPlayingMovies: response.items, isNowPlayingLoading: false));
       }
+    } on ApiException catch (e) {
+      emit(state.copyWith(errorMessage: e.errorMessage));
+    }
+  }
+
+  Future<void> getMoviePreviews(int limit) async {
+    try {
+      emit(state.copyWith(isPreviewLoading: true));
+      final response = await movieRepository.getMoviePreviews(limit);
+      emit(state.copyWith(previewMovies: response, isPreviewLoading: false));
     } on ApiException catch (e) {
       emit(state.copyWith(errorMessage: e.errorMessage));
     }

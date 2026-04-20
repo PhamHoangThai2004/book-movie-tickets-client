@@ -282,7 +282,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               borderRadius: BorderRadius.circular(Dimens.d8.responsive()),
             ),
             padding: EdgeInsets.all(Dimens.d4.responsive()),
-            child: Assets.images.imgVnpay.image(),
+            child: Assets.images.imgVnPay.image(),
           ),
           HorizontalSpacing(of: Dimens.d16.responsive()),
           Text('vn_pay'.tr(), style: AppTextStyles.style.s16.w500.whiteColor),

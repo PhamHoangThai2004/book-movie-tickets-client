@@ -1,10 +1,10 @@
+import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/size_config/app_dimen.dart';
 import '../../../core/size_config/dimens.dart';
-import '../../../core/size_config/size_config.dart';
 import '../../../core/styles/app_text_styles.dart';
 import '../../../core/themes/app_colors.dart';
 import '../../../generated/assets.gen.dart';
@@ -28,7 +28,6 @@ class HomeHeaderLayout extends StatelessWidget {
                   'hello'.tr(namedArgs: {'fullName': state.userInfo?.name ?? ''}),
                   style: AppTextStyles.style.s18.w400.whiteSmokeColor,
                 ),
-                VerticalSpacing(of: Dimens.d4.responsive()),
                 Text('welcome_back'.tr(), style: AppTextStyles.style.s26.w700.whiteSmokeColor),
               ],
             );
@@ -36,10 +35,13 @@ class HomeHeaderLayout extends StatelessWidget {
         ),
         Stack(
           children: [
-            Assets.svgs.icNotification.svg(
-              width: Dimens.d36.responsive(),
-              height: Dimens.d36.responsive(),
-              colorFilter: const ColorFilter.mode(AppColors.whiteSmoke, BlendMode.srcIn),
+            CupertinoButtonCustom(
+              onPressed: () {},
+              child: Assets.svgs.icNotification.svg(
+                width: Dimens.d36.responsive(),
+                height: Dimens.d36.responsive(),
+                colorFilter: const ColorFilter.mode(AppColors.whiteSmoke, BlendMode.srcIn),
+              ),
             ),
             Positioned(
               right: 5,

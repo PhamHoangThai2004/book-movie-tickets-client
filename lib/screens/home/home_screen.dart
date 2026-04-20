@@ -1,7 +1,8 @@
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
+import 'package:client/screens/home/components/coming_soon_carousel_shimmer.dart';
 import 'package:client/screens/home/components/home_header_layout.dart';
 import 'package:client/screens/home/components/now_playing_carousel.dart';
-import 'package:client/screens/home/components/coming_soon_carousel_shimmer.dart';
+import 'package:client/screens/home/components/previews_movies_list.dart';
 import 'package:client/screens/movie/components/movie_item.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,6 @@ class _HomeState extends State<HomeScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // Header và Search Bar - Fixed
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
                 child: Column(
@@ -69,7 +69,17 @@ class _HomeState extends State<HomeScreen> {
                       _buildSectionHeader(title: 'coming_soon'.tr(), onTapSeeAll: () {}),
                       VerticalSpacing(of: Dimens.d16.responsive()),
                       _buildComingSoonSection(),
-                      VerticalSpacing(of: Dimens.d20.responsive()),
+                      VerticalSpacing(of: Dimens.d24.responsive()),
+                      Text(
+                        'promo_and_discount'.tr(),
+                        style: AppTextStyles.style.s24.w700.whiteSmokeColor,
+                      ),
+                      VerticalSpacing(of: Dimens.d16.responsive()),
+                      Assets.images.imgPromotion.image(),
+                      VerticalSpacing(of: Dimens.d24.responsive()),
+                      _buildSectionHeader(title: 'new_movie'.tr(), onTapSeeAll: () {}),
+                      VerticalSpacing(of: Dimens.d16.responsive()),
+                      PreviewsMoviesList(),
                     ],
                   ),
                 ),

@@ -26,11 +26,14 @@ class $AssetsImagesGen {
   /// File path: assets/images/img_projector_range.png
   AssetGenImage get imgProjectorRange => const AssetGenImage('assets/images/img_projector_range.png');
 
-  /// File path: assets/images/img_vnpay.png
-  AssetGenImage get imgVnpay => const AssetGenImage('assets/images/img_vnpay.png');
+  /// File path: assets/images/img_promotion.png
+  AssetGenImage get imgPromotion => const AssetGenImage('assets/images/img_promotion.png');
+
+  /// File path: assets/images/img_vn_pay.png
+  AssetGenImage get imgVnPay => const AssetGenImage('assets/images/img_vn_pay.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [appLogo, imgNameApp, imgProjectorRange, imgVnpay];
+  List<AssetGenImage> get values => [appLogo, imgNameApp, imgProjectorRange, imgPromotion, imgVnPay];
 }
 
 class $AssetsSvgsGen {
