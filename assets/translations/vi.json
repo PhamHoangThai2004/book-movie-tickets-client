@@ -141,5 +141,17 @@
   "other_error": "Lỗi khác",
   "unexpected_error": "Lỗi không xác định",
   "promo_and_discount": "Khuyến mãi & giảm giá",
-  "new_movie": "Phim mới"
+  "new_movie": "Phim mới",
+  "search_for_movies": "Tìm kiếm phim",
+  "start_typing_movie_name": "Bắt đầu gõ tên phim bạn muốn tìm",
+  "no_results_found": "Không tìm thấy kết quả nào",
+  "try_different_keyword": "Hãy thử từ khóa khác",
+  "found": "Tìm thấy",
+  "results": "kết quả",
+  "filter": "Bộ lọc",
+  "status": "Trạng thái",
+  "all": "Tất cả",
+  "apply": "Áp dụng",
+  "enter_search": "Nhập để tìm kiếm",
+  "reset": "Đặt lại"
 }

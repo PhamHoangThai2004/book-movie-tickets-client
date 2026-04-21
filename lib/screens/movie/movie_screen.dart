@@ -7,6 +7,7 @@ import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/styles/app_text_styles.dart';
 import 'package:client/core/themes/app_colors.dart';
 import 'package:client/core/themes/app_themes.dart';
+import 'package:client/data/enums/movie_status_enum.dart';
 import 'package:client/screens/movie/components/movie_item.dart';
 import 'package:client/screens/movie/components/movie_item_shimmer.dart';
 import 'package:client/screens/movie/cubit/movie_cubit.dart';
@@ -156,14 +157,14 @@ class _MovieState extends State<MovieScreen> {
       child: Row(
         children: [
           _buildTabItem(
-            title: 'now_playing'.tr(),
+            title: MovieStatusEnum.nowShowing.title,
             isActive: state.isNowPlaying,
             onTap: () {
               context.movieCubit.onTabChanged(true);
             },
           ),
           _buildTabItem(
-            title: 'coming_soon'.tr(),
+            title: MovieStatusEnum.comingSoon.title,
             isActive: !state.isNowPlaying,
             onTap: () {
               context.movieCubit.onTabChanged(false);

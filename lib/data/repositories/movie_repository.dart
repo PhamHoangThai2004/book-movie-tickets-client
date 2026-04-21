@@ -4,6 +4,7 @@ import 'package:client/data/remote/services/movie_service.dart';
 import 'package:injectable/injectable.dart';
 
 import '../model/cinema_model.dart';
+import '../model/genre_model.dart';
 import '../model/movie_poster_preview_model.dart';
 import '../model/movie_preview_model.dart';
 import '../network/exceptions/api_exception.dart';
@@ -17,6 +18,8 @@ abstract class MovieRepository {
   Future<List<CinemaModel>> getCinemasByMovieId(String movieId);
 
   Future<List<MoviePosterPreviewModel>> getMoviePreviews(int limit);
+
+  Future<List<GenreModel>> getGenres();
 }
 
 @Singleton(as: MovieRepository)
@@ -59,6 +62,16 @@ class MovieRepositoryImpl implements MovieRepository {
   Future<List<MoviePosterPreviewModel>> getMoviePreviews(int limit) async {
     try {
       final response = await _movieService.getMoviePreviews(limit);
+      return response;
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+
+  @override
+  Future<List<GenreModel>> getGenres() async {
+    try {
+      final response = await _movieService.getGenres();
       return response;
     } catch (e) {
       throw ApiException.error(e);

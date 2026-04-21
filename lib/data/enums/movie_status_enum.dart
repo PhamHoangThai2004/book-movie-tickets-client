@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 enum MovieStatusEnum { comingSoon, nowShowing, ended }
 
 extension MovieStatusEnumX on MovieStatusEnum {
@@ -28,6 +30,17 @@ extension MovieStatusEnumX on MovieStatusEnum {
         return 'now_showing';
       case MovieStatusEnum.ended:
         return 'ended';
+    }
+  }
+
+  String get title {
+    switch (this) {
+      case MovieStatusEnum.comingSoon:
+        return 'coming_soon'.tr();
+      case MovieStatusEnum.nowShowing:
+        return 'now_playing'.tr();
+      case MovieStatusEnum.ended:
+        return '';
     }
   }
 }

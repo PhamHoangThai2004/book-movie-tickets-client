@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/common/app_config.dart';
+import '../../model/genre_model.dart';
 import '../../model/movie_model.dart';
 import '../../network/interceptors/general_interceptor.dart';
 
@@ -18,6 +19,7 @@ class MovieService {
   final String _moviePath = 'users/movies';
   final String _movieCinemaPath = 'users/movies/{id}/cinemas';
   final String _moviePreviewsPath = 'users/movies/previews';
+  final String _genrePath = 'users/genres';
 
   final Dio _dio = Dio(BaseOptions(baseUrl: AppConfig.baseUrl))
     ..interceptors.addAll([CurlLoggerDioInterceptor(printOnSuccess: true), GeneralInterceptor()]);
@@ -71,6 +73,19 @@ class MovieService {
         (json) => (json as List)
             .map((e) => MoviePosterPreviewModel.fromJson(e as Map<String, dynamic>))
             .toList(),
+      );
+      return result.data;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<List<GenreModel>> getGenres() async {
+    try {
+      final response = await _dio.get(_genrePath);
+      final result = ModelResponse.fromJson(
+        response.data,
+        (json) => (json as List).map((e) => GenreModel.fromJson(e as Map<String, dynamic>)).toList(),
       );
       return result.data;
     } on ApiException {
