@@ -1,4 +1,5 @@
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
+import 'package:client/core/firebase/notification_service.dart';
 import 'package:client/screens/home/components/coming_soon_carousel_shimmer.dart';
 import 'package:client/screens/home/components/home_header_layout.dart';
 import 'package:client/screens/home/components/now_playing_carousel.dart';
@@ -32,6 +33,10 @@ class _HomeState extends State<HomeScreen> {
     super.initState();
     context.homeCubit.getMovies(MovieStatusEnum.nowShowing);
     context.homeCubit.getMovies(MovieStatusEnum.comingSoon);
+
+    NotificationService.getFCMToken((tokenDevice) {
+      debugPrint('tokenDevice: $tokenDevice');
+    });
   }
 
   @override

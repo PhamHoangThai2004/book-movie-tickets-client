@@ -76,7 +76,7 @@ class AuthInterceptor extends InterceptorsWrapper {
   Future<String> _refreshToken() async {
     final refreshToken = Preferences.instance.refreshToken;
     if (refreshToken.isEmpty) {
-      throw Exception('Không thể ấy refresh token!');
+      throw Exception('Không thể lấy refresh token!');
     }
 
     final Dio dio = Dio(BaseOptions(baseUrl: AppConfig.baseUrl))
