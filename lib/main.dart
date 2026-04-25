@@ -1,6 +1,8 @@
+import 'package:client/core/firebase/notification_service.dart';
 import 'package:client/core/size_config/device_size_constants.dart';
 import 'package:client/core/themes/app_themes.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -31,6 +33,9 @@ Future<void> _configApp() async {
   await EasyLocalization.ensureInitialized();
   await Preferences.instance.init();
   configureDependencies();
+  final app = await Firebase.initializeApp();
+  debugPrint('Firebase app: ${app.options.projectId}');
+  await NotificationService.initialize();
 }
 
 class MyApplication extends StatefulWidget {

@@ -1,4 +1,5 @@
 import 'package:client/core/common/register_cubit.dart';
+import 'package:client/core/firebase/notification_service.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/utils/app_utils.dart';
@@ -27,6 +28,7 @@ class _DashboardState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     context.dashboardCubit.getUserInfo();
+    NotificationService.listenerFirebaseMessaging();
   }
 
   @override

@@ -141,5 +141,6 @@
   "other_error": "Lỗi khác",
   "unexpected_error": "Lỗi không xác định",
   "promo_and_discount": "Khuyến mãi & giảm giá",
-  "new_movie": "Phim mới"
+  "new_movie": "Phim mới",
+  "get_qr_code": "Lấy mã QR"
 }
