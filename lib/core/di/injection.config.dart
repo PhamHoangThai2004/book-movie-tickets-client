@@ -21,6 +21,8 @@ import 'package:client/data/repositories/payment_repository.dart' as _i724;
 import 'package:client/data/repositories/showtime_repository.dart' as _i904;
 import 'package:client/data/repositories/ticket_repository.dart' as _i652;
 import 'package:client/data/repositories/user_repository.dart' as _i181;
+import 'package:client/screens/payment_detail/cubit/payment_detail_cubit.dart'
+    as _i931;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -41,6 +43,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i724.PaymentRepositoryImpl(
         paymentService: gh<_i280.PaymentService>(),
       ),
+    );
+    gh.factory<_i931.PaymentDetailCubit>(
+      () => _i931.PaymentDetailCubit(gh<_i724.PaymentRepository>()),
     );
     gh.lazySingleton<_i904.ShowtimeRepository>(
       () => _i904.ShowtimeRepositoryImpl(

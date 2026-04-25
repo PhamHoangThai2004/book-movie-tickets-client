@@ -29,16 +29,26 @@ class PaymentHistoryCubit extends Cubit<PaymentHistoryState> {
   }
 
   Future<void> loadMoreBookings() async {
-    if (!state.hasMore || state.status == StatusEnum.processing) return;
+    if (!state.hasMore || state.isLoadMore) return;
 
     try {
-      final nextPage = state.currentPage + 1;
-      final request = PaymentRequest(page: nextPage, size: state.pageSize);
+      emit(state.copyWith(isLoadMore: true));
+      final request = PaymentRequest(page: state.currentPage + 1, size: state.pageSize);
       final result = await paymentRepository.getPayments(request);
 
-      emit(state.copyWith(payments: result));
+      final oldItems = state.payments?.items ?? [];
+      final newItems = result.items;
+      final mergedItems = [...oldItems, ...newItems];
+
+      final mergedResponse = result.copyWith(
+        items: mergedItems,
+        page: result.page,
+        hasMore: result.hasMore,
+      );
+
+      emit(state.copyWith(payments: mergedResponse, isLoadMore: false));
     } on ApiException catch (e) {
-      emit(state.copyWith(errorMessage: e.errorMessage));
+      emit(state.copyWith(errorMessage: e.errorMessage, isLoadMore: false));
     }
   }
 

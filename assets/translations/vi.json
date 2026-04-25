@@ -142,5 +142,8 @@
   "unexpected_error": "Lỗi không xác định",
   "promo_and_discount": "Khuyến mãi & giảm giá",
   "new_movie": "Phim mới",
-  "get_qr_code": "Lấy mã QR"
+  "get_qr_code": "Lấy mã QR",
+  "cancel_payment": "Huỷ thanh toán",
+  "confirm_cancel_payment": "Bạn có chắc chắn muốn huỷ thanh toán này không?",
+  "cancel_payment_success": "Huỷ thanh toán thành công!"
 }

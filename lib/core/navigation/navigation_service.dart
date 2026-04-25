@@ -37,6 +37,7 @@ import '../../screens/movie/cubit/movie_cubit.dart';
 import '../../screens/movie_detail/cubit/movie_detail_cubit.dart';
 import '../../screens/movie_detail/movie_detail_screen.dart';
 import '../../screens/payment/cubit/payment_cubit.dart';
+import '../../screens/payment_detail/cubit/payment_detail_cubit.dart';
 import '../../screens/sign_up/cubit/sign_up_cubit.dart';
 import '../di/injection.dart';
 
@@ -352,7 +353,10 @@ class NavigationService {
           final payment = state.extra as PaymentModel;
           return CustomTransitionPage(
             key: state.pageKey,
-            child: PaymentDetailScreen(payment: payment),
+            child: BlocProvider(
+              create: (context) => getIt<PaymentDetailCubit>(),
+              child: PaymentDetailScreen(payment: payment),
+            ),
             transitionDuration: const Duration(milliseconds: 300),
             reverseTransitionDuration: const Duration(milliseconds: 300),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {

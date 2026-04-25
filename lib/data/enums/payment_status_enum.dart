@@ -39,7 +39,7 @@ extension PaymentStatusEnumX on PaymentStatusEnum {
       case PaymentStatusEnum.failed:
         return 'failure'.tr();
       case PaymentStatusEnum.cancelled:
-        return 'cancel_short'.tr();
+        return 'cancelled'.tr();
     }
   }
 
