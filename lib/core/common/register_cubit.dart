@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../screens/auth/cubit/auth_cubit.dart';
 import '../../screens/book_tickets/cubit/book_tickets_cubit.dart';
 import '../../screens/change_password/cubit/change_password_cubit.dart';
 import '../../screens/dashboard/cubit/dashboard_cubit.dart';
@@ -8,7 +9,9 @@ import '../../screens/forget_password/cubit/forget_password_cubit.dart';
 import '../../screens/home/cubit/home_cubit.dart';
 import '../../screens/movie/cubit/movie_cubit.dart';
 import '../../screens/movie_detail/cubit/movie_detail_cubit.dart';
+import '../../screens/notification/cubit/notification_cubit.dart';
 import '../../screens/payment/cubit/payment_cubit.dart';
+import '../../screens/payment_detail/cubit/payment_detail_cubit.dart';
 import '../../screens/payment_history/cubit/payment_history_cubit.dart';
 import '../../screens/search/cubit/search_cubit.dart';
 import '../../screens/sign_in/cubit/sign_in_cubit.dart';
@@ -44,4 +47,10 @@ extension RegisterCubit on BuildContext {
   HomeCubit get homeCubit => read<HomeCubit>();
 
   SearchCubit get searchCubit => read<SearchCubit>();
+
+  PaymentDetailCubit get paymentDetailCubit => read<PaymentDetailCubit>();
+
+  NotificationCubit get notificationCubit => read<NotificationCubit>();
+
+  AuthCubit get authCubit => read<AuthCubit>();
 }

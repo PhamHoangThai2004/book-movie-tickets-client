@@ -49,6 +49,13 @@ dependencies:
   qr_flutter: ^4.1.0
   barcode_widget: ^2.0.4
 
+  # Notification
+  flutter_local_notifications: ^21.0.0
+
+  #Firebase
+  firebase_core: ^4.7.0
+  firebase_messaging: ^16.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -153,5 +153,11 @@
   "all": "Tất cả",
   "apply": "Áp dụng",
   "enter_search": "Nhập để tìm kiếm",
-  "reset": "Đặt lại"
+  "reset": "Đặt lại",
+  "get_qr_code": "Lấy mã QR",
+  "cancel_payment": "Huỷ thanh toán",
+  "confirm_cancel_payment": "Bạn có chắc chắn muốn huỷ thanh toán này không?",
+  "cancel_payment_success": "Huỷ thanh toán thành công!",
+  "notification": "Thông báo",
+  "no_notifications": "Chưa có thông báo nào!"
 }

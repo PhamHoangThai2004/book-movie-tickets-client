@@ -6,6 +6,7 @@ class PaymentHistoryState extends Equatable {
   final StatusEnum statusLoad;
   final PaginationResponse<PaymentPreviewModel>? payments;
   final PaymentModel? payment;
+  final bool isLoadMore;
 
   const PaymentHistoryState({
     this.status = StatusEnum.initial,
@@ -13,10 +14,13 @@ class PaymentHistoryState extends Equatable {
     this.statusLoad = StatusEnum.initial,
     this.payments,
     this.payment,
+    this.isLoadMore = false,
   });
 
   bool get hasMore => payments?.hasMore ?? false;
+
   int get currentPage => payments?.page ?? 1;
+
   int get pageSize => payments?.pageSize ?? 10;
 
   PaymentHistoryState copyWith({
@@ -25,6 +29,7 @@ class PaymentHistoryState extends Equatable {
     StatusEnum? statusLoad,
     PaginationResponse<PaymentPreviewModel>? payments,
     PaymentModel? payment,
+    bool? isLoadMore,
   }) {
     return PaymentHistoryState(
       status: status ?? this.status,
@@ -32,9 +37,10 @@ class PaymentHistoryState extends Equatable {
       payments: payments ?? this.payments,
       statusLoad: statusLoad ?? this.statusLoad,
       payment: payment ?? this.payment,
+      isLoadMore: isLoadMore ?? this.isLoadMore,
     );
   }
 
   @override
-  List<Object?> get props => [status, errorMessage, payments, statusLoad, payment];
+  List<Object?> get props => [status, errorMessage, payments, statusLoad, payment, isLoadMore];
 }

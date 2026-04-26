@@ -74,7 +74,7 @@ class TicketDetailScreen extends StatelessWidget {
                 VerticalSpacing(of: Dimens.d24.responsive()),
 
                 ButtonCustom(
-                  title: 'Lấy mã QR'.tr(),
+                  title: 'get_qr_code'.tr(),
                   onPressed: () =>
                       showQRCodeDialog(context: context, ticketCode: ticket.ticketCode),
                 ),

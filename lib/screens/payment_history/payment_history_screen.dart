@@ -4,6 +4,7 @@ import 'package:client/core/customs/toasts/loading_custom.dart';
 import 'package:client/core/customs/toasts/toast_custom.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
+import 'package:client/core/size_config/size_config.dart';
 import 'package:client/core/styles/app_text_styles.dart';
 import 'package:client/core/themes/app_colors.dart';
 import 'package:client/core/themes/app_themes.dart';
@@ -17,7 +18,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/common/register_cubit.dart';
 import '../../core/navigation/navigation_service.dart';
-import '../../core/size_config/size_config.dart';
 import '../../data/enums/status_enum.dart';
 
 class PaymentHistoryScreen extends StatefulWidget {
@@ -69,15 +69,21 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
           ),
           BlocListener<PaymentHistoryCubit, PaymentHistoryState>(
             listenWhen: (previous, current) => previous.statusLoad != current.statusLoad,
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state.statusLoad.isProcessing) {
                 LoadingCustom.show();
-              }
-              else if (state.statusLoad.isSuccess && state.payment != null) {
+              } else if (state.statusLoad.isSuccess && state.payment != null) {
                 LoadingCustom.hideLoading();
-                context.pushNamed(NavigationService.paymentDetail, extra: state.payment!);
-              }
-              else if (state.statusLoad.isFailure) {
+                final result = await context.push<bool?>(
+                  NavigationService.paymentDetail,
+                  extra: state.payment!,
+                );
+                if (result == true) {
+                  if (context.mounted) {
+                    context.paymentHistoryCubit.refreshBookingHistory();
+                  }
+                }
+              } else if (state.statusLoad.isFailure) {
                 LoadingCustom.hideLoading();
                 ToastCustom.show(message: state.errorMessage);
               }
@@ -157,6 +163,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
 
                     return Expanded(
                       child: RefreshIndicator(
+                        color: AppColors.amberYellow,
                         onRefresh: () => context.paymentHistoryCubit.refreshBookingHistory(),
                         child: ListView.builder(
                           controller: _scrollController,

@@ -27,7 +27,8 @@ class _PreviewsMoviesListState extends State<PreviewsMoviesList> {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       buildWhen: (previous, current) =>
-      previous.previewMovies != current.previewMovies || previous.isPreviewLoading != current.isPreviewLoading,
+          previous.previewMovies != current.previewMovies ||
+          previous.isPreviewLoading != current.isPreviewLoading,
       builder: (context, state) {
         if (state.isPreviewLoading) {
           return PreviewsMovieShimmer();

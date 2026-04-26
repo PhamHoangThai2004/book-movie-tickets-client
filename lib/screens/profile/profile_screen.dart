@@ -193,9 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: Dimens.d14.responsive()),
-        decoration: AppThemes.outlineButtonStyle.copyWith(
-          border: Border.all(color: AppColors.amberYellow, width: Dimens.d1.responsive()),
-        ),
+        decoration: AppThemes.outlineButtonStyle,
         alignment: Alignment.center,
         child: Text('sign_out'.tr(), style: AppTextStyles.style.s20.w700.amberYellowColor),
       ),

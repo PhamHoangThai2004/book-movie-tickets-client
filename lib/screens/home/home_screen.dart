@@ -4,13 +4,15 @@ import 'package:client/screens/home/components/coming_soon_carousel_shimmer.dart
 import 'package:client/screens/home/components/home_header_layout.dart';
 import 'package:client/screens/home/components/now_playing_carousel.dart';
 import 'package:client/screens/home/components/previews_movies_list.dart';
-import 'package:client/screens/movie/components/movie_item.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/common/register_cubit.dart';
+import '../../core/customs/toasts/loading_custom.dart';
+import '../../core/customs/toasts/toast_custom.dart';
+import '../../core/navigation/navigation_service.dart';
 import '../../core/size_config/app_dimen.dart';
 import '../../core/size_config/dimens.dart';
 import '../../core/size_config/size_config.dart';
@@ -18,7 +20,10 @@ import '../../core/styles/app_text_styles.dart';
 import '../../core/themes/app_colors.dart';
 import '../../core/themes/app_themes.dart';
 import '../../data/enums/movie_status_enum.dart';
+import '../../data/enums/status_enum.dart';
+import '../../data/remote/firebase/fcm_service.dart';
 import '../../generated/assets.gen.dart';
+import 'components/coming_soon_movie_item.dart';
 import 'cubit/home_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,6 +39,10 @@ class _HomeState extends State<HomeScreen> {
     super.initState();
     context.homeCubit.getMovies(MovieStatusEnum.nowShowing);
     context.homeCubit.getMovies(MovieStatusEnum.comingSoon);
+
+    FcmService.getFCMToken((tokenDevice) {
+      debugPrint('tokenDevice: $tokenDevice');
+    });
   }
 
   @override
@@ -43,50 +52,76 @@ class _HomeState extends State<HomeScreen> {
       body: Container(
         decoration: AppThemes.mainBackground,
         child: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const VerticalSpacing(of: Dimens.d20),
-                    HomeHeaderLayout(),
-                    VerticalSpacing(of: Dimens.d24.responsive()),
-                    _buildSearchBar(),
-                  ],
-                ),
-              ),
-              VerticalSpacing(of: Dimens.d24.responsive()),
-              Expanded(
-                child: SingleChildScrollView(
+          child: BlocListener<HomeCubit, HomeState>(
+            listenWhen: (previous, current) => previous.status != current.status,
+            listener: (context, state) {
+              if (state.status.isProcessing) {
+                LoadingCustom.show();
+              } else if (state.status.isSuccess) {
+                LoadingCustom.hideLoading();
+                if (state.movie != null) {
+                  context.pushNamed(NavigationService.movieDetail, extra: state.movie);
+                }
+              } else if (state.status.isFailure) {
+                LoadingCustom.hideLoading();
+                ToastCustom.show(message: state.errorMessage);
+              }
+            },
+            child: Column(
+              children: [
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildSectionHeader(title: 'now_playing'.tr(), onTapSeeAll: () {}),
-                      VerticalSpacing(of: Dimens.d16.responsive()),
-                      NowPlayingCarousel(),
+                      const VerticalSpacing(of: Dimens.d20),
+                      HomeHeaderLayout(),
                       VerticalSpacing(of: Dimens.d24.responsive()),
-                      _buildSectionHeader(title: 'coming_soon'.tr(), onTapSeeAll: () {}),
-                      VerticalSpacing(of: Dimens.d16.responsive()),
-                      _buildComingSoonSection(),
-                      VerticalSpacing(of: Dimens.d24.responsive()),
-                      Text(
-                        'promo_and_discount'.tr(),
-                        style: AppTextStyles.style.s24.w700.whiteSmokeColor,
-                      ),
-                      VerticalSpacing(of: Dimens.d16.responsive()),
-                      Assets.images.imgPromotion.image(),
-                      VerticalSpacing(of: Dimens.d24.responsive()),
-                      _buildSectionHeader(title: 'new_movie'.tr(), onTapSeeAll: () {}),
-                      VerticalSpacing(of: Dimens.d16.responsive()),
-                      PreviewsMoviesList(),
+                      _buildSearchBar(),
                     ],
                   ),
                 ),
-              ),
-            ],
+                VerticalSpacing(of: Dimens.d24.responsive()),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: SizeConfig.appDefaultPadding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildSectionHeader(title: 'now_playing'.tr(), onTapSeeAll: () {}),
+                        VerticalSpacing(of: Dimens.d16.responsive()),
+                        NowPlayingCarousel(),
+                        VerticalSpacing(of: Dimens.d24.responsive()),
+
+                        BlocBuilder<HomeCubit, HomeState>(
+                          buildWhen: (previous, current) =>
+                              previous.comingSoonMovies != current.comingSoonMovies,
+                          builder: (context, state) {
+                            if (state.comingSoonMovies.isEmpty) {
+                              return const SizedBox.shrink();
+                            }
+                            return _buildSectionHeader(title: 'coming_soon'.tr(), onTapSeeAll: () {});
+                          },
+                        ),
+                        VerticalSpacing(of: Dimens.d16.responsive()),
+                        _buildComingSoonSection(),
+                        VerticalSpacing(of: Dimens.d24.responsive()),
+                        Text(
+                          'promo_and_discount'.tr(),
+                          style: AppTextStyles.style.s24.w700.whiteSmokeColor,
+                        ),
+                        VerticalSpacing(of: Dimens.d16.responsive()),
+                        Assets.images.imgPromotion.image(),
+                        VerticalSpacing(of: Dimens.d24.responsive()),
+                        _buildSectionHeader(title: 'new_movie'.tr(), onTapSeeAll: () {}),
+                        VerticalSpacing(of: Dimens.d16.responsive()),
+                        PreviewsMoviesList(),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -166,7 +201,7 @@ class _HomeState extends State<HomeScreen> {
                 padding: EdgeInsets.only(right: Dimens.d16.responsive()),
                 child: SizedBox(
                   width: Dimens.d191.responsive(),
-                  child: MovieItem(movie: movies[index], isNowPlaying: false),
+                  child: ComingSoonMovieItem(movie: movies[index]),
                 ),
               );
             },
