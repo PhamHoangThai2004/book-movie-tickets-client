@@ -1,3 +1,4 @@
+import 'package:client/core/common/register_cubit.dart';
 import 'package:client/core/customs/buttons/button_custom.dart';
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
 import 'package:client/core/customs/images/image_custom.dart';
@@ -34,7 +35,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<AuthCubit>().getMoviePreviews();
+    context.authCubit.getMoviePreviews();
   }
 
   @override
@@ -117,7 +118,7 @@ class _AuthScreenState extends State<AuthScreen> {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: Dimens.d40.responsive()),
             child: CupertinoButtonCustom(
-              onPressed: () => context.read<AuthCubit>().getMovieDetail(movies[index].id),
+              onPressed: () => context.authCubit.getMovieDetail(movies[index].id),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(Dimens.d30.responsive()),
                 child: ImageCustom(

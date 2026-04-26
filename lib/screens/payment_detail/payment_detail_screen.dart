@@ -20,16 +20,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/navigation/navigation_service.dart';
 import '../../data/model/payment_model.dart';
 import 'cubit/payment_detail_cubit.dart';
 
-class PaymentDetailScreen extends StatelessWidget {
+class PaymentDetailScreen extends StatefulWidget {
   final PaymentModel payment;
 
-  const PaymentDetailScreen({
-    super.key,
-    required this.payment,
-  });
+  const PaymentDetailScreen({super.key, required this.payment});
+
+  @override
+  State<StatefulWidget> createState() => _PaymentDetailState();
+}
+
+class _PaymentDetailState extends State<PaymentDetailScreen> with WidgetsBindingObserver {
+  late PaymentModel payment;
+  bool _isPaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    payment = widget.payment;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      if (_isPaying) context.go(NavigationService.home);
+    }
+  }
 
   String _getCleanUrl(String rawUrl) {
     if (rawUrl.contains('VNP_URL=')) {
@@ -177,7 +204,10 @@ class PaymentDetailScreen extends StatelessWidget {
                         Expanded(
                           child: ButtonCustom(
                             title: 'pay'.tr(),
-                            onPressed: () => AppUtils.openLink(_getCleanUrl(payment.paymentUrl!)),
+                            onPressed: () {
+                              _isPaying = true;
+                              AppUtils.openLink(_getCleanUrl(payment.paymentUrl!));
+                            },
                           ),
                         ),
                       ],

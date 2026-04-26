@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../screens/auth/cubit/auth_cubit.dart';
 import '../../screens/book_tickets/cubit/book_tickets_cubit.dart';
 import '../../screens/change_password/cubit/change_password_cubit.dart';
 import '../../screens/dashboard/cubit/dashboard_cubit.dart';
@@ -47,4 +48,6 @@ extension RegisterCubit on BuildContext {
   PaymentDetailCubit get paymentDetailCubit => read<PaymentDetailCubit>();
 
   NotificationCubit get notificationCubit => read<NotificationCubit>();
+
+  AuthCubit get authCubit => read<AuthCubit>();
 }
