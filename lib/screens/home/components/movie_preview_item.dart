@@ -1,6 +1,7 @@
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../core/common/register_cubit.dart';
 import '../../../core/customs/images/image_custom.dart';
 import '../../../core/size_config/app_dimen.dart';
 import '../../../core/size_config/dimens.dart';
@@ -15,7 +16,7 @@ class MoviePreviewItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoButtonCustom(
-      onPressed: () {},
+      onPressed: () => context.homeCubit.getMovieDetail(movie.id),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: Dimens.d8.responsive(),

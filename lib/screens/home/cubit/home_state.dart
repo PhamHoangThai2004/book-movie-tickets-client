@@ -8,6 +8,8 @@ class HomeState {
   final bool isNowPlayingLoading;
   final bool isComingSoonLoading;
   final bool isPreviewLoading;
+  final MovieModel? movie;
+  final StatusEnum status;
 
   HomeState({
     this.nowPlayingMovies = const [],
@@ -17,6 +19,8 @@ class HomeState {
     this.isNowPlayingLoading = true,
     this.isComingSoonLoading = true,
     this.isPreviewLoading = true,
+    this.movie,
+    this.status = StatusEnum.initial,
   });
 
   HomeState copyWith({
@@ -27,6 +31,8 @@ class HomeState {
     bool? isNowPlayingLoading,
     bool? isComingSoonLoading,
     bool? isPreviewLoading,
+    MovieModel? movie,
+    StatusEnum? status,
   }) {
     return HomeState(
       nowPlayingMovies: nowPlayingMovies ?? this.nowPlayingMovies,
@@ -36,6 +42,8 @@ class HomeState {
       isNowPlayingLoading: isNowPlayingLoading ?? this.isNowPlayingLoading,
       isComingSoonLoading: isComingSoonLoading ?? this.isComingSoonLoading,
       isPreviewLoading: isPreviewLoading ?? this.isPreviewLoading,
+      movie: movie ?? this.movie,
+      status: status ?? this.status,
     );
   }
 }

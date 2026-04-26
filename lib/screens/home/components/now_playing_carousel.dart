@@ -2,6 +2,7 @@ import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/common/register_cubit.dart';
 import '../../../core/customs/images/image_custom.dart';
 import '../../../core/size_config/app_dimen.dart';
 import '../../../core/size_config/dimens.dart';
@@ -69,7 +70,7 @@ class _NowPlayingCarouselState extends State<NowPlayingCarousel> {
                   return Padding(
                     padding: EdgeInsets.symmetric(horizontal: Dimens.d8.responsive()),
                     child: CupertinoButtonCustom(
-                      onPressed: () {},
+                      onPressed: () => context.homeCubit.getMovieDetail(movie.id),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(Dimens.d20.responsive()),
                         child: ImageCustom(
