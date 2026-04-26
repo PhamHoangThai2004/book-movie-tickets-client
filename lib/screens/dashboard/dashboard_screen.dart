@@ -23,11 +23,11 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardState extends State<DashboardScreen> {
-
   @override
   void initState() {
     super.initState();
     context.dashboardCubit.getUserInfo();
+    context.dashboardCubit.checkHaveUnreadNotifications();
     FcmService.listenerFirebaseMessaging();
   }
 
@@ -74,7 +74,7 @@ class _DashboardState extends State<DashboardScreen> {
 
               return NavigationBarItem(
                 type: item,
-                isSelected: item.index ==  widget.navigationShell.currentIndex,
+                isSelected: item.index == widget.navigationShell.currentIndex,
                 onTap: () => _goToTab(item.index),
               );
             }).toList(),
@@ -85,13 +85,17 @@ class _DashboardState extends State<DashboardScreen> {
   }
 
   void _goToTab(int index) {
+    final loggedIn = AppUtils.isLoggedIn();
+    if (index == 0 && loggedIn) {
+      context.dashboardCubit.checkHaveUnreadNotifications();
+    }
     if (index == 1 || index == 3) {
-      final loggedIn = AppUtils.isLoggedIn();
       if (!loggedIn) {
         AppUtils.requestLogin(context: context);
         return;
       }
     }
+
     widget.navigationShell.goBranch(
       index,
       initialLocation: index == widget.navigationShell.currentIndex,

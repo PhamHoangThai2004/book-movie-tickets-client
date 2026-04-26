@@ -414,7 +414,7 @@ class NavigationService {
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return BlocProvider(
-            create: (context) => DashboardCubit(getIt()),
+            create: (context) => getIt<DashboardCubit>(),
             child: DashboardScreen(navigationShell: navigationShell),
           );
         },
@@ -424,7 +424,7 @@ class NavigationService {
               GoRoute(
                 path: home,
                 builder: (_, _) => BlocProvider(
-                  create: (context) => HomeCubit(movieRepository: getIt()),
+                  create: (context) => getIt<HomeCubit>(),
                   child: const HomeScreen(),
                 ),
                 routes: const [],

@@ -71,7 +71,17 @@ class _HomeState extends State<HomeScreen> {
                       VerticalSpacing(of: Dimens.d16.responsive()),
                       NowPlayingCarousel(),
                       VerticalSpacing(of: Dimens.d24.responsive()),
-                      _buildSectionHeader(title: 'coming_soon'.tr(), onTapSeeAll: () {}),
+
+                      BlocBuilder<HomeCubit, HomeState>(
+                        buildWhen: (previous, current) =>
+                            previous.comingSoonMovies != current.comingSoonMovies,
+                        builder: (context, state) {
+                          if (state.comingSoonMovies.isEmpty) {
+                            return const SizedBox.shrink();
+                          }
+                          return _buildSectionHeader(title: 'coming_soon'.tr(), onTapSeeAll: () {});
+                        },
+                      ),
                       VerticalSpacing(of: Dimens.d16.responsive()),
                       _buildComingSoonSection(),
                       VerticalSpacing(of: Dimens.d24.responsive()),

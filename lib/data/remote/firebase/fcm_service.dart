@@ -19,7 +19,6 @@ class FcmService {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   static Future<void> initialize() async {
-    debugPrint('🔔 Initializing Notification Service...');
     await messaging.requestPermission();
     await FirebaseMessaging.instance.setAutoInitEnabled(true);
     FirebaseMessaging.onBackgroundMessage(_handleMessageBackground);

@@ -12,6 +12,8 @@ abstract class NotificationRepository {
   Future<void> markNotification(String id);
 
   Future<void> markAllSeen();
+
+  Future<int> getUnreadCount();
 }
 
 @LazySingleton(as: NotificationRepository)
@@ -46,6 +48,16 @@ class NotificationRepositoryImpl implements NotificationRepository {
   Future<void> markAllSeen() async {
     try {
       await _notificationService.markAllSeen();
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+
+  @override
+  Future<int> getUnreadCount() async {
+    try {
+      final response = await _notificationService.getUnreadCount();
+      return response;
     } catch (e) {
       throw ApiException.error(e);
     }

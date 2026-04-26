@@ -104,21 +104,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.error_outline, size: 64, color: AppColors.silver),
-                              SizedBox(height: Dimens.d16.responsive()),
                               Text(
                                 state.errorMessage.isEmpty
                                     ? 'error_occurred'.tr()
                                     : state.errorMessage,
-                                style: AppTextStyles.style.s16.copyWith(color: AppColors.silver),
+                                style: AppTextStyles.style.s18.w500.whiteColor,
                                 textAlign: TextAlign.center,
                               ),
                               SizedBox(height: Dimens.d24.responsive()),
                               ButtonCustom(
-                                onPressed: () {
-                                  context.notificationCubit.fetchNotifications();
-                                },
-                                width: Dimens.d100.responsive(),
+                                onPressed: context.notificationCubit.fetchNotifications,
+                                width: Dimens.d120.responsive(),
                                 title: 'retry'.tr(),
                               ),
                             ],
