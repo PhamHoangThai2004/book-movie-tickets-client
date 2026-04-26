@@ -40,6 +40,8 @@ import '../../screens/notification/cubit/notification_cubit.dart';
 import '../../screens/notification/notification_screen.dart';
 import '../../screens/payment/cubit/payment_cubit.dart';
 import '../../screens/payment_detail/cubit/payment_detail_cubit.dart';
+import '../../screens/search/cubit/search_cubit.dart';
+import '../../screens/search/search_screen.dart';
 import '../../screens/sign_up/cubit/sign_up_cubit.dart';
 import '../di/injection.dart';
 
@@ -86,6 +88,8 @@ class NavigationService {
   static String get ticketDetail => '/ticket-detail';
 
   static String get notification => '/notification';
+
+  static String get search => '/search';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -400,6 +404,26 @@ class NavigationService {
             child: BlocProvider(
               create: (context) => getIt<NotificationCubit>(),
               child: const NotificationScreen(),
+            ),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: search,
+        path: search,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (context) => getIt<SearchCubit>(),
+              child: const SearchScreen(),
             ),
             transitionDuration: const Duration(milliseconds: 300),
             reverseTransitionDuration: const Duration(milliseconds: 300),

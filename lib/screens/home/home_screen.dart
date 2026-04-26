@@ -12,7 +12,6 @@ import 'package:go_router/go_router.dart';
 import '../../core/common/register_cubit.dart';
 import '../../core/customs/toasts/loading_custom.dart';
 import '../../core/customs/toasts/toast_custom.dart';
-import '../../core/navigation/navigation_service.dart';
 import '../../core/size_config/app_dimen.dart';
 import '../../core/size_config/dimens.dart';
 import '../../core/size_config/size_config.dart';
