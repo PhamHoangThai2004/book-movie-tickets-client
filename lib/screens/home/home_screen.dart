@@ -1,5 +1,4 @@
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
-import 'package:client/core/firebase/notification_service.dart';
 import 'package:client/screens/home/components/coming_soon_carousel_shimmer.dart';
 import 'package:client/screens/home/components/home_header_layout.dart';
 import 'package:client/screens/home/components/now_playing_carousel.dart';
@@ -17,6 +16,7 @@ import '../../core/styles/app_text_styles.dart';
 import '../../core/themes/app_colors.dart';
 import '../../core/themes/app_themes.dart';
 import '../../data/enums/movie_status_enum.dart';
+import '../../data/remote/firebase/fcm_service.dart';
 import '../../generated/assets.gen.dart';
 import 'cubit/home_cubit.dart';
 
@@ -34,7 +34,7 @@ class _HomeState extends State<HomeScreen> {
     context.homeCubit.getMovies(MovieStatusEnum.nowShowing);
     context.homeCubit.getMovies(MovieStatusEnum.comingSoon);
 
-    NotificationService.getFCMToken((tokenDevice) {
+    FcmService.getFCMToken((tokenDevice) {
       debugPrint('tokenDevice: $tokenDevice');
     });
   }
@@ -71,7 +71,17 @@ class _HomeState extends State<HomeScreen> {
                       VerticalSpacing(of: Dimens.d16.responsive()),
                       NowPlayingCarousel(),
                       VerticalSpacing(of: Dimens.d24.responsive()),
-                      _buildSectionHeader(title: 'coming_soon'.tr(), onTapSeeAll: () {}),
+
+                      BlocBuilder<HomeCubit, HomeState>(
+                        buildWhen: (previous, current) =>
+                            previous.comingSoonMovies != current.comingSoonMovies,
+                        builder: (context, state) {
+                          if (state.comingSoonMovies.isEmpty) {
+                            return const SizedBox.shrink();
+                          }
+                          return _buildSectionHeader(title: 'coming_soon'.tr(), onTapSeeAll: () {});
+                        },
+                      ),
                       VerticalSpacing(of: Dimens.d16.responsive()),
                       _buildComingSoonSection(),
                       VerticalSpacing(of: Dimens.d24.responsive()),
