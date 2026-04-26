@@ -29,6 +29,7 @@ import 'package:client/screens/notification/cubit/notification_cubit.dart'
     as _i223;
 import 'package:client/screens/payment_detail/cubit/payment_detail_cubit.dart'
     as _i931;
+import 'package:client/screens/search/cubit/search_cubit.dart' as _i446;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -74,6 +75,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i709.HomeCubit>(
       () => _i709.HomeCubit(gh<_i756.MovieRepository>()),
+    );
+    gh.factory<_i446.SearchCubit>(
+      () => _i446.SearchCubit(gh<_i756.MovieRepository>()),
     );
     gh.lazySingleton<_i652.TicketRepository>(
       () =>

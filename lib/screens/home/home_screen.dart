@@ -1,4 +1,5 @@
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
+import 'package:client/core/navigation/navigation_service.dart';
 import 'package:client/screens/home/components/coming_soon_carousel_shimmer.dart';
 import 'package:client/screens/home/components/home_header_layout.dart';
 import 'package:client/screens/home/components/now_playing_carousel.dart';
@@ -11,7 +12,6 @@ import 'package:go_router/go_router.dart';
 import '../../core/common/register_cubit.dart';
 import '../../core/customs/toasts/loading_custom.dart';
 import '../../core/customs/toasts/toast_custom.dart';
-import '../../core/navigation/navigation_service.dart';
 import '../../core/size_config/app_dimen.dart';
 import '../../core/size_config/dimens.dart';
 import '../../core/size_config/size_config.dart';
@@ -129,7 +129,7 @@ class _HomeState extends State<HomeScreen> {
 
   Widget _buildSearchBar() {
     return CupertinoButtonCustom(
-      onPressed: () {},
+      onPressed: () => context.pushNamed(NavigationService.search),
       child: Container(
         height: Dimens.d48.responsive(),
         padding: EdgeInsets.all(Dimens.d16.responsive()),

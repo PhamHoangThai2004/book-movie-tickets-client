@@ -75,6 +75,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/ic_eyes_open.svg
   SvgGenImage get icEyesOpen => const SvgGenImage('assets/svgs/ic_eyes_open.svg');
 
+  /// File path: assets/svgs/ic_filter_list.svg
+  SvgGenImage get icFilterList => const SvgGenImage('assets/svgs/ic_filter_list.svg');
+
   /// File path: assets/svgs/ic_home.svg
   SvgGenImage get icHome => const SvgGenImage('assets/svgs/ic_home.svg');
 
@@ -161,6 +164,7 @@ class $AssetsSvgsGen {
     icExclamationCircle,
     icEyesClosed,
     icEyesOpen,
+    icFilterList,
     icHome,
     icHomeOutline,
     icLabelVip,

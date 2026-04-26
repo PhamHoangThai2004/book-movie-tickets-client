@@ -13,6 +13,7 @@ import '../../screens/notification/cubit/notification_cubit.dart';
 import '../../screens/payment/cubit/payment_cubit.dart';
 import '../../screens/payment_detail/cubit/payment_detail_cubit.dart';
 import '../../screens/payment_history/cubit/payment_history_cubit.dart';
+import '../../screens/search/cubit/search_cubit.dart';
 import '../../screens/sign_in/cubit/sign_in_cubit.dart';
 import '../../screens/sign_up/cubit/sign_up_cubit.dart';
 import '../../screens/ticket/cubit/ticket_cubit.dart';
@@ -44,6 +45,8 @@ extension RegisterCubit on BuildContext {
   TicketCubit get ticketCubit => read<TicketCubit>();
 
   HomeCubit get homeCubit => read<HomeCubit>();
+
+  SearchCubit get searchCubit => read<SearchCubit>();
 
   PaymentDetailCubit get paymentDetailCubit => read<PaymentDetailCubit>();
 
