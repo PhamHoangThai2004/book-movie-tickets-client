@@ -1,5 +1,4 @@
 import 'package:client/core/common/register_cubit.dart';
-import 'package:client/core/firebase/notification_service.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/utils/app_utils.dart';
@@ -11,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/navigation/navigation_bar_type.dart';
 import '../../core/size_config/size_config.dart';
 import '../../core/themes/app_colors.dart';
+import '../../data/remote/firebase/fcm_service.dart';
 import 'cubit/dashboard_cubit.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -28,7 +28,7 @@ class _DashboardState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     context.dashboardCubit.getUserInfo();
-    NotificationService.listenerFirebaseMessaging();
+    FcmService.listenerFirebaseMessaging();
   }
 
   @override

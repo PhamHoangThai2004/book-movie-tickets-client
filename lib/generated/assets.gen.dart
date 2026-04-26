@@ -51,6 +51,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/ic_call.svg
   SvgGenImage get icCall => const SvgGenImage('assets/svgs/ic_call.svg');
 
+  /// File path: assets/svgs/ic_check.svg
+  SvgGenImage get icCheck => const SvgGenImage('assets/svgs/ic_check.svg');
+
   /// File path: assets/svgs/ic_clock.svg
   SvgGenImage get icClock => const SvgGenImage('assets/svgs/ic_clock.svg');
 
@@ -150,6 +153,7 @@ class $AssetsSvgsGen {
     icArrowRight,
     icCalendar,
     icCall,
+    icCheck,
     icClock,
     icClose,
     icEdit,

@@ -1,7 +1,9 @@
 import 'package:client/core/customs/buttons/cupertino_button_custom.dart';
+import 'package:client/core/navigation/navigation_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/size_config/app_dimen.dart';
 import '../../../core/size_config/dimens.dart';
@@ -36,7 +38,7 @@ class HomeHeaderLayout extends StatelessWidget {
         Stack(
           children: [
             CupertinoButtonCustom(
-              onPressed: () {},
+              onPressed: () => context.pushNamed(NavigationService.notification),
               child: Assets.svgs.icNotification.svg(
                 width: Dimens.d36.responsive(),
                 height: Dimens.d36.responsive(),

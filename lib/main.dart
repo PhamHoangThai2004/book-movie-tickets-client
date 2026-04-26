@@ -1,4 +1,3 @@
-import 'package:client/core/firebase/notification_service.dart';
 import 'package:client/core/size_config/device_size_constants.dart';
 import 'package:client/core/themes/app_themes.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -12,10 +11,10 @@ import 'core/navigation/navigation_service.dart';
 import 'core/size_config/app_dimen.dart';
 import 'core/size_config/size_config.dart';
 import 'data/local/preferences.dart';
+import 'data/remote/firebase/fcm_service.dart';
 
 void main() async {
   await _configApp();
-
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('vi')],
@@ -33,9 +32,8 @@ Future<void> _configApp() async {
   await EasyLocalization.ensureInitialized();
   await Preferences.instance.init();
   configureDependencies();
-  final app = await Firebase.initializeApp();
-  debugPrint('Firebase app: ${app.options.projectId}');
-  await NotificationService.initialize();
+  await Firebase.initializeApp();
+  await FcmService.initialize();
 }
 
 class MyApplication extends StatefulWidget {

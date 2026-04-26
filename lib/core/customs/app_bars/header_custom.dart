@@ -13,8 +13,17 @@ class HeaderCustom extends StatelessWidget {
   final String title;
   final SvgGenImage? backIcon;
   final Function()? backAction;
+  final SvgGenImage? extraIcon;
+  final Function()? extraAction;
 
-  const HeaderCustom({super.key, required this.title, this.backIcon, this.backAction});
+  const HeaderCustom({
+    super.key,
+    required this.title,
+    this.backIcon,
+    this.backAction,
+    this.extraIcon,
+    this.extraAction,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +44,24 @@ class HeaderCustom extends StatelessWidget {
                   colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
                 ),
         ),
-        Text(title, style: AppTextStyles.style.w700.s28.whiteSmokeColor),
-        HorizontalSpacing(of: Dimens.d34.responsive()),
+        Expanded(
+          child: Text(
+            title,
+            style: AppTextStyles.style.w700.s28.whiteSmokeColor,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        if (extraIcon != null)
+          CupertinoButtonCustom(
+            onPressed: extraAction,
+            child: extraIcon!.svg(
+              width: Dimens.d25.responsive(),
+              height: Dimens.d25.responsive(),
+              colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+            ),
+          )
+        else
+          HorizontalSpacing(of: Dimens.d34.responsive()),
       ],
     );
   }
