@@ -12,7 +12,7 @@ import '../../network/exceptions/api_exception.dart';
 import '../../network/interceptors/auth_interceptor.dart';
 import '../responses/model_response.dart';
 
-@injectable
+@lazySingleton
 class ShowtimeService {
   final String _showtimePath = 'users/showtimes';
   final String _seatPickPath = 'users/bookings/pick';

@@ -13,7 +13,7 @@ abstract class TicketRepository {
   Future<TicketModel> getTicketById(String id);
 }
 
-@Injectable(as: TicketRepository)
+@LazySingleton(as: TicketRepository)
 class TicketRepositoryImpl implements TicketRepository {
   final TicketService _ticketService;
 

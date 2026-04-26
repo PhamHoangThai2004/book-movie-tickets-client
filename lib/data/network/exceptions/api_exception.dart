@@ -60,7 +60,7 @@ class ApiException {
     if (error is DioException) {
       return ApiException(exception: error);
     }
-    log('Error not from Dio: $stackTrace');
+    log('${'other_error'.tr()}: $stackTrace');
     return ApiException._(exception: error, errorMessage: error.toString());
   }
 
@@ -78,7 +78,7 @@ ApiException _handleErrorWithResponse(DioException exception) {
       return ApiException._(
         exception: exception,
         networkError: exception,
-        errorMessage: errorBody['message'] ?? 'Unknown error',
+        errorMessage: errorBody['message'] ?? 'unexpected_error'.tr(),
         errorCode: errorBody['statusCode'] ?? exception.response?.statusCode ?? 0,
       );
     }
@@ -86,7 +86,7 @@ ApiException _handleErrorWithResponse(DioException exception) {
     return ApiException._(
       exception: exception,
       networkError: exception,
-      errorMessage: exception.response?.statusMessage ?? 'Unexpected error',
+      errorMessage: exception.response?.statusMessage ?? 'unexpected_error'.tr(),
       errorCode: exception.response?.statusCode ?? 0,
     );
   } catch (e) {

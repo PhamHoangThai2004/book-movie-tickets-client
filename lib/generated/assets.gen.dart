@@ -26,11 +26,14 @@ class $AssetsImagesGen {
   /// File path: assets/images/img_projector_range.png
   AssetGenImage get imgProjectorRange => const AssetGenImage('assets/images/img_projector_range.png');
 
-  /// File path: assets/images/img_vnpay.png
-  AssetGenImage get imgVnpay => const AssetGenImage('assets/images/img_vnpay.png');
+  /// File path: assets/images/img_promotion.png
+  AssetGenImage get imgPromotion => const AssetGenImage('assets/images/img_promotion.png');
+
+  /// File path: assets/images/img_vn_pay.png
+  AssetGenImage get imgVnPay => const AssetGenImage('assets/images/img_vn_pay.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [appLogo, imgNameApp, imgProjectorRange, imgVnpay];
+  List<AssetGenImage> get values => [appLogo, imgNameApp, imgProjectorRange, imgPromotion, imgVnPay];
 }
 
 class $AssetsSvgsGen {
@@ -47,6 +50,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/ic_call.svg
   SvgGenImage get icCall => const SvgGenImage('assets/svgs/ic_call.svg');
+
+  /// File path: assets/svgs/ic_check.svg
+  SvgGenImage get icCheck => const SvgGenImage('assets/svgs/ic_check.svg');
 
   /// File path: assets/svgs/ic_clock.svg
   SvgGenImage get icClock => const SvgGenImage('assets/svgs/ic_clock.svg');
@@ -68,6 +74,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/ic_eyes_open.svg
   SvgGenImage get icEyesOpen => const SvgGenImage('assets/svgs/ic_eyes_open.svg');
+
+  /// File path: assets/svgs/ic_filter_list.svg
+  SvgGenImage get icFilterList => const SvgGenImage('assets/svgs/ic_filter_list.svg');
 
   /// File path: assets/svgs/ic_home.svg
   SvgGenImage get icHome => const SvgGenImage('assets/svgs/ic_home.svg');
@@ -147,6 +156,7 @@ class $AssetsSvgsGen {
     icArrowRight,
     icCalendar,
     icCall,
+    icCheck,
     icClock,
     icClose,
     icEdit,
@@ -154,6 +164,7 @@ class $AssetsSvgsGen {
     icExclamationCircle,
     icEyesClosed,
     icEyesOpen,
+    icFilterList,
     icHome,
     icHomeOutline,
     icLabelVip,

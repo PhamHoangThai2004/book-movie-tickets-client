@@ -3,7 +3,6 @@ import 'package:client/data/network/exceptions/api_exception.dart';
 import 'package:client/data/repositories/payment_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../data/model/payment_model.dart';
 import '../../../data/model/payment_preview_model.dart';
@@ -12,7 +11,6 @@ import '../../../data/remote/responses/pagination_response.dart';
 
 part 'payment_history_state.dart';
 
-@injectable
 class PaymentHistoryCubit extends Cubit<PaymentHistoryState> {
   final PaymentRepository paymentRepository;
 
@@ -31,16 +29,26 @@ class PaymentHistoryCubit extends Cubit<PaymentHistoryState> {
   }
 
   Future<void> loadMoreBookings() async {
-    if (!state.hasMore || state.status == StatusEnum.processing) return;
+    if (!state.hasMore || state.isLoadMore) return;
 
     try {
-      final nextPage = state.currentPage + 1;
-      final request = PaymentRequest(page: nextPage, size: state.pageSize);
+      emit(state.copyWith(isLoadMore: true));
+      final request = PaymentRequest(page: state.currentPage + 1, size: state.pageSize);
       final result = await paymentRepository.getPayments(request);
 
-      emit(state.copyWith(payments: result));
+      final oldItems = state.payments?.items ?? [];
+      final newItems = result.items;
+      final mergedItems = [...oldItems, ...newItems];
+
+      final mergedResponse = result.copyWith(
+        items: mergedItems,
+        page: result.page,
+        hasMore: result.hasMore,
+      );
+
+      emit(state.copyWith(payments: mergedResponse, isLoadMore: false));
     } on ApiException catch (e) {
-      emit(state.copyWith(errorMessage: e.errorMessage));
+      emit(state.copyWith(errorMessage: e.errorMessage, isLoadMore: false));
     }
   }
 

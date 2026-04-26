@@ -18,8 +18,10 @@ import 'package:client/screens/payment/cubit/payment_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/common/register_cubit.dart';
+import '../../core/navigation/navigation_service.dart';
 import '../../data/model/booking_model.dart';
 import '../../generated/assets.gen.dart';
 
@@ -32,13 +34,26 @@ class PaymentScreen extends StatefulWidget {
   State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
-class _PaymentScreenState extends State<PaymentScreen> {
-  String selectedMethod = 'ZaloPay';
-
+class _PaymentScreenState extends State<PaymentScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     context.paymentCubit.getBookingDetail(widget.bookingId);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      if (context.paymentCubit.state.statusPayment.isSuccess) context.go(NavigationService.home);
+    }
   }
 
   @override
@@ -282,7 +297,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               borderRadius: BorderRadius.circular(Dimens.d8.responsive()),
             ),
             padding: EdgeInsets.all(Dimens.d4.responsive()),
-            child: Assets.images.imgVnpay.image(),
+            child: Assets.images.imgVnPay.image(),
           ),
           HorizontalSpacing(of: Dimens.d16.responsive()),
           Text('vn_pay'.tr(), style: AppTextStyles.style.s16.w500.whiteColor),

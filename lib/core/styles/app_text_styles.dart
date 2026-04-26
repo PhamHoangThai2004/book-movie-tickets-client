@@ -79,6 +79,9 @@ extension FontSizeCustom on TextStyle {
   /// fontSize: 25
   TextStyle get s25 => copyWith(fontSize: Dimens.d25.responsive());
 
+  /// fontSize: 26
+  TextStyle get s26 => copyWith(fontSize: Dimens.d26.responsive());
+
   /// fontSize: 28
   TextStyle get s28 => copyWith(fontSize: Dimens.d28.responsive());
 

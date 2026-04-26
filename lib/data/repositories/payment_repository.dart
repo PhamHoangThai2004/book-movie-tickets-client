@@ -16,9 +16,11 @@ abstract class PaymentRepository {
   Future<PaginationResponse<PaymentPreviewModel>> getPayments(PaymentRequest request);
 
   Future<PaymentModel> getPaymentById(String id);
+
+  Future<void> cancelPayment(String id);
 }
 
-@Injectable(as: PaymentRepository)
+@LazySingleton(as: PaymentRepository)
 class PaymentRepositoryImpl implements PaymentRepository {
   final PaymentService _paymentService;
 
@@ -60,6 +62,15 @@ class PaymentRepositoryImpl implements PaymentRepository {
     try {
       final response = await _paymentService.getPaymentById(id);
       return response;
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+
+  @override
+  Future<void> cancelPayment(String id) async {
+    try {
+      await _paymentService.cancelPayment(id);
     } catch (e) {
       throw ApiException.error(e);
     }

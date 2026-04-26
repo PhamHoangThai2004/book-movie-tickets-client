@@ -6,9 +6,9 @@ class MoviePreviewRequest {
   final int size;
 
   MoviePreviewRequest({
-    required this.search,
-    required this.genre,
-    required this.status,
+    this.search,
+    this.genre,
+    this.status,
     required this.page,
     required this.size,
   });

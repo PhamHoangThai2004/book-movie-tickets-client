@@ -4,6 +4,7 @@ import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/styles/app_text_styles.dart';
 import 'package:client/core/themes/app_colors.dart';
 import 'package:client/generated/assets.gen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -44,7 +45,7 @@ class _TrailerLayoutState extends State<TrailerLayout> {
       if (videoUrl.isEmpty) {
         setState(() {
           _hasError = true;
-          _errorMessage = 'Empty trailer URL';
+          _errorMessage = 'not_load_trailer'.tr();
           _isLoading = false;
         });
         return;
@@ -55,7 +56,6 @@ class _TrailerLayoutState extends State<TrailerLayout> {
       _controller!.addListener(_updatePlayerState);
 
       if (mounted) {
-        // Auto play when loaded
         await _controller!.play();
         setState(() {
           _isLoading = false;
@@ -64,11 +64,10 @@ class _TrailerLayoutState extends State<TrailerLayout> {
         });
       }
     } catch (e) {
-      debugPrint('Trailer error: $e');
       if (mounted) {
         setState(() {
           _hasError = true;
-          _errorMessage = 'Failed to load trailer';
+          _errorMessage = 'load_trailer_failed'.tr();
           _isLoading = false;
         });
       }
@@ -159,7 +158,7 @@ class _TrailerLayoutState extends State<TrailerLayout> {
               child: const CupertinoActivityIndicator(color: AppColors.amberYellow),
             ),
             SizedBox(height: Dimens.d12.responsive()),
-            Text('Loading trailer...', style: AppTextStyles.style.s14.w400.silverGrayColor),
+            Text('loading_trailer'.tr(), style: AppTextStyles.style.s14.w400.silverGrayColor),
           ],
         ),
       );
@@ -207,7 +206,6 @@ class _TrailerLayoutState extends State<TrailerLayout> {
             ),
           ),
         ),
-        // Play/Pause button overlay - show when controls visible
         if (_showControls)
           Center(
             child: CupertinoButtonCustom(
@@ -233,7 +231,6 @@ class _TrailerLayoutState extends State<TrailerLayout> {
               ),
             ),
           ),
-        // Progress bar and time at bottom
         Positioned(
           bottom: 0,
           left: 0,
@@ -265,7 +262,6 @@ class _TrailerLayoutState extends State<TrailerLayout> {
                   ),
                 ),
                 SizedBox(height: Dimens.d4.responsive()),
-                // Time display
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(

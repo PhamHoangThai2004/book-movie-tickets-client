@@ -37,9 +37,9 @@ extension PaymentStatusEnumX on PaymentStatusEnum {
       case PaymentStatusEnum.success:
         return 'paid'.tr();
       case PaymentStatusEnum.failed:
-        return 'failure'.tr();
+        return 'expired'.tr();
       case PaymentStatusEnum.cancelled:
-        return 'cancel_short'.tr();
+        return 'cancelled'.tr();
     }
   }
 
@@ -50,7 +50,7 @@ extension PaymentStatusEnumX on PaymentStatusEnum {
       case PaymentStatusEnum.success:
         return AppColors.green;
       case PaymentStatusEnum.failed:
-        return AppColors.red;
+        return AppColors.silverGray;
       case PaymentStatusEnum.cancelled:
         return AppColors.red;
     }

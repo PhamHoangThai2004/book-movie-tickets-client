@@ -12,10 +12,11 @@ import '../requests/payment_request.dart';
 import '../responses/model_response.dart';
 import '../responses/pagination_response.dart';
 
-@injectable
+@lazySingleton
 class PaymentService {
   final String _bookingPath = 'users/bookings';
   final String _paymentPath = 'users/payments';
+  final String _cancelPaymentPath = 'users/payments/{id}/cancel';
 
   final Dio _dio = Dio(BaseOptions(baseUrl: AppConfig.baseUrl))
     ..interceptors.addAll([CurlLoggerDioInterceptor(printOnSuccess: true), AuthInterceptor()]);
@@ -71,6 +72,15 @@ class PaymentService {
         (json) => PaymentModel.fromJson(json as Map<String, dynamic>),
       );
       return result.data;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<void> cancelPayment(String id) async {
+    try {
+      final path = _cancelPaymentPath.replaceAll('{id}', id);
+      await _dio.patch(path);
     } on ApiException {
       rethrow;
     }

@@ -10,7 +10,7 @@ import '../../network/exceptions/api_exception.dart';
 import '../../network/interceptors/auth_interceptor.dart';
 import '../responses/model_response.dart';
 
-@injectable
+@singleton
 class UserService {
   final String _profilePath = 'account/users/profile';
   final String _changePasswordPath = 'account/auth/change-password';

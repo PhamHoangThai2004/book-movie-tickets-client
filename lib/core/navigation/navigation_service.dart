@@ -1,9 +1,12 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:client/screens/auth/auth_screen.dart';
+import 'package:client/screens/auth/cubit/auth_cubit.dart';
 import 'package:client/screens/change_password/change_password_screen.dart';
 import 'package:client/screens/change_password/cubit/change_password_cubit.dart';
 import 'package:client/screens/dashboard/cubit/dashboard_cubit.dart';
 import 'package:client/screens/forget_password/cubit/forget_password_cubit.dart';
 import 'package:client/screens/forget_password/forget_password_screen.dart';
+import 'package:client/screens/home/cubit/home_cubit.dart';
 import 'package:client/screens/home/home_screen.dart';
 import 'package:client/screens/movie/movie_screen.dart';
 import 'package:client/screens/payment/payment_screen.dart';
@@ -23,7 +26,6 @@ import 'package:client/screens/update_profile/update_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bot_toast/bot_toast.dart';
 
 import '../../data/model/movie_model.dart';
 import '../../data/model/payment_model.dart';
@@ -34,7 +36,12 @@ import '../../screens/dashboard/dashboard_screen.dart';
 import '../../screens/movie/cubit/movie_cubit.dart';
 import '../../screens/movie_detail/cubit/movie_detail_cubit.dart';
 import '../../screens/movie_detail/movie_detail_screen.dart';
+import '../../screens/notification/cubit/notification_cubit.dart';
+import '../../screens/notification/notification_screen.dart';
 import '../../screens/payment/cubit/payment_cubit.dart';
+import '../../screens/payment_detail/cubit/payment_detail_cubit.dart';
+import '../../screens/search/cubit/search_cubit.dart';
+import '../../screens/search/search_screen.dart';
 import '../../screens/sign_up/cubit/sign_up_cubit.dart';
 import '../di/injection.dart';
 
@@ -79,6 +86,10 @@ class NavigationService {
   static String get paymentDetail => '/payment-detail';
 
   static String get ticketDetail => '/ticket-detail';
+
+  static String get notification => '/notification';
+
+  static String get search => '/search';
 
   static GoRoute commonGoRoute({
     required String path,
@@ -141,7 +152,10 @@ class NavigationService {
         path: auth,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: const AuthScreen(),
+          child: BlocProvider(
+            create: (context) => AuthCubit(movieRepository: getIt()),
+            child: const AuthScreen(),
+          ),
           transitionDuration: const Duration(milliseconds: 300),
           reverseTransitionDuration: const Duration(milliseconds: 300),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -347,7 +361,10 @@ class NavigationService {
           final payment = state.extra as PaymentModel;
           return CustomTransitionPage(
             key: state.pageKey,
-            child: PaymentDetailScreen(payment: payment),
+            child: BlocProvider(
+              create: (context) => getIt<PaymentDetailCubit>(),
+              child: PaymentDetailScreen(payment: payment),
+            ),
             transitionDuration: const Duration(milliseconds: 300),
             reverseTransitionDuration: const Duration(milliseconds: 300),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -376,17 +393,67 @@ class NavigationService {
         },
       ),
 
+      /// notificationScreen
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: notification,
+        path: notification,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (context) => getIt<NotificationCubit>(),
+              child: const NotificationScreen(),
+            ),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        name: search,
+        path: search,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (context) => getIt<SearchCubit>(),
+              child: const SearchScreen(),
+            ),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          );
+        },
+      ),
+
       /// dashboardScreen
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return BlocProvider(
-            create: (context) => DashboardCubit(getIt()),
+            create: (context) => getIt<DashboardCubit>(),
             child: DashboardScreen(navigationShell: navigationShell),
           );
         },
         branches: [
           StatefulShellBranch(
-            routes: [GoRoute(path: home, builder: (_, _) => const HomeScreen(), routes: const [])],
+            routes: [
+              GoRoute(
+                path: home,
+                builder: (_, _) => BlocProvider(
+                  create: (context) => getIt<HomeCubit>(),
+                  child: const HomeScreen(),
+                ),
+                routes: const [],
+              ),
+            ],
           ),
 
           StatefulShellBranch(
@@ -416,7 +483,9 @@ class NavigationService {
           ),
 
           StatefulShellBranch(
-            routes: [GoRoute(path: profile, builder: (_, _) => const ProfileScreen(), routes: const [])],
+            routes: [
+              GoRoute(path: profile, builder: (_, _) => const ProfileScreen(), routes: const []),
+            ],
           ),
         ],
       ),

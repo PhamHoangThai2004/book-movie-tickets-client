@@ -43,7 +43,7 @@ abstract class AppThemes {
 
   static BoxDecoration outlineButtonStyle = BoxDecoration(
     color: AppColors.transparent,
-    border: Border.all(color: AppColors.whiteSmoke, width: Dimens.d1.responsive()),
+    border: Border.all(color: AppColors.amberYellow, width: Dimens.d1.responsive()),
     borderRadius: BorderRadius.all(Radius.circular(Dimens.d64.responsive())),
   );
 
