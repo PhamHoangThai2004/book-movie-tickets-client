@@ -26,19 +26,12 @@ class SearchHeaderLayout extends StatefulWidget {
 class _SearchHeaderState extends State<SearchHeaderLayout> {
   late TextEditingController _searchController;
   Timer? _debounceTimer;
-  static const int _debounceDelayMs = 500; // ⏱️ 0.5 giây
+  static const int _debounceDelayMs = 500;
 
   @override
   void initState() {
     _searchController = TextEditingController();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    _debounceTimer?.cancel();
-    super.dispose();
   }
 
   @override
@@ -53,10 +46,7 @@ class _SearchHeaderState extends State<SearchHeaderLayout> {
                 controller: _searchController,
                 textStyle: AppTextStyles.style.s15.w400.whiteColor,
                 onChanged: (value) {
-                  // Cancel previous timer
                   _debounceTimer?.cancel();
-                  
-                  // Set new debounce timer
                   _debounceTimer = Timer(
                     const Duration(milliseconds: _debounceDelayMs),
                     () => context.searchCubit.searchMovies(value),
@@ -75,7 +65,7 @@ class _SearchHeaderState extends State<SearchHeaderLayout> {
               onPressed: () => showFilterBottomSheet(context: context),
               child: BlocBuilder<SearchCubit, SearchState>(
                 buildWhen: (previous, current) =>
-                previous.selectedStatus != current.selectedStatus ||
+                    previous.selectedStatus != current.selectedStatus ||
                     previous.selectedGenre != current.selectedGenre,
                 builder: (context, state) {
                   final hasFilter = state.selectedStatus != null || state.selectedGenre != null;
@@ -98,9 +88,12 @@ class _SearchHeaderState extends State<SearchHeaderLayout> {
                             BlendMode.srcIn,
                           ),
                         ),
-                        Text('filter'.tr(), style: AppTextStyles.style.s14.w500.copyWith(
-                          color: hasFilter ? AppColors.black : AppColors.white,
-                        )),
+                        Text(
+                          'filter'.tr(),
+                          style: AppTextStyles.style.s14.w500.copyWith(
+                            color: hasFilter ? AppColors.black : AppColors.white,
+                          ),
+                        ),
                       ],
                     ),
                   );
