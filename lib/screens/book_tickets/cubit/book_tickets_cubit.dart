@@ -1,4 +1,5 @@
 import 'package:client/data/enums/status_enum.dart';
+import 'package:client/data/enums/seat_status_enum.dart';
 import 'package:client/data/model/showtime_preview_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,7 +69,6 @@ class BookTicketsCubit extends Cubit<BookTicketsState> {
     } on ApiException catch (e) {
       _reloadShowtime();
       emit(state.copyWith(seatStatus: StatusEnum.failure, errorMessage: e.errorMessage));
-      debugPrint(e.errorMessage);
     }
   }
 
@@ -82,11 +82,52 @@ class BookTicketsCubit extends Cubit<BookTicketsState> {
     } on ApiException catch (e) {
       _reloadShowtime();
       emit(state.copyWith(seatStatus: StatusEnum.failure, errorMessage: e.errorMessage));
-      debugPrint(e.errorMessage);
     }
   }
 
-  void toggleSeat(String seatId, bool isSelected) async {
+  BookingPreviewModel _createOptimisticBooking(List<Seat> seats) {
+    final selectedSeats = seats.where((seat) => seat.status.isHeld).toList();
+
+    final totalAmount = selectedSeats.fold<int>(0, (sum, seat) => sum + seat.price);
+
+    final seatBookings = selectedSeats
+        .map(
+          (seat) => SeatBookingInfo(
+            id: seat.id,
+            price: seat.price,
+            holdExpiredAt: '',
+            status: 'HELD',
+            seatCode: seat.seatCode,
+          ),
+        )
+        .toList();
+
+    return BookingPreviewModel(
+      id: state.booking?.id ?? '',
+      bookingCode: state.booking?.bookingCode ?? '',
+      totalAmount: totalAmount,
+      status: state.booking?.status ?? 'PENDING',
+      createdAt: state.booking?.createdAt ?? DateTime.now().toIso8601String(),
+      seatBookings: seatBookings,
+    );
+  }
+
+  Future<void> toggleSeat(String seatId, bool isSelected) async {
+    if (state.showtime == null) return;
+
+    final updatedSeats = state.showtime!.seats.map((seat) {
+      if (seat.id == seatId) {
+        return seat.copyWith(status: isSelected ? SeatStatusEnum.available : SeatStatusEnum.held);
+      }
+      return seat;
+    }).toList();
+
+    final updatedShowtime = state.showtime!.copyWith(seats: updatedSeats);
+
+    final optimisticBooking = _createOptimisticBooking(updatedSeats);
+
+    emit(state.copyWith(showtime: updatedShowtime, booking: optimisticBooking));
+
     if (isSelected) {
       await _unpickSeat(seatId);
     } else {
@@ -98,7 +139,8 @@ class BookTicketsCubit extends Cubit<BookTicketsState> {
   void _reloadShowtime() async {
     try {
       final response = await showtimeRepository.getShowtimeById(state.selectedShowtimeId!);
-      emit(state.copyWith(showtime: response));
+      final updatedBooking = _createOptimisticBooking(response.seats);
+      emit(state.copyWith(showtime: response, booking: updatedBooking));
     } on ApiException catch (e) {
       debugPrint(e.errorMessage);
     }

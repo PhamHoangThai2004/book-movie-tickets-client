@@ -250,7 +250,7 @@ class _PaymentScreenState extends State<PaymentScreen> with WidgetsBindingObserv
       children: [
         _buildOrderRow('order_id'.tr(), booking?.bookingCode ?? ''),
         VerticalSpacing(of: Dimens.d12.responsive()),
-        _buildOrderRow('seat'.tr(), booking?.tickets.map((t) => t.seatCode).join(', ') ?? ''),
+        _buildOrderRow('seat'.tr(), booking?.seatBookings.map((t) => t.seatCode).join(', ') ?? ''),
       ],
     );
   }
