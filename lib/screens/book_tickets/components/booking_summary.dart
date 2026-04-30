@@ -54,7 +54,7 @@ class _BookingSummaryState extends State<BookingSummary> {
                     ButtonCustom(
                       title: 'pay'.tr(),
                       onPressed: () {
-                        if (state.booking != null && state.booking!.tickets.isNotEmpty) {
+                        if (state.booking != null && state.booking!.seatBookings.isNotEmpty) {
                           context.pushNamed(NavigationService.payment, extra: state.booking!.id);
                         } else {
                           ToastCustom.show(message: 'pls_select_seat'.tr());

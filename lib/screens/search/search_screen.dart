@@ -50,7 +50,6 @@ class _SearchScreenState extends State<SearchScreen> {
     final state = context.read<SearchCubit>().state;
     if (state.isLoadingMore) return;
     
-    // Load more khi gần cuộl hết (500 pixels antes max)
     if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 500) {
       context.searchCubit.loadMoreResults();
     }

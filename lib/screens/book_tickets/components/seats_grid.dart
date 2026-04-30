@@ -68,9 +68,9 @@ class SeatsGrid extends StatelessWidget {
                     return _buildSeatButton(
                       context,
                       seat: seat,
-                      isSelected: seat.status.isSelected,
+                      isSelected: seat.status.isHeld,
                       onTap: () =>
-                          context.bookTicketsCubit.toggleSeat(seat.id, seat.status.isSelected),
+                          context.bookTicketsCubit.toggleSeat(seat.id, seat.status.isHeld),
                     );
                   }).toList(),
                 ),
@@ -141,8 +141,8 @@ class SeatsGrid extends StatelessWidget {
         ),
         HorizontalSpacing(of: Dimens.d24.responsive()),
         _buildLegendItem(
-          label: SeatStatusEnum.selected.name(SeatTypeEnum.normal),
-          color: SeatStatusEnum.selected.background(SeatTypeEnum.normal),
+          label: SeatStatusEnum.held.name(SeatTypeEnum.normal),
+          color: SeatStatusEnum.held.background(SeatTypeEnum.normal),
         ),
         HorizontalSpacing(of: Dimens.d24.responsive()),
         _buildLegendItem(
