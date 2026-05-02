@@ -13,6 +13,7 @@ import 'package:client/data/remote/services/auth_service.dart' as _i787;
 import 'package:client/data/remote/services/movie_service.dart' as _i468;
 import 'package:client/data/remote/services/notification_service.dart' as _i721;
 import 'package:client/data/remote/services/payment_service.dart' as _i280;
+import 'package:client/data/remote/services/review_service.dart' as _i548;
 import 'package:client/data/remote/services/showtime_service.dart' as _i573;
 import 'package:client/data/remote/services/ticket_service.dart' as _i1017;
 import 'package:client/data/remote/services/user_service.dart' as _i906;
@@ -20,6 +21,7 @@ import 'package:client/data/repositories/auth_repository.dart' as _i11;
 import 'package:client/data/repositories/movie_repository.dart' as _i756;
 import 'package:client/data/repositories/notification_repository.dart' as _i176;
 import 'package:client/data/repositories/payment_repository.dart' as _i724;
+import 'package:client/data/repositories/review_repository.dart' as _i591;
 import 'package:client/data/repositories/showtime_repository.dart' as _i904;
 import 'package:client/data/repositories/ticket_repository.dart' as _i652;
 import 'package:client/data/repositories/user_repository.dart' as _i181;
@@ -47,6 +49,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i721.NotificationService(),
     );
     gh.lazySingleton<_i280.PaymentService>(() => _i280.PaymentService());
+    gh.lazySingleton<_i548.ReviewService>(() => _i548.ReviewService());
     gh.lazySingleton<_i573.ShowtimeService>(() => _i573.ShowtimeService());
     gh.lazySingleton<_i1017.TicketService>(() => _i1017.TicketService());
     gh.lazySingleton<_i176.NotificationRepository>(
@@ -82,6 +85,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i652.TicketRepository>(
       () =>
           _i652.TicketRepositoryImpl(ticketService: gh<_i1017.TicketService>()),
+    );
+    gh.lazySingleton<_i591.ReviewRepository>(
+      () =>
+          _i591.ReviewRepositoryImpl(reviewService: gh<_i548.ReviewService>()),
     );
     gh.factory<_i223.NotificationCubit>(
       () => _i223.NotificationCubit(gh<_i176.NotificationRepository>()),

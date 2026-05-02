@@ -20,6 +20,7 @@ class MovieService {
   final String _movieCinemaPath = 'users/movies/{id}/cinemas';
   final String _moviePreviewsPath = 'users/movies/previews';
   final String _genrePath = 'users/genres';
+  final String _reviewPath = 'users/movies/{id}/reviews';
 
   final Dio _dio = Dio(BaseOptions(baseUrl: AppConfig.baseUrl))
     ..interceptors.addAll([CurlLoggerDioInterceptor(printOnSuccess: true), GeneralInterceptor()]);
@@ -88,6 +89,15 @@ class MovieService {
         (json) => (json as List).map((e) => GenreModel.fromJson(e as Map<String, dynamic>)).toList(),
       );
       return result.data;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<void> getReviews(String movieId) async {
+    try {
+      final path = _reviewPath.replaceAll('{id}', movieId);
+      await _dio.get(path);
     } on ApiException {
       rethrow;
     }

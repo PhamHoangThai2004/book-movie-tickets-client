@@ -20,6 +20,8 @@ abstract class MovieRepository {
   Future<List<MoviePosterPreviewModel>> getMoviePreviews(int limit);
 
   Future<List<GenreModel>> getGenres();
+
+  Future<void> getReviews(String movieId);
 }
 
 @Singleton(as: MovieRepository)
@@ -73,6 +75,15 @@ class MovieRepositoryImpl implements MovieRepository {
     try {
       final response = await _movieService.getGenres();
       return response;
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+
+  @override
+  Future<void> getReviews(String movieId) async {
+    try {
+      await _movieService.getReviews(movieId);
     } catch (e) {
       throw ApiException.error(e);
     }
