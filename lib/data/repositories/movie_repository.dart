@@ -1,4 +1,5 @@
 import 'package:client/data/model/movie_model.dart';
+import 'package:client/data/model/review_model.dart';
 import 'package:client/data/remote/requests/movie_preview_request.dart';
 import 'package:client/data/remote/services/movie_service.dart';
 import 'package:injectable/injectable.dart';
@@ -21,7 +22,7 @@ abstract class MovieRepository {
 
   Future<List<GenreModel>> getGenres();
 
-  Future<void> getReviews(String movieId);
+  Future<PaginationResponse<ReviewModel>> getReviews(String movieId);
 }
 
 @Singleton(as: MovieRepository)
@@ -81,9 +82,10 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<void> getReviews(String movieId) async {
+  Future<PaginationResponse<ReviewModel>> getReviews(String movieId) async {
     try {
-      await _movieService.getReviews(movieId);
+      final response = await _movieService.getReviews(movieId);
+      return response;
     } catch (e) {
       throw ApiException.error(e);
     }

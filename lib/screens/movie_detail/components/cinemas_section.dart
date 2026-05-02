@@ -23,7 +23,7 @@ class CinemasSection extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.cinemasStatus != current.cinemasStatus || previous.cinemas != current.cinemas,
       builder: (context, state) {
-        if (state.cinemasStatus == StatusEnum.processing) {
+        if (state.cinemasStatus.isProcessing) {
           return _buildCinemaLoading();
         }
 

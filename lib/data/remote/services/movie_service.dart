@@ -1,6 +1,7 @@
 import 'package:client/data/model/cinema_model.dart';
 import 'package:client/data/model/movie_poster_preview_model.dart';
 import 'package:client/data/model/movie_preview_model.dart';
+import 'package:client/data/model/review_model.dart';
 import 'package:client/data/network/exceptions/api_exception.dart';
 import 'package:client/data/remote/requests/movie_preview_request.dart';
 import 'package:client/data/remote/responses/model_response.dart';
@@ -94,10 +95,15 @@ class MovieService {
     }
   }
 
-  Future<void> getReviews(String movieId) async {
+  Future<PaginationResponse<ReviewModel>> getReviews(String movieId) async {
     try {
       final path = _reviewPath.replaceAll('{id}', movieId);
-      await _dio.get(path);
+      final response = await _dio.get(path);
+      final result = PaginationResponse<ReviewModel>.fromJson(
+        response.data,
+        (json) => ReviewModel.fromJson(json as Map<String, dynamic>),
+      );
+      return result;
     } on ApiException {
       rethrow;
     }

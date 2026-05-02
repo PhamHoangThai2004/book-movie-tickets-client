@@ -27,6 +27,8 @@ import 'package:client/data/repositories/ticket_repository.dart' as _i652;
 import 'package:client/data/repositories/user_repository.dart' as _i181;
 import 'package:client/screens/dashboard/cubit/dashboard_cubit.dart' as _i315;
 import 'package:client/screens/home/cubit/home_cubit.dart' as _i709;
+import 'package:client/screens/movie_detail/cubit/movie_detail_cubit.dart'
+    as _i280;
 import 'package:client/screens/notification/cubit/notification_cubit.dart'
     as _i223;
 import 'package:client/screens/payment_detail/cubit/payment_detail_cubit.dart'
@@ -95,6 +97,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i11.AuthRepository>(
       () => _i11.AuthRepositoryImpl(authService: gh<_i787.AuthService>()),
+    );
+    gh.factory<_i280.MovieDetailCubit>(
+      () => _i280.MovieDetailCubit(
+        gh<_i756.MovieRepository>(),
+        gh<_i591.ReviewRepository>(),
+      ),
     );
     gh.factory<_i315.DashboardCubit>(
       () => _i315.DashboardCubit(
