@@ -144,14 +144,10 @@ class FcmService {
   }
 
   static Future<void> getFCMToken(Function(String) receiveFcmToken) async {
-    messaging.onTokenRefresh.listen((token) async {
-      receiveFcmToken(token);
-    });
-
     if (Platform.isIOS) {
       final apnsToken = await messaging.getAPNSToken();
       if (apnsToken == null) {
-        debugPrint('⚠FirebaseMessaging: APNs token not found');
+        debugPrint('FirebaseMessaging: APNs token not found');
         return;
       }
     }

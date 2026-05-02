@@ -6,6 +6,7 @@ class _PreferencesKey {
   static const accessToken = 'ACCESS_TOKEN_KEY';
   static const refreshToken = 'REFRESH_TOKEN_KEY';
   static const moviePreviews = 'MOVIE_PREVIEWS_KEY';
+  static const deviceToken = 'DEVICE_TOKEN_KEY';
 }
 
 class Preferences {
@@ -62,11 +63,19 @@ class Preferences {
     }
   }
 
+  /// Save, get device token
+  Future<bool> saveDeviceToken(String token) {
+    return _myPref.setString(_PreferencesKey.deviceToken, token);
+  }
+
+  String get deviceToken => _myPref.getString(_PreferencesKey.deviceToken) ?? '';
+
   /// Remove data
   Future<void> clearCurrentUserData() async {
     await Future.wait([
       _myPref.remove(_PreferencesKey.accessToken),
       _myPref.remove(_PreferencesKey.refreshToken),
+      _myPref.remove(_PreferencesKey.deviceToken),
     ]);
   }
 
