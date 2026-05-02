@@ -1,6 +1,7 @@
 import 'package:client/core/common/register_cubit.dart';
 import 'package:client/core/customs/dialogs/dialog_custom.dart';
 import 'package:client/core/utils/validator.dart';
+import 'package:client/data/remote/firebase/fcm_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
@@ -79,8 +80,11 @@ class AppUtils {
     );
   }
 
-  static void logout(BuildContext context) {
+  static void logout(BuildContext context) async {
+    await context.dashboardCubit.removeDeviceToken(Preferences.instance.deviceToken);
+    if (!context.mounted) return;
     context.dashboardCubit.logout();
+    FcmService.deleteToken();
     Preferences.instance.clearCurrentUserData();
     context.go(NavigationService.auth);
   }

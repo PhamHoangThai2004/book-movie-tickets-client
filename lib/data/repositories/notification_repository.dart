@@ -14,6 +14,10 @@ abstract class NotificationRepository {
   Future<void> markAllSeen();
 
   Future<int> getUnreadCount();
+
+  Future<void> addDeviceToken(String token);
+
+  Future<void> removeDeviceToken(String token);
 }
 
 @LazySingleton(as: NotificationRepository)
@@ -58,6 +62,24 @@ class NotificationRepositoryImpl implements NotificationRepository {
     try {
       final response = await _notificationService.getUnreadCount();
       return response;
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+
+  @override
+  Future<void> addDeviceToken(String token) async {
+    try {
+      await _notificationService.addDeviceToken(token);
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+
+  @override
+  Future<void> removeDeviceToken(String token) async {
+    try {
+      await _notificationService.removeDeviceToken(token);
     } catch (e) {
       throw ApiException.error(e);
     }

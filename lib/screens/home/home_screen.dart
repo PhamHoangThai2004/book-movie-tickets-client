@@ -20,7 +20,6 @@ import '../../core/themes/app_colors.dart';
 import '../../core/themes/app_themes.dart';
 import '../../data/enums/movie_status_enum.dart';
 import '../../data/enums/status_enum.dart';
-import '../../data/remote/firebase/fcm_service.dart';
 import '../../generated/assets.gen.dart';
 import 'components/coming_soon_movie_item.dart';
 import 'cubit/home_cubit.dart';
@@ -38,10 +37,6 @@ class _HomeState extends State<HomeScreen> {
     super.initState();
     context.homeCubit.getMovies(MovieStatusEnum.nowShowing);
     context.homeCubit.getMovies(MovieStatusEnum.comingSoon);
-
-    FcmService.getFCMToken((tokenDevice) {
-      debugPrint('tokenDevice: $tokenDevice');
-    });
   }
 
   @override
@@ -99,7 +94,10 @@ class _HomeState extends State<HomeScreen> {
                             if (state.comingSoonMovies.isEmpty) {
                               return const SizedBox.shrink();
                             }
-                            return _buildSectionHeader(title: 'coming_soon'.tr(), onTapSeeAll: () {});
+                            return _buildSectionHeader(
+                              title: 'coming_soon'.tr(),
+                              onTapSeeAll: () {},
+                            );
                           },
                         ),
                         VerticalSpacing(of: Dimens.d16.responsive()),
