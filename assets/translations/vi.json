@@ -168,5 +168,7 @@
   "yesterday": "Hôm qua",
   "days_ago": "ngày trước",
   "pls_select_rating": "Vui lòng chọn điểm xếp hạng",
-  "pls_enter_comment": "Vui lòng nhập đánh giá của bạn"
+  "pls_enter_comment": "Vui lòng nhập đánh giá của bạn",
+  "rating_fail": "Điểm đánh giá không hợp lệ",
+  "pls_enter_review": "Vui lòng nhập đánh giá của bạn"
 }

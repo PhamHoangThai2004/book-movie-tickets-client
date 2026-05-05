@@ -85,20 +85,22 @@ class ReviewItem extends StatelessWidget {
 
   Widget _buildStarRating(int rating) {
     return Row(
-      children: List.generate(5, (index) {
-        final isFilled = index < rating;
-        return Padding(
-          padding: EdgeInsets.only(left: Dimens.d2.responsive()),
-          child: Assets.svgs.icStar.svg(
-            colorFilter: ColorFilter.mode(
-              isFilled ? AppColors.amberYellow : AppColors.coolGray,
-              BlendMode.srcIn,
-            ),
-            width: Dimens.d16.responsive(),
-            height: Dimens.d16.responsive(),
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          '$rating',
+          style: AppTextStyles.style.s14.w600.amberYellowColor,
+        ),
+        HorizontalSpacing(of: Dimens.d4.responsive()),
+        Assets.svgs.icStar.svg(
+          colorFilter: ColorFilter.mode(
+            AppColors.amberYellow,
+            BlendMode.srcIn,
           ),
-        );
-      }),
+          width: Dimens.d16.responsive(),
+          height: Dimens.d16.responsive(),
+        ),
+      ],
     );
   }
 

@@ -9,6 +9,8 @@ class MovieDetailState {
   final StatusEnum reviewsStatus;
   final PaginationResponse<ReviewModel>? reviews;
   final StatusEnum submitReviewStatus;
+  final int rating;
+  final String comment;
 
   const MovieDetailState({
     this.cinemas = const [],
@@ -19,7 +21,11 @@ class MovieDetailState {
     this.reviewsStatus = StatusEnum.initial,
     this.reviews,
     this.submitReviewStatus = StatusEnum.initial,
+    this.rating = 0,
+    this.comment = '',
   });
+
+  bool get isValid => rating > 0 && rating <= 10 && comment.isNotEmpty;
 
   MovieDetailState copyWith({
     List<CinemaModel>? cinemas,
@@ -30,6 +36,8 @@ class MovieDetailState {
     StatusEnum? reviewsStatus,
     PaginationResponse<ReviewModel>? reviews,
     StatusEnum? submitReviewStatus,
+    int? rating,
+    String? comment,
   }) {
     return MovieDetailState(
       cinemas: cinemas ?? this.cinemas,
@@ -40,6 +48,8 @@ class MovieDetailState {
       reviewsStatus: reviewsStatus ?? this.reviewsStatus,
       reviews: reviews ?? this.reviews,
       submitReviewStatus: submitReviewStatus ?? this.submitReviewStatus,
+      rating: rating ?? this.rating,
+      comment: comment ?? this.comment,
     );
   }
 }

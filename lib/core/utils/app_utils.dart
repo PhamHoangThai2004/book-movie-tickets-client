@@ -64,6 +64,25 @@ class AppUtils {
     }
   }
 
+  static String validationRating(int rating) {
+    if (rating == 0) {
+      return 'pls_select_rating'.tr();
+    } else if (rating > 10 || rating < 0) {
+      return 'rating_fail'.tr();
+    } else {
+      return '';
+    }
+  }
+
+  static String validationComment(String comment) {
+    final value = comment.trim();
+    if (value.isEmpty) {
+      return 'pls_enter_comment'.tr();
+    } else {
+      return '';
+    }
+  }
+
   static bool isLoggedIn() {
     return Preferences.instance.accessToken.isNotEmpty;
   }
@@ -93,10 +112,7 @@ class AppUtils {
     debugPrint('openLink:  $link');
     final uri = Uri.parse(link);
     if (await canLaunchUrl(uri)) {
-      final success = await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
+      final success = await launchUrl(uri, mode: LaunchMode.externalApplication);
       if (!success) {
         await launchUrl(uri, mode: LaunchMode.inAppWebView);
       }

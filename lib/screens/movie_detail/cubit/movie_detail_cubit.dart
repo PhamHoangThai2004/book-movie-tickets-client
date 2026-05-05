@@ -1,8 +1,10 @@
+import 'package:client/core/utils/app_utils.dart';
 import 'package:client/data/network/exceptions/api_exception.dart';
 import 'package:client/data/remote/responses/pagination_response.dart';
 import 'package:client/data/repositories/movie_repository.dart';
 import 'package:client/data/model/cinema_model.dart';
 import 'package:client/data/repositories/review_repository.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -58,19 +60,45 @@ class MovieDetailCubit extends Cubit<MovieDetailState> {
     }
   }
 
-  Future<void> addReview({
-    required String movieId,
-    required int rating,
-    required String comment,
-  }) async {
+  Future<void> addReview(String movieId) async {
+    final errorRating = AppUtils.validationRating(state.rating);
+    final errorComment = AppUtils.validationComment(state.comment);
+
+    if (errorRating.isNotEmpty && errorComment.isNotEmpty) {
+      emit(state.copyWith(errorMessage: 'pls_enter_review'.tr()));
+      return;
+    }
+
+    if (errorRating.isNotEmpty) {
+      emit(state.copyWith(errorMessage: errorRating));
+      return;
+    }
+
+    if (errorComment.isNotEmpty) {
+      emit(state.copyWith(errorMessage: errorComment));
+      return;
+    }
+
     emit(state.copyWith(submitReviewStatus: StatusEnum.processing));
     try {
-      final request = CreateReviewRequest(movieId: movieId, rating: rating, comment: comment);
+      final request = CreateReviewRequest(
+        movieId: movieId,
+        rating: state.rating,
+        comment: state.comment,
+      );
       await _reviewRepository.createReview(request);
-      await getReviews(movieId);
-      emit(state.copyWith(submitReviewStatus: StatusEnum.success));
+      emit(state.copyWith(submitReviewStatus: StatusEnum.success, rating: 0, comment: ''));
     } on ApiException catch (e) {
       emit(state.copyWith(submitReviewStatus: StatusEnum.failure, errorMessage: e.errorMessage));
     }
+  }
+
+  void setRating(int rating) {
+    emit(state.copyWith(rating: rating));
+  }
+
+  void setComment(String comment) {
+    final value = comment.trim();
+    emit(state.copyWith(comment: value));
   }
 }
