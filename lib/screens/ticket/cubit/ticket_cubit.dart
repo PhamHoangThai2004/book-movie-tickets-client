@@ -27,20 +27,19 @@ class TicketCubit extends Cubit<TicketState> {
       emit(state.copyWith(status: StatusEnum.failure, errorMessage: e.errorMessage));
     }
   }
-  
+
   Future<void> loadMoreTickets() async {
     if (state.status == StatusEnum.processing || state.isLoadingMore) return;
 
     final currentData = state.tickets;
     if (currentData == null) return;
 
-    if (!currentData.hasMore || currentData.page >= currentData.totalPages) return;
+    if (!currentData.hasMore) return;
 
     emit(state.copyWith(isLoadingMore: true));
 
     try {
-      final nextPage = currentData.page + 1;
-      final request = TicketRequest(page: nextPage, size: 10);
+      final request = TicketRequest(page: currentData.page + 1, size: 10);
       final response = await ticketRepository.getTickets(request);
 
       final mergedData = currentData.copyWith(
@@ -49,7 +48,7 @@ class TicketCubit extends Cubit<TicketState> {
         hasMore: response.hasMore,
       );
 
-      emit(state.copyWith(tickets: mergedData, status: StatusEnum.initial, isLoadingMore: false));
+      emit(state.copyWith(tickets: mergedData, status: StatusEnum.success, isLoadingMore: false));
     } on ApiException catch (e) {
       emit(
         state.copyWith(

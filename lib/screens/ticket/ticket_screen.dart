@@ -74,8 +74,7 @@ class _TicketScreenState extends State<TicketScreen> {
                 listener: (context, state) {
                   if (state.statusDetail.isProcessing) {
                     LoadingCustom.show();
-                  }
-                  else if (state.statusDetail.isSuccess) {
+                  } else if (state.statusDetail.isSuccess) {
                     LoadingCustom.hideLoading();
                     context.pushNamed(NavigationService.ticketDetail, extra: state.ticket);
                   } else if (state.statusDetail.isFailure) {
@@ -120,7 +119,7 @@ class _TicketScreenState extends State<TicketScreen> {
 
   Widget _buildContent(TicketState state) {
     return BlocBuilder<TicketCubit, TicketState>(
-      buildWhen: (p, c) => p.status != c.status,
+      buildWhen: (p, c) => p.status != c.status || p.tickets != c.tickets,
       builder: (context, state) {
         if (state.status.isProcessing) {
           return _buildLoadingShimmer();
