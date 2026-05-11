@@ -6,6 +6,11 @@ class MovieDetailState {
   final String errorMessage;
   final String? selectedCinemaId;
   final bool isPlaying;
+  final StatusEnum reviewsStatus;
+  final PaginationResponse<ReviewModel>? reviews;
+  final StatusEnum submitReviewStatus;
+  final int rating;
+  final String comment;
 
   const MovieDetailState({
     this.cinemas = const [],
@@ -13,7 +18,14 @@ class MovieDetailState {
     this.errorMessage = '',
     this.selectedCinemaId,
     this.isPlaying = false,
+    this.reviewsStatus = StatusEnum.initial,
+    this.reviews,
+    this.submitReviewStatus = StatusEnum.initial,
+    this.rating = 0,
+    this.comment = '',
   });
+
+  bool get isValid => rating > 0 && rating <= 10 && comment.isNotEmpty;
 
   MovieDetailState copyWith({
     List<CinemaModel>? cinemas,
@@ -21,6 +33,11 @@ class MovieDetailState {
     String? errorMessage,
     String? selectedCinemaId,
     bool? isPlaying,
+    StatusEnum? reviewsStatus,
+    PaginationResponse<ReviewModel>? reviews,
+    StatusEnum? submitReviewStatus,
+    int? rating,
+    String? comment,
   }) {
     return MovieDetailState(
       cinemas: cinemas ?? this.cinemas,
@@ -28,6 +45,11 @@ class MovieDetailState {
       errorMessage: errorMessage ?? this.errorMessage,
       selectedCinemaId: selectedCinemaId ?? this.selectedCinemaId,
       isPlaying: isPlaying ?? this.isPlaying,
+      reviewsStatus: reviewsStatus ?? this.reviewsStatus,
+      reviews: reviews ?? this.reviews,
+      submitReviewStatus: submitReviewStatus ?? this.submitReviewStatus,
+      rating: rating ?? this.rating,
+      comment: comment ?? this.comment,
     );
   }
 }

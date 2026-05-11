@@ -270,7 +270,7 @@ class NavigationService {
           return CustomTransitionPage(
             key: state.pageKey,
             child: BlocProvider(
-              create: (context) => MovieDetailCubit(movieRepository: getIt()),
+              create: (context) => getIt<MovieDetailCubit>(),
               child: MovieDetailScreen(movie: movie),
             ),
             transitionDuration: const Duration(milliseconds: 300),
