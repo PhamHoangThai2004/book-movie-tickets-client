@@ -27,19 +27,7 @@ class TicketCubit extends Cubit<TicketState> {
       emit(state.copyWith(status: StatusEnum.failure, errorMessage: e.errorMessage));
     }
   }
-
-  Future<void> refreshTickets() async {
-    emit(state.copyWith(status: StatusEnum.processing));
-    try {
-      final request = TicketRequest(page: 1, size: 10);
-      final response = await ticketRepository.getTickets(request);
-
-      emit(state.copyWith(tickets: response, status: StatusEnum.initial));
-    } on ApiException catch (e) {
-      emit(state.copyWith(status: StatusEnum.failure, errorMessage: e.errorMessage));
-    }
-  }
-
+  
   Future<void> loadMoreTickets() async {
     if (state.status == StatusEnum.processing || state.isLoadingMore) return;
 

@@ -103,7 +103,7 @@ class _TicketScreenState extends State<TicketScreen> {
                       Expanded(
                         child: RefreshIndicator(
                           color: AppColors.amberYellow,
-                          onRefresh: () => context.ticketCubit.refreshTickets(),
+                          onRefresh: () => context.ticketCubit.fetchTickets(),
                           child: _buildContent(state),
                         ),
                       ),
