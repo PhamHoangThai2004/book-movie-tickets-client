@@ -157,7 +157,7 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
                 ),
                 ButtonCustom(
                   title: 'find_day_have_showtimes'.tr(),
-                  onPressed: () {},
+                  onPressed: context.bookTicketsCubit.getNearestShowtime,
                   titleStyle: AppTextStyles.style.s14.w500.blackColor,
                   width: Dimens.d200.responsive(),
                 ),

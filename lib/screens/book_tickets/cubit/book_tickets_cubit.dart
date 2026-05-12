@@ -1,5 +1,6 @@
 import 'package:client/data/enums/status_enum.dart';
 import 'package:client/data/enums/seat_status_enum.dart';
+import 'package:client/data/model/cinema_model.dart';
 import 'package:client/data/model/showtime_preview_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,16 +19,22 @@ part 'book_tickets_state.dart';
 class BookTicketsCubit extends Cubit<BookTicketsState> {
   final ShowtimeRepository showtimeRepository;
   final MovieModel movie;
-  final String cinemaId;
+  final CinemaModel cinema;
 
-  BookTicketsCubit({required this.showtimeRepository, required this.movie, required this.cinemaId})
-    : super(BookTicketsState(selectedDate: DateTime.now()));
+  BookTicketsCubit({required this.showtimeRepository, required this.movie, required this.cinema})
+    : super(
+        BookTicketsState(
+          selectedDate: DateTime.now(),
+          cinemaName: cinema.name,
+          movieTitle: movie.title,
+        ),
+      );
 
   Future<void> fetchShowtimes() async {
     emit(state.copyWith(status: StatusEnum.processing));
     try {
       final request = ShowtimeRequest(
-        cinemaId: cinemaId,
+        cinemaId: cinema.id,
         movieId: movie.id,
         page: 1,
         size: 10,
@@ -134,6 +141,28 @@ class BookTicketsCubit extends Cubit<BookTicketsState> {
       await _pickSeat(seatId);
     }
     _reloadShowtime();
+  }
+
+  Future<void> getNearestShowtime() async {
+    emit(state.copyWith(status: StatusEnum.processing));
+    try {
+      final response = await showtimeRepository.getNearestShowtime(cinema.id, movie.id);
+
+      final showDate = DateTime.parse(response.showDate);
+
+      emit(
+        state.copyWith(
+          showtime: response,
+          selectedDate: showDate,
+          status: StatusEnum.success,
+          selectedShowtimeId: response.id,
+        ),
+      );
+
+      await fetchShowtimes();
+    } on ApiException catch (e) {
+      emit(state.copyWith(status: StatusEnum.failure, errorMessage: e.errorMessage));
+    }
   }
 
   void _reloadShowtime() async {

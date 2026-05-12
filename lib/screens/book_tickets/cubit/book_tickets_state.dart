@@ -10,6 +10,8 @@ class BookTicketsState {
   final String errorMessage;
   final BookingPreviewModel? booking;
   final StatusEnum seatStatus;
+  final String cinemaName;
+  final String movieTitle;
 
   const BookTicketsState({
     this.showtimes = const [],
@@ -21,6 +23,8 @@ class BookTicketsState {
     this.errorMessage = '',
     this.seatStatus = StatusEnum.initial,
     this.booking,
+    required this.cinemaName,
+    required this.movieTitle,
   });
 
   BookTicketsState copyWith({
@@ -45,6 +49,8 @@ class BookTicketsState {
       errorMessage: errorMessage ?? this.errorMessage,
       seatStatus: seatStatus ?? this.seatStatus,
       booking: booking ?? this.booking,
+      cinemaName: cinemaName,
+      movieTitle: movieTitle,
     );
   }
 
@@ -57,7 +63,9 @@ class BookTicketsState {
       selectedShowtimeId: showtimeId,
       status: status,
       errorMessage: errorMessage,
-      booking: null
+      booking: null,
+      cinemaName: cinemaName,
+      movieTitle: movieTitle,
     );
   }
 
@@ -69,6 +77,8 @@ class BookTicketsState {
     selectedShowtimeId: selectedShowtimeId,
     status: status,
     errorMessage: errorMessage,
-    booking: null
+    booking: null,
+    cinemaName: cinemaName,
+    movieTitle: movieTitle,
   );
 }

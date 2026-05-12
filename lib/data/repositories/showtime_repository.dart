@@ -11,6 +11,8 @@ import '../remote/requests/showtime_request.dart';
 abstract class ShowtimeRepository {
   Future<List<ShowtimePreviewModel>> getShowtimes(ShowtimeRequest request);
 
+  Future<ShowtimeModel> getNearestShowtime(String cinemaId, String movieId);
+
   Future<ShowtimeModel> getShowtimeById(String id);
 
   Future<BookingPreviewModel> pickSeat(BookingRequest request);
@@ -71,6 +73,16 @@ class ShowtimeRepositoryImpl implements ShowtimeRepository {
   Future<void> removePendingBooking() async {
     try {
       await _showtimeService.removePendingBooking();
+    } catch (e) {
+      throw ApiException.error(e);
+    }
+  }
+
+  @override
+  Future<ShowtimeModel> getNearestShowtime(String cinemaId, String movieId) async {
+    try {
+      final response = await _showtimeService.getNearestShowtime(cinemaId, movieId);
+      return response;
     } catch (e) {
       throw ApiException.error(e);
     }

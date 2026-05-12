@@ -157,7 +157,7 @@ class _MovieDetailState extends State<MovieDetailScreen> {
           Dimens.d12.responsive(),
         ),
         child: BlocBuilder<MovieDetailCubit, MovieDetailState>(
-          buildWhen: (previous, current) => current.selectedCinemaId != previous.selectedCinemaId,
+          buildWhen: (previous, current) => current.selectedCinema != previous.selectedCinema,
           builder: (context, state) {
             return ButtonCustom(
               title: 'book_tickets'.tr(),
@@ -167,10 +167,10 @@ class _MovieDetailState extends State<MovieDetailScreen> {
                   AppUtils.requestLogin(context: context);
                   return;
                 }
-                if (state.selectedCinemaId != null) {
+                if (state.selectedCinema != null) {
                   context.pushNamed(
                     NavigationService.bookTickets,
-                    extra: {"movie": _movie, "cinemaId": state.selectedCinemaId},
+                    extra: {"movie": _movie, "cinema": state.selectedCinema},
                   );
                 } else {
                   ToastCustom.show(message: 'movie_not_showtimes'.tr());

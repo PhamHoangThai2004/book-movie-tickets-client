@@ -64,7 +64,7 @@ extension SeatStatusEnumX on SeatStatusEnum {
         if (seatType.isNormal) return AppColors.silverGray;
         return AppColors.amberYellow;
       case SeatStatusEnum.reserved:
-        return AppColors.black;
+        return AppColors.amberYellow;
       case SeatStatusEnum.held:
         return AppColors.black;
       case SeatStatusEnum.booked:

@@ -31,7 +31,7 @@ class MovieDetailCubit extends Cubit<MovieDetailState> {
         state.copyWith(
           cinemas: response,
           cinemasStatus: StatusEnum.success,
-          selectedCinemaId: response.isNotEmpty ? response.first.id : null,
+          selectedCinema: response.isNotEmpty ? response.first : null,
         ),
       );
     } on ApiException catch (e) {
@@ -39,11 +39,9 @@ class MovieDetailCubit extends Cubit<MovieDetailState> {
     }
   }
 
-  void selectCinema(String cinemaId) {
-    if (!state.cinemas.any((cinema) => cinema.id == cinemaId)) {
-      return;
-    }
-    emit(state.copyWith(selectedCinemaId: cinemaId));
+  void selectCinema(CinemaModel selectedCinema) {
+    if (state.selectedCinema?.id == selectedCinema.id) return;
+    emit(state.copyWith(selectedCinema: selectedCinema));
   }
 
   void setIsPlaying(bool isPlaying) {
