@@ -15,6 +15,7 @@ class NotificationService {
   final String _markSeenPath = 'notifications/{id}/seen';
   final String _markAllSeenPath = 'notifications/seen/all';
   final String _unreadCountPath = 'notifications/unread-count';
+  final String _deviceTokenPath = 'notifications/device-token';
 
   final Dio _dio = Dio(BaseOptions(baseUrl: AppConfig.baseUrl))
     ..interceptors.addAll([CurlLoggerDioInterceptor(printOnSuccess: true), AuthInterceptor()]);
@@ -55,6 +56,22 @@ class NotificationService {
     try {
       final response = await _dio.get(_unreadCountPath);
       return response.data['data']['count'];
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<void> addDeviceToken(String token) async {
+    try {
+      await _dio.post(_deviceTokenPath, data: {'deviceToken': token});
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<void> removeDeviceToken(String token) async {
+    try {
+      await _dio.delete(_deviceTokenPath, data: {'deviceToken': token});
     } on ApiException {
       rethrow;
     }

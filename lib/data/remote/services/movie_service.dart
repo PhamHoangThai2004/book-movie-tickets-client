@@ -1,6 +1,7 @@
 import 'package:client/data/model/cinema_model.dart';
 import 'package:client/data/model/movie_poster_preview_model.dart';
 import 'package:client/data/model/movie_preview_model.dart';
+import 'package:client/data/model/review_model.dart';
 import 'package:client/data/network/exceptions/api_exception.dart';
 import 'package:client/data/remote/requests/movie_preview_request.dart';
 import 'package:client/data/remote/responses/model_response.dart';
@@ -20,6 +21,7 @@ class MovieService {
   final String _movieCinemaPath = 'users/movies/{id}/cinemas';
   final String _moviePreviewsPath = 'users/movies/previews';
   final String _genrePath = 'users/genres';
+  final String _reviewPath = 'users/movies/{id}/reviews';
 
   final Dio _dio = Dio(BaseOptions(baseUrl: AppConfig.baseUrl))
     ..interceptors.addAll([CurlLoggerDioInterceptor(printOnSuccess: true), GeneralInterceptor()]);
@@ -88,6 +90,20 @@ class MovieService {
         (json) => (json as List).map((e) => GenreModel.fromJson(e as Map<String, dynamic>)).toList(),
       );
       return result.data;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<PaginationResponse<ReviewModel>> getReviews(String movieId) async {
+    try {
+      final path = _reviewPath.replaceAll('{id}', movieId);
+      final response = await _dio.get(path);
+      final result = PaginationResponse<ReviewModel>.fromJson(
+        response.data,
+        (json) => ReviewModel.fromJson(json as Map<String, dynamic>),
+      );
+      return result;
     } on ApiException {
       rethrow;
     }

@@ -159,5 +159,16 @@
   "confirm_cancel_payment": "Bạn có chắc chắn muốn huỷ thanh toán này không?",
   "cancel_payment_success": "Huỷ thanh toán thành công!",
   "notification": "Thông báo",
-  "no_notifications": "Chưa có thông báo nào!"
+  "no_notifications": "Chưa có thông báo nào!",
+  "movie_not_reviews": "Bộ phim này chưa có đánh giá nào!",
+  "write_review": "Viết đánh giá",
+  "write_your_comment": "Viết đánh giá của bạn...",
+  "submit_review": "Gửi đánh giá",
+  "today": "Hôm nay",
+  "yesterday": "Hôm qua",
+  "days_ago": "ngày trước",
+  "pls_select_rating": "Vui lòng chọn điểm xếp hạng",
+  "pls_enter_comment": "Vui lòng nhập đánh giá của bạn",
+  "rating_fail": "Điểm đánh giá không hợp lệ",
+  "pls_enter_review": "Vui lòng nhập đánh giá của bạn"
 }

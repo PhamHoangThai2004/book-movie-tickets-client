@@ -1,6 +1,7 @@
 import 'package:client/core/common/register_cubit.dart';
 import 'package:client/core/customs/dialogs/dialog_custom.dart';
 import 'package:client/core/utils/validator.dart';
+import 'package:client/data/remote/firebase/fcm_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
@@ -63,6 +64,25 @@ class AppUtils {
     }
   }
 
+  static String validationRating(int rating) {
+    if (rating == 0) {
+      return 'pls_select_rating'.tr();
+    } else if (rating > 10 || rating < 0) {
+      return 'rating_fail'.tr();
+    } else {
+      return '';
+    }
+  }
+
+  static String validationComment(String comment) {
+    final value = comment.trim();
+    if (value.isEmpty) {
+      return 'pls_enter_comment'.tr();
+    } else {
+      return '';
+    }
+  }
+
   static bool isLoggedIn() {
     return Preferences.instance.accessToken.isNotEmpty;
   }
@@ -79,8 +99,11 @@ class AppUtils {
     );
   }
 
-  static void logout(BuildContext context) {
+  static void logout(BuildContext context) async {
+    await context.dashboardCubit.removeDeviceToken(Preferences.instance.deviceToken);
+    if (!context.mounted) return;
     context.dashboardCubit.logout();
+    FcmService.deleteToken();
     Preferences.instance.clearCurrentUserData();
     context.go(NavigationService.auth);
   }
@@ -89,10 +112,7 @@ class AppUtils {
     debugPrint('openLink:  $link');
     final uri = Uri.parse(link);
     if (await canLaunchUrl(uri)) {
-      final success = await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
+      final success = await launchUrl(uri, mode: LaunchMode.externalApplication);
       if (!success) {
         await launchUrl(uri, mode: LaunchMode.inAppWebView);
       }

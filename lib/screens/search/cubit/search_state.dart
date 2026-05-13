@@ -10,6 +10,8 @@ class SearchState {
   final GenreModel? selectedGenre;
   final bool showFilters;
   final List<GenreModel> genres;
+  final StatusEnum loadStatus;
+  final MovieModel? movie;
 
   SearchState({
     this.searchQuery = '',
@@ -21,23 +23,26 @@ class SearchState {
     this.showFilters = false,
     this.genres = const [],
     this.searchResult,
+    this.loadStatus = StatusEnum.initial,
+    this.movie,
   });
+
+  int get page => searchResult?.page ?? 1;
+  bool get hasMore => searchResult?.hasMore ?? false;
 
   SearchState copyWith({
     PaginationResponse<MoviePreviewModel>? searchResult,
-    List<MoviePreviewModel>? searchResults,
     String? searchQuery,
     StatusEnum? status,
     String? errorMessage,
-    int? currentPage,
-    int? totalPages,
-    bool? hasMore,
     bool? isLoadingMore,
     MovieStatusEnum? selectedStatus,
     GenreModel? selectedGenre,
     List<String>? availableGenres,
     bool? showFilters,
     List<GenreModel>? genres,
+    StatusEnum? loadStatus,
+    MovieModel? movie,
   }) {
     return SearchState(
       searchQuery: searchQuery ?? this.searchQuery,
@@ -49,6 +54,8 @@ class SearchState {
       showFilters: showFilters ?? this.showFilters,
       genres: genres ?? this.genres,
       searchResult: searchResult ?? this.searchResult,
+      loadStatus: loadStatus ?? this.loadStatus,
+      movie: movie ?? this.movie,
     );
   }
 
@@ -63,6 +70,8 @@ class SearchState {
       showFilters: showFilters,
       genres: genres,
       searchResult: searchResult,
+      loadStatus: loadStatus,
+      movie: movie,
     );
   }
 }

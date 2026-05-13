@@ -19,6 +19,8 @@ import '../../core/size_config/size_config.dart';
 import '../../core/utils/app_utils.dart';
 import '../../data/model/movie_model.dart';
 import 'components/cinemas_section.dart';
+import 'components/review_input.dart';
+import 'components/reviews_layout.dart';
 import 'components/trailer_layout.dart';
 import 'cubit/movie_detail_cubit.dart';
 
@@ -40,6 +42,7 @@ class _MovieDetailState extends State<MovieDetailScreen> {
   void initState() {
     super.initState();
     context.movieDetailCubit.getCinemas(_movie.id);
+    context.movieDetailCubit.getReviews(_movie.id);
   }
 
   List<String> _splitPeople(String source) {
@@ -109,6 +112,10 @@ class _MovieDetailState extends State<MovieDetailScreen> {
                               _buildPeopleSection(title: 'actor'.tr(), items: casts),
                               VerticalSpacing(of: Dimens.d20.responsive()),
                               CinemasSection(),
+                              VerticalSpacing(of: Dimens.d20.responsive()),
+                              ReviewsLayout(),
+                              VerticalSpacing(of: Dimens.d20.responsive()),
+                              ReviewInput(movieId: _movie.id),
                               VerticalSpacing(of: Dimens.d100.responsive()),
                             ],
                           ),
@@ -150,7 +157,7 @@ class _MovieDetailState extends State<MovieDetailScreen> {
           Dimens.d12.responsive(),
         ),
         child: BlocBuilder<MovieDetailCubit, MovieDetailState>(
-          buildWhen: (previous, current) => current.selectedCinemaId != previous.selectedCinemaId,
+          buildWhen: (previous, current) => current.selectedCinema != previous.selectedCinema,
           builder: (context, state) {
             return ButtonCustom(
               title: 'book_tickets'.tr(),
@@ -160,10 +167,10 @@ class _MovieDetailState extends State<MovieDetailScreen> {
                   AppUtils.requestLogin(context: context);
                   return;
                 }
-                if (state.selectedCinemaId != null) {
+                if (state.selectedCinema != null) {
                   context.pushNamed(
                     NavigationService.bookTickets,
-                    extra: {"movie": _movie, "cinemaId": state.selectedCinemaId},
+                    extra: {"movie": _movie, "cinema": state.selectedCinema},
                   );
                 } else {
                   ToastCustom.show(message: 'movie_not_showtimes'.tr());

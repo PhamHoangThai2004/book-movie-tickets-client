@@ -15,6 +15,7 @@ import '../responses/model_response.dart';
 @lazySingleton
 class ShowtimeService {
   final String _showtimePath = 'users/showtimes';
+  final String _nearestShowtimePath = 'users/showtimes/nearest';
   final String _seatPickPath = 'users/bookings/pick';
   final String _seatUnpickPath = 'users/bookings/unpick';
   final String _removePendingBookingPath = 'users/bookings/remove-pending';
@@ -30,6 +31,22 @@ class ShowtimeService {
         (json) => (json as List)
             .map((e) => ShowtimePreviewModel.fromJson(e as Map<String, dynamic>))
             .toList(),
+      );
+      return result.data;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<ShowtimeModel> getNearestShowtime(String cinemaId, String movieId) async {
+    try {
+      final response = await _dio.get(_nearestShowtimePath, queryParameters: {
+        'cinemaId': cinemaId,
+        'movieId': movieId,
+      });
+      final result = ModelResponse.fromJson(
+        response.data,
+        (json) => ShowtimeModel.fromJson(json as Map<String, dynamic>),
       );
       return result.data;
     } on ApiException {

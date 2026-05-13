@@ -2,14 +2,17 @@ import 'package:client/core/common/register_cubit.dart';
 import 'package:client/core/size_config/app_dimen.dart';
 import 'package:client/core/size_config/dimens.dart';
 import 'package:client/core/utils/app_utils.dart';
+import 'package:client/data/enums/status_enum.dart';
 import 'package:client/screens/dashboard/components/navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/customs/toasts/loading_custom.dart';
 import '../../core/navigation/navigation_bar_type.dart';
 import '../../core/size_config/size_config.dart';
 import '../../core/themes/app_colors.dart';
+import '../../data/local/preferences.dart';
 import '../../data/remote/firebase/fcm_service.dart';
 import 'cubit/dashboard_cubit.dart';
 
@@ -27,30 +30,54 @@ class _DashboardState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     context.dashboardCubit.getUserInfo();
-    context.dashboardCubit.checkHaveUnreadNotifications();
+    if (AppUtils.isLoggedIn()) {
+      context.dashboardCubit.checkHaveUnreadNotifications();
+    }
     FcmService.listenerFirebaseMessaging();
+    _addDeviceToken();
   }
 
   @override
   void didUpdateWidget(covariant DashboardScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (context.dashboardCubit.state.userInfo == null) {
+
+    final state = context.dashboardCubit.state;
+
+    if (state.userInfo == null) {
       context.dashboardCubit.getUserInfo();
     }
+
+    if (!state.deviceTokenAdded && AppUtils.isLoggedIn()) {
+      _addDeviceToken();
+    }
+  }
+
+  void _addDeviceToken() {
+    FcmService.getFCMToken((token) {
+      if (!mounted) return;
+      context.dashboardCubit.addDeviceToken(token);
+      Preferences.instance.saveDeviceToken(token);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DashboardCubit, DashboardState>(
-      builder: (context, state) {
-        return Scaffold(
-          extendBody: true,
-          backgroundColor: AppColors.black,
-          resizeToAvoidBottomInset: false,
-          body: widget.navigationShell,
-          bottomNavigationBar: _bottomNavigationBar(),
-        );
+    return BlocListener<DashboardCubit, DashboardState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) {
+        if (state.status.isProcessing) {
+          LoadingCustom.show();
+        } else {
+          LoadingCustom.hideLoading();
+        }
       },
+      child: Scaffold(
+        extendBody: true,
+        backgroundColor: AppColors.black,
+        resizeToAvoidBottomInset: false,
+        body: widget.navigationShell,
+        bottomNavigationBar: _bottomNavigationBar(),
+      ),
     );
   }
 

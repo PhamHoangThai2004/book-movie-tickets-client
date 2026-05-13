@@ -4,7 +4,7 @@ class BookingPreviewModel {
   final int totalAmount;
   final String status;
   final String createdAt;
-  final List<TicketInfo> tickets;
+  final List<SeatBookingInfo> seatBookings;
 
   BookingPreviewModel({
     required this.id,
@@ -12,7 +12,7 @@ class BookingPreviewModel {
     required this.totalAmount,
     required this.status,
     required this.createdAt,
-    required this.tickets,
+    required this.seatBookings,
   });
 
   factory BookingPreviewModel.fromJson(Map<String, dynamic> json) {
@@ -22,7 +22,7 @@ class BookingPreviewModel {
       totalAmount: json['totalAmount'] as int,
       status: json['status'] as String,
       createdAt: json['createdAt'] as String,
-      tickets: List<TicketInfo>.from(json["tickets"].map((x) => TicketInfo.fromJson(x))),
+      seatBookings: List<SeatBookingInfo>.from(json["seatBookings"].map((x) => SeatBookingInfo.fromJson(x))),
     );
   }
 
@@ -33,42 +33,38 @@ class BookingPreviewModel {
       'totalAmount': totalAmount,
       'status': status,
       'createdAt': createdAt,
-      "tickets": List<dynamic>.from(tickets.map((x) => x.toJson())),
+      "seatBookings": List<dynamic>.from(seatBookings.map((x) => x.toJson())),
     };
   }
 }
 
-class TicketInfo {
+class SeatBookingInfo {
   final String id;
-  final String ticketCode;
   final int price;
-  final String expiredAt;
+  final String holdExpiredAt;
   final String status;
   final String seatCode;
 
-  TicketInfo({
+  SeatBookingInfo({
     required this.id,
-    required this.ticketCode,
     required this.price,
-    required this.expiredAt,
+    required this.holdExpiredAt,
     required this.status,
     required this.seatCode,
   });
 
-  factory TicketInfo.fromJson(Map<String, dynamic> json) => TicketInfo(
+  factory SeatBookingInfo.fromJson(Map<String, dynamic> json) => SeatBookingInfo(
     id: json["id"],
-    ticketCode: json["ticketCode"],
     price: json["price"],
-    expiredAt: json["expiredAt"],
+    holdExpiredAt: json["holdExpiredAt"],
     status: json["status"],
     seatCode: json["seatCode"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "ticketCode": ticketCode,
     "price": price,
-    "expiredAt": expiredAt,
+    "expiredAt": holdExpiredAt,
     "status": status,
     "seatCode": seatCode,
   };

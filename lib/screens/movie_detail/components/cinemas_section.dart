@@ -23,7 +23,7 @@ class CinemasSection extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.cinemasStatus != current.cinemasStatus || previous.cinemas != current.cinemas,
       builder: (context, state) {
-        if (state.cinemasStatus == StatusEnum.processing) {
+        if (state.cinemasStatus.isProcessing) {
           return _buildCinemaLoading();
         }
 
@@ -37,9 +37,9 @@ class CinemasSection extends StatelessWidget {
             Text('cinema'.tr(), style: AppTextStyles.style.s24.w700.whiteColor),
             BlocBuilder<MovieDetailCubit, MovieDetailState>(
               buildWhen: (previous, current) =>
-                  previous.selectedCinemaId != current.selectedCinemaId,
+                  previous.selectedCinema != current.selectedCinema,
               builder: (context, state) {
-                final selectedCinemaId = state.selectedCinemaId ?? state.cinemas.first.id;
+                final selectedCinema = state.selectedCinema ?? state.cinemas.first;
 
                 return ListView.separated(
                   primary: false,
@@ -52,8 +52,8 @@ class CinemasSection extends StatelessWidget {
                     final cinema = state.cinemas[index];
                     return _buildCinemaCard(
                       cinema,
-                      isSelected: cinema.id == selectedCinemaId,
-                      onPressed: () => context.movieDetailCubit.selectCinema(cinema.id),
+                      isSelected: cinema.id == selectedCinema.id,
+                      onPressed: () => context.movieDetailCubit.selectCinema(cinema),
                     );
                   },
                 );

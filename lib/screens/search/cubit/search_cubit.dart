@@ -10,6 +10,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../data/model/movie_model.dart';
+
 part 'search_state.dart';
 
 @injectable
@@ -20,37 +22,40 @@ class SearchCubit extends Cubit<SearchState> {
 
   Future<void> searchMovies(String query) async {
     if (query.isEmpty) {
-      emit(state.copyWith(searchResults: [], searchQuery: '', status: StatusEnum.initial));
+      emit(state.copyWith(searchQuery: '', searchResult: null, status: StatusEnum.initial));
       return;
     }
 
-    emit(
-      state.copyWith(
-        status: StatusEnum.processing,
-        searchQuery: query,
-        currentPage: 1,
-        searchResults: [],
-      ),
-    );
+    emit(state.copyWith(status: StatusEnum.processing, searchQuery: query));
 
     try {
+      debugPrint('🔍 Searching: "$query" - Page 1');
       final request = MoviePreviewRequest(
         search: query,
         genre: state.selectedGenre?.name,
         status: state.selectedStatus?.toKey,
-        page: state.searchResult?.page ?? 1,
+        page: 1,
         size: 10,
       );
       final response = await _movieRepository.getMovies(request);
 
+      debugPrint('✅ Found ${response.items.length} results');
       emit(state.copyWith(searchResult: response, status: StatusEnum.initial));
     } on ApiException catch (e) {
+      debugPrint('❌ Search error: ${e.errorMessage}');
       emit(state.copyWith(status: StatusEnum.failure, errorMessage: e.errorMessage));
     }
   }
 
   void setFilter(MovieStatusEnum? status, GenreModel? genre) {
-    emit(state.setFilter(status, genre));
+    debugPrint('🎬 Filter changed - Status: $status, Genre: ${genre?.name}');
+    emit(
+      state
+          .setFilter(status, genre)
+          .copyWith(
+            searchResult: null, // Reset results when filter changes
+          ),
+    );
   }
 
   void toggleFilters() {
@@ -58,8 +63,7 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   Future<void> loadMoreResults() async {
-    if (state.status.isProcessing || state.isLoadingMore || state.searchResult == null) return;
-    if (!state.searchResult!.hasMore) return;
+    if (state.isLoadingMore || state.searchResult == null || !state.hasMore) return;
 
     emit(state.copyWith(isLoadingMore: true));
 
@@ -74,16 +78,14 @@ class SearchCubit extends Cubit<SearchState> {
       );
       final response = await _movieRepository.getMovies(request);
       final mergedResults = [...state.searchResult!.items, ...response.items];
-
       emit(
         state.copyWith(
-          searchResults: mergedResults,
-          currentPage: response.page,
-          totalPages: response.totalPages,
-          hasMore: response.hasMore,
-          status: StatusEnum.success,
+          searchResult: state.searchResult!.copyWith(
+            items: mergedResults,
+            page: nextPage,
+            hasMore: response.hasMore,
+          ),
           isLoadingMore: false,
-          errorMessage: '',
         ),
       );
     } on ApiException catch (e) {
@@ -103,6 +105,16 @@ class SearchCubit extends Cubit<SearchState> {
       emit(state.copyWith(genres: genres));
     } on ApiException catch (e) {
       debugPrint(e.errorMessage);
+    }
+  }
+
+  Future<void> getMovieDetail(String movieId) async {
+    emit(state.copyWith(loadStatus: StatusEnum.processing));
+    try {
+      final response = await _movieRepository.getMovieById(movieId);
+      emit(state.copyWith(loadStatus: StatusEnum.success, movie: response));
+    } on ApiException catch (e) {
+      emit(state.copyWith(loadStatus: StatusEnum.failure, errorMessage: e.errorMessage));
     }
   }
 }

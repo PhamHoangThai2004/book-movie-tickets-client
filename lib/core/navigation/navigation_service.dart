@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:client/data/model/cinema_model.dart';
 import 'package:client/screens/auth/auth_screen.dart';
 import 'package:client/screens/auth/cubit/auth_cubit.dart';
 import 'package:client/screens/change_password/change_password_screen.dart';
@@ -270,7 +271,7 @@ class NavigationService {
           return CustomTransitionPage(
             key: state.pageKey,
             child: BlocProvider(
-              create: (context) => MovieDetailCubit(movieRepository: getIt()),
+              create: (context) => getIt<MovieDetailCubit>(),
               child: MovieDetailScreen(movie: movie),
             ),
             transitionDuration: const Duration(milliseconds: 300),
@@ -290,13 +291,13 @@ class NavigationService {
         pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final movie = extra['movie'] as MovieModel;
-          final cinemaId = extra['cinemaId'] as String;
+          final cinema = extra['cinema'] as CinemaModel;
 
           return CustomTransitionPage(
             key: state.pageKey,
             child: BlocProvider(
               create: (context) =>
-                  BookTicketsCubit(showtimeRepository: getIt(), movie: movie, cinemaId: cinemaId),
+                  BookTicketsCubit(showtimeRepository: getIt(), movie: movie, cinema: cinema),
               child: BookTicketsScreen(),
             ),
             transitionDuration: const Duration(milliseconds: 300),
