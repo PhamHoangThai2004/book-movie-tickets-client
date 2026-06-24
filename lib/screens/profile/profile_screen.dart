@@ -28,8 +28,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppDimen.of(context);
-
     return Scaffold(
       backgroundColor: AppColors.warmBlack,
       body: Container(
